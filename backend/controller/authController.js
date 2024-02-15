@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 // helper function to send verification email
 const sendVerificationEmail = (email, verificationCode) => {
   const mailOptions = {
-    from: "peter.huang440@gmail.com",
+    from: "bearbazaar verification <peter.huang440@gmail.com>",
     to: email,
     subject: "Please verify your email",
     html: `
@@ -53,23 +53,21 @@ const sendVerificationEmail = (email, verificationCode) => {
   });
 };
 
-exports.signup = async (req, res) => {
-  const { email, password } = req.body;
+// handler for getting one-time code
+exports.getCode = async (req, res) => {
+  const { email } = req.body;
   try {
-    // check if the user already exists
+    // check if the user already verified
     const user = await User.findOne({ where: { email } });
-    if (user) {
-      return res.status(400).json({ message: "User already exists" });
+    if (user && user.isVerified) {
+      return res.status(400).json({ message: "User already registered" });
     }
 
-    // hash the password
-    const passwordHash = await bcrypt.hash(password, 10);
     const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
     // create a new user
     const newUser = await User.create({
       email,
-      password: passwordHash,
       verificationCode: verificationCode.toString(),
       verificationCodeTimestamp: new Date(),
     });
@@ -87,8 +85,9 @@ exports.signup = async (req, res) => {
   }
 };
 
-exports.verifyEmail = async (req, res) => {
-  const { email, verificationCode } = req.body;
+// handler for signing up
+exports.signUpVerify = async (req, res) => {
+  const { email, verificationCode, password } = req.body;
 
   try {
     const user = await User.findOne({ where: { email } });
@@ -96,9 +95,12 @@ exports.verifyEmail = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // hash the password
+    const passwordHash = await bcrypt.hash(password, 10);
+
     // check if the code is expired (e.g., 1 hour limit)
     const isCodeExpired =
-      new Date() - new Date(user.verificationCodeTimestamp) > 3600000; // 1 hour in milliseconds
+      new Date() - new Date(user.verificationCodeTimestamp) > 3600000;
     if (isCodeExpired) {
       return res.status(400).json({ message: "Verification code expired" });
     }
@@ -106,6 +108,7 @@ exports.verifyEmail = async (req, res) => {
     // check if the code is correct
     if (user.verificationCode === verificationCode) {
       await user.update({
+        password: passwordHash,
         isVerified: true,
         verificationCode: null,
         verificationCodeTimestamp: null,
@@ -125,6 +128,7 @@ exports.verifyEmail = async (req, res) => {
   }
 };
 
+// handler for resending the verification code
 exports.resendCode = async (req, res) => {
   const { email } = req.body;
 
