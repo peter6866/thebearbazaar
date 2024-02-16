@@ -1,5 +1,4 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const authController = require("../controller/authController");
 const router = express.Router();
 
@@ -9,5 +8,7 @@ router.post("/get-code", authController.getCode);
 router.post("/signup-verify", authController.signUpVerify);
 // resend verification code route
 router.post("/resend-code", authController.resendCode);
+// login route
+router.post("/login", authController.login);
 
 module.exports = router;
