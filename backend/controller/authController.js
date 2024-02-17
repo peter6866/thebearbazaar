@@ -11,7 +11,6 @@ const signToken = (id) => {
   });
 };
 
-// TODO: change to sendgrid
 const transporter = nodemailer.createTransport({
   host: "smtp.sendgrid.net",
   port: 465,
@@ -24,12 +23,10 @@ const transporter = nodemailer.createTransport({
 
 // helper function to send verification email
 const sendVerificationEmail = (email, verificationCode) => {
-  // TODO: can not deliever to wustl.edu
   const mailOptions = {
-    from: "bearbazaar <no-reply@thebearbazaar.com>",
-    // from: "hjiayu@wustl.edu",
+    from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
     to: email,
-    subject: "Please verify your email",
+    subject: "Please verify your email for the bearbazaar!",
     html: `
     <!DOCTYPE html>
     <html lang="en">
@@ -37,19 +34,73 @@ const sendVerificationEmail = (email, verificationCode) => {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Email Verification</title>
+        <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #222222;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .header {
+            background-color: #a51417; /* Main red color */
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .verification-code {
+            background-color: #f8e6e7; /* Lighter shade of red for contrast */
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #a51417; /* Main red color for text */
+            border-radius: 5px;
+            border: 1px dashed #a51417; /* Main red color for border */
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+        }
+        a {
+            color: #a51417; /* Main red color for links */
+        }
+    </style>
+  
     </head>
-    <body>
-        <div style="font-family: Arial, sans-serif; color: #333;">
-            <h2>Hello, thank you for signing up!</h2>
-            <p>Please verify your email by entering the following code:</p>
-            <div style="background-color: #f2f2f2; padding: 20px; text-align: center; margin: 20px 0; font-size: 24px; font-weight: bold; border-radius: 5px;">
-                ${verificationCode}
-            </div>
-            <p>Thank you for using our service!</p>
-        </div>
-    </body>
+      <body>
+          <div class="email-container">
+              <div class="header">
+                  <h1>Welcome to The Bear Bazaar!</h1>
+              </div>
+              <h3>Hello!</h3>
+              <p>Thank you for signing up. Please verify your wustl email to start using our services.</p>
+              <div class="verification-code">
+                  ${verificationCode}
+              </div>
+              <p>Enter the above code in the verification field on our website. This code is valid for 1 hour.</p>
+              <p>If you didn't request this, please ignore this email or contact support if you have any concerns.</p>
+              <div class="footer">
+                  Thank you for using our service!<br>
+                  <a href="mailto:hjiayu@wustl.edu" style="color: #005a9c;">Contact Support</a>
+              </div>
+          </div>
+      </body>
     </html>
-        `,
+          `,
   };
 
   // return a promise to send the email
@@ -88,7 +139,10 @@ exports.getCode = catchAsync(async (req, res, next) => {
     });
   }
 
-  await sendVerificationEmail(email, verificationCode);
+  await sendVerificationEmail(
+    email.replace(/@wustl\.edu/g, "@email.wustl.edu"),
+    verificationCode
+  );
 
   res.status(201).json({
     status: "success",
