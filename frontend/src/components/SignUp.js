@@ -1,11 +1,14 @@
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 function SignUp() {
     return (
-
-        <form>
-            <input type="text" name="email" id="email" placeholder="student@wustl.edu"></input>
-            <Button variant="contained">Hello world</Button>;
-        </form>
+        <div>
+            <h2>Sign Up</h2>
+            <form>
+                <TextField fullWidth id="standard-basic" label="email@wustl.edu" variant="standard" />
+                <Button variant="contained">Get One Time Code</Button>
+            </form>
+        </div>
 
     )
 }

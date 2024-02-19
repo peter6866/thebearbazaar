@@ -10,7 +10,7 @@ let signUpUser = () => {
 
 function Auth() {
     return (
-        <div>
+        <div class="auth-container-outer">
             <SignUp />
         </div>
     )
