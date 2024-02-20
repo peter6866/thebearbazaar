@@ -5,6 +5,7 @@ import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useAuth } from "../context/AuthContext";
+import { useConfig } from "../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
 
 function SignUp({ flip }) {
@@ -16,6 +17,7 @@ function SignUp({ flip }) {
   });
 
   const { login } = useAuth();
+  const config = useConfig();
   let navigate = useNavigate();
 
   const [successMessage, setSuccessMessage] = useState("");
@@ -24,10 +26,11 @@ function SignUp({ flip }) {
 
   let requestCode = async (e) => {
     e.preventDefault();
+    console.log(config);
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/v1/users/get-code`,
+        `${config.REACT_APP_API_URL}/v1/users/get-code`,
         {
           method: "POST",
           headers: {
@@ -52,7 +55,7 @@ function SignUp({ flip }) {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/v1/users/resend-code`,
+        `${config.REACT_APP_API_URL}/v1/users/resend-code`,
         {
           method: "POST",
           headers: {
@@ -80,7 +83,7 @@ function SignUp({ flip }) {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/v1/users/signup-verify`,
+        `${config.REACT_APP_API_URL}/v1/users/signup-verify`,
         {
           method: "POST",
           headers: {

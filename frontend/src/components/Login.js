@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import { useAuth } from "../context/AuthContext";
+import { useConfig } from "../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
 
 function Login({ flip }) {
@@ -12,6 +13,7 @@ function Login({ flip }) {
   });
 
   const { login } = useAuth();
+  const config = useConfig();
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -27,7 +29,7 @@ function Login({ flip }) {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/v1/users/login`,
+        `${config.REACT_APP_API_URL}/v1/users/login`,
         {
           method: "POST",
           headers: {
