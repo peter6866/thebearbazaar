@@ -1,7 +1,3 @@
-// TODO: remove dotenv
-const dotenv = require("dotenv");
-dotenv.config({ path: "./config.env" });
-
 const sequelize = require("./db/connection");
 
 const app = require("./app");
