@@ -82,7 +82,7 @@ function SignUp({flip}) {
               },
               body: JSON.stringify({
                 "email": userData["email"],
-                "verificiationCode": userData["code"],
+                "verificationCode": userData["code"],
                 "password": userData["password"]
             })
             });
