@@ -1,11 +1,12 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db/connection");
+const bcrypt = require("bcrypt");
 
 const User = sequelize.define(
   "User",
   {
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
-    password: { type: DataTypes.STRING, allowNull: false },
+    password: { type: DataTypes.STRING, allowNull: true },
     verificationCode: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -21,5 +22,20 @@ const User = sequelize.define(
   },
   {}
 );
+
+User.prototype.isCodeExpired = function (timestamp) {
+  return new Date() - new Date(timestamp) > 3600000;
+};
+
+User.prototype.correctCode = function (candidateCode, userCode) {
+  return candidateCode === userCode;
+};
+
+User.prototype.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
 
 module.exports = User;

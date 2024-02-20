@@ -1,7 +1,13 @@
 const { Sequelize } = require("sequelize");
+// Retrieve environment variables
+const PGUSER = process.env.PGUSER;
+const PGPASSWORD = process.env.PGPASSWORD;
+const PGDATABASE = process.env.PGDATABASE;
+const PGHOST = process.env.PGHOST;
+const PGPORT = 5432;
+
 // connect to the database
-const sequelize = new Sequelize(
-  "postgres://postgres_user:postgres_password@localhost:5432/mydb"
-);
+const connectionString = `postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}`;
+const sequelize = new Sequelize(connectionString);
 
 module.exports = sequelize;

@@ -1,0 +1,22 @@
+FROM node:20-alpine as builder
+
+WORKDIR /app
+
+COPY package.json ./
+
+# Use --only=production to avoid installing devDependencies
+RUN npm install --only=production
+
+COPY . .
+
+# Production stage
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app ./
+
+EXPOSE 3001
+
+# start npm production
+CMD ["npm", "run", "start:prod"]
