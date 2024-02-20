@@ -1,5 +1,6 @@
 .auth-container-outer {
     display:flex;
+    flex-direction: column;
     justify-content:center;
     align-items:center;
     width:100vw;
@@ -7,5 +8,7 @@
 }
 
 .auth-container-inner {
-    
+    max-width:650px;
+    min-width:300px;
+    padding:2rem;
 }
