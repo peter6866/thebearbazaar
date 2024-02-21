@@ -2,6 +2,7 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Transact from "./Transact";
 
 function HomePage() {
   const { isLoggedIn, logout } = useAuth();
@@ -17,6 +18,7 @@ function HomePage() {
         <div>
           <h1>Welcome back!</h1>
           <button onClick={logout}>Logout</button>
+          <Transact/>
         </div>
       ) : (
         <div>
