@@ -13,12 +13,13 @@ function HomePage() {
   }
 
   return (
-    <div>
+    // FIXME: temporary style
+    <div className="auth-container-outer">
       {isLoggedIn ? (
         <div>
           <h1>Welcome back!</h1>
           <button onClick={logout}>Logout</button>
-          <Transact/>
+          <Transact />
         </div>
       ) : (
         <div>
