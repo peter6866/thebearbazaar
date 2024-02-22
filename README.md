@@ -8,7 +8,7 @@
 
 ## TA: <Insert Here>
 
-## Instructions/Link to access: <insert here>
+## Instructions/Link to access: [The Bear Bazaar](http://www.thebearbazaar.com)
 
 
 # Starting the Project
