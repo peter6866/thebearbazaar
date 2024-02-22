@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
@@ -23,10 +25,25 @@ function SignUp({ flip }) {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [step, setStep] = useState(1);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [countdown, setCountdown] = useState(60);
 
   let requestCode = async (e) => {
     e.preventDefault();
-    console.log(config);
+
+    // Start the countdown and disable the button
+    setIsButtonDisabled(true);
+    setCountdown(60);
+    let intervalId = setInterval(() => {
+      setCountdown((currentCountdown) => {
+        if (currentCountdown <= 1) {
+          clearInterval(intervalId);
+          setIsButtonDisabled(false);
+          return null; // Reset the countdown
+        }
+        return currentCountdown - 1;
+      });
+    }, 1000);
 
     try {
       const response = await fetch(
@@ -44,14 +61,35 @@ function SignUp({ flip }) {
 
       if (!response.ok) {
         setErrorMessage(data.message);
+        clearInterval(intervalId);
+        setIsButtonDisabled(false);
+        setCountdown(null);
       } else {
         nextStep();
       }
-    } catch (error) {}
+    } catch (error) {
+      clearInterval(intervalId); // Ensure to clear interval on error
+      setIsButtonDisabled(false);
+      setCountdown(null);
+    }
   };
 
   let resendCode = async (e) => {
     e.preventDefault();
+    setIsButtonDisabled(true);
+    setCountdown(60); // Reset countdown
+
+    // Restart the countdown
+    const timer = setInterval(() => {
+      setCountdown((currentCountdown) => {
+        if (currentCountdown <= 1) {
+          clearInterval(timer);
+          setIsButtonDisabled(false);
+          return 0; // Stop the countdown
+        }
+        return currentCountdown - 1;
+      });
+    }, 1000);
 
     try {
       const response = await fetch(
@@ -69,6 +107,8 @@ function SignUp({ flip }) {
 
       if (response.ok) {
         setSuccessMessage(data.message);
+      } else {
+        setErrorMessage(data.message);
       }
     } catch (error) {}
   };
@@ -140,7 +180,6 @@ function SignUp({ flip }) {
         )}
         Sign Up
       </h3>
-
       {step === 1 && (
         <form onSubmit={requestCode}>
           <div>
@@ -166,7 +205,6 @@ function SignUp({ flip }) {
           )}
         </form>
       )}
-
       {step === 2 && (
         <form onSubmit={signUp}>
           <div>
@@ -180,11 +218,18 @@ function SignUp({ flip }) {
               onChange={update}
             />
           </div>
-          <div>
-            <Button onClick={resendCode} variant="contained">
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Button
+              onClick={resendCode}
+              variant="contained"
+              disabled={isButtonDisabled}
+            >
               Get a New Code
             </Button>
-          </div>
+            {isButtonDisabled && (
+              <Typography variant="body2">{countdown}s</Typography>
+            )}
+          </Box>
           {successMessage && (
             <div>
               <Alert severity="success">{successMessage}</Alert>
@@ -226,7 +271,17 @@ function SignUp({ flip }) {
           )}
         </form>
       )}
-      <div onClick={flip}>Already have an account? Login instead.</div>
+      <Box
+        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+      >
+        <Typography variant="body1">Already have an account?</Typography>
+        <Button
+          onClick={flip}
+          style={{ textTransform: "none", fontSize: "1rem" }}
+        >
+          Login instead.
+        </Button>
+      </Box>
     </div>
   );
 }

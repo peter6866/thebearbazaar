@@ -8,6 +8,8 @@ const PGPORT = 5432;
 
 // connect to the database
 const connectionString = `postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}`;
-const sequelize = new Sequelize(connectionString);
+const sequelize = new Sequelize(connectionString, {
+  logging: false,
+});
 
 module.exports = sequelize;

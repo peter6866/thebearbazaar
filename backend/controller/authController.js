@@ -121,6 +121,11 @@ exports.getCode = catchAsync(async (req, res, next) => {
   const { email } = req.body;
   const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@wustl\.edu$/;
+  if (!emailRegex.test(email)) {
+    return next(new AppError("Please enter your wustl email", 400));
+  }
+
   let newUser;
 
   // check if the user already verified

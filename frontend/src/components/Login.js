@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
@@ -92,8 +94,17 @@ function Login({ flip }) {
           </div>
         )}
       </form>
-
-      <div onClick={flip}>Need an account? Sign up.</div>
+      <Box
+        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+      >
+        <Typography variant="body1">Need an account?</Typography>
+        <Button
+          onClick={flip}
+          style={{ textTransform: "none", fontSize: "1rem" }}
+        >
+          Sign up.
+        </Button>
+      </Box>
     </div>
   );
 }
