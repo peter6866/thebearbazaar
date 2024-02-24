@@ -2,29 +2,35 @@
 import React, { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+import Logout from "./Logout";
 
 function HomePage() {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, isLoading } = useAuth();
   let navigate = useNavigate();
 
   useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/transact");
-    } else {
+    if (!isLoading && !isLoggedIn) {
       navigate("/auth");
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, isLoading, navigate]);
 
   return (
-    <></>
-    // FIXME: temporary style
-    // <div className="container-outer">
-    //   <div>
-    //     <h1>Welcome back!</h1>
-    //     <button onClick={logout}>Logout</button>
-    //     <Transact />
-    //   </div>
-    // </div>
+    <div className="container-outer">
+      <div>
+        <Logout />
+        <br></br>
+        <Button
+          variant="contained"
+          fullWidth
+          onClick={() => navigate("/transact")}
+        >
+          Place a bid
+        </Button>
+        <p>View your bid</p>
+        <p>Your buy/seller</p>
+      </div>
+    </div>
   );
 }
 

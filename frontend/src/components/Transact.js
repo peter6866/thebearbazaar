@@ -10,9 +10,10 @@ import {
 } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
-import Logout from "./Logout";
+import { useNavigate } from "react-router-dom";
 
 function Transact() {
+  const navigate = useNavigate();
   const [bidData, setBidData] = useState({
     Price: 0,
   });
@@ -57,7 +58,6 @@ function Transact() {
   return (
     <div className="container-outer">
       <div>
-        <Logout />
         <form>
           <FormControl component="fieldset" fullWidth margin="normal">
             Would you like to buy or sell mealpoints?
@@ -99,6 +99,9 @@ function Transact() {
               onClick={sendBid}
             >
               Submit
+            </Button>
+            <Button fullWidth onClick={() => navigate("/")}>
+              Back to Home
             </Button>
           </FormControl>
           {errorMessage && (

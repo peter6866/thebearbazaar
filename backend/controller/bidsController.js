@@ -16,7 +16,7 @@ exports.sellBid = catchAsync(async (req, res, next) => {
   const buybid = await BuyBids.findOne({ where: { user_id: id } });
   const sellbid = await SellBids.findOne({ where: { user_id: id } });
   if (buybid || sellbid) {
-    return next(new AppError("User already has a bid", 400));
+    return next(new AppError("You have already placed a bid!", 400));
   }
 
   await SellBids.create({
@@ -42,7 +42,7 @@ exports.buyBid = catchAsync(async (req, res, next) => {
   const buybid = await BuyBids.findOne({ where: { user_id: id } });
   const sellbid = await SellBids.findOne({ where: { user_id: id } });
   if (buybid || sellbid) {
-    return next(new AppError("User already has a bid", 400));
+    return next(new AppError("You have already placed a bid!", 400));
   }
 
   await BuyBids.create({
