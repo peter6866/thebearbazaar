@@ -1,9 +1,10 @@
-import "./App.css";
+import "./styles/App.css";
 import React from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { ConfigProvider } from "./context/ConfigContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Auth from "./components/Auth";
+import Transact from "./components/Transact";
 import HomePage from "./components/HomePage";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} exact />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/transact" element={<Transact />} />
           </Routes>
         </AuthProvider>
       </ConfigProvider>

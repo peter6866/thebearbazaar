@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
+import Logout from "./Logout";
 
 function Transact() {
   const [bidData, setBidData] = useState({
@@ -54,56 +55,59 @@ function Transact() {
   };
 
   return (
-    <div>
-      <form>
-        <FormControl component="fieldset" fullWidth margin="normal">
-          Would you like to buy or sell mealpoints?
-          <br />
-          <RadioGroup
-            row
-            name="Transact"
-            value={transType}
-            onChange={(e) => setTransType(e.target.value)}
-          >
-            <FormControlLabel
-              value="buy"
-              control={<Radio required />}
-              label="Buy"
+    <div className="container-outer">
+      <div>
+        <Logout />
+        <form>
+          <FormControl component="fieldset" fullWidth margin="normal">
+            Would you like to buy or sell mealpoints?
+            <br />
+            <RadioGroup
+              row
+              name="Transact"
+              value={transType}
+              onChange={(e) => setTransType(e.target.value)}
+            >
+              <FormControlLabel
+                value="buy"
+                control={<Radio required />}
+                label="Buy"
+              />
+              <FormControlLabel
+                value="sell"
+                control={<Radio required />}
+                label="Sell"
+              />
+            </RadioGroup>
+            <TextField
+              id="Price"
+              name="Price"
+              label="Willingness to pay: $"
+              type="number"
+              value={bidData.Price}
+              onChange={update}
+              InputProps={{ inputProps: { min: 0, max: 500 } }}
+              required
+              margin="normal"
+              fullWidth
             />
-            <FormControlLabel
-              value="sell"
-              control={<Radio required />}
-              label="Sell"
-            />
-          </RadioGroup>
-          <TextField
-            id="Price"
-            name="Price"
-            label="Willingness to pay: $"
-            type="number"
-            value={bidData.Price}
-            onChange={update}
-            InputProps={{ inputProps: { min: 0, max: 500 } }}
-            required
-            margin="normal"
-            fullWidth
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            margin="normal"
-            fullWidth
-            onClick={sendBid}
-          >
-            Submit
-          </Button>
-        </FormControl>
-        {errorMessage && (
-          <div>
-            <Alert severity="error">{errorMessage}</Alert>
-          </div>
-        )}
-      </form>
+            <Button
+              variant="contained"
+              color="primary"
+              margin="normal"
+              fullWidth
+              onClick={sendBid}
+            >
+              Submit
+            </Button>
+          </FormControl>
+          {errorMessage && (
+            <div>
+              <Alert severity="error">{errorMessage}</Alert>
+            </div>
+          )}
+        </form>
+      </div>
     </div>
   );
 }

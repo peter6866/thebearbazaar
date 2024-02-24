@@ -1,0 +1,19 @@
+form > * {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.container-outer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.container-inner {
+  max-width: 650px;
+  min-width: 300px;
+  padding: 2rem;
+}

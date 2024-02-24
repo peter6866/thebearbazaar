@@ -166,7 +166,7 @@ function SignUp({ flip }) {
   };
 
   return (
-    <div className="auth-container-inner">
+    <div className="container-inner">
       <h3>
         {step === 2 && (
           <IconButton
@@ -194,7 +194,7 @@ function SignUp({ flip }) {
             />
           </div>
           <div>
-            <Button onClick={requestCode} variant="contained">
+            <Button type="submit" variant="contained">
               Get One Time Code
             </Button>
           </div>
@@ -260,7 +260,7 @@ function SignUp({ flip }) {
             />
           </div>
           <div>
-            <Button onClick={signUp} variant="contained">
+            <Button type="submit" variant="contained">
               Sign Up
             </Button>
           </div>

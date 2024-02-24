@@ -56,7 +56,7 @@ function Login({ flip }) {
   };
 
   return (
-    <div className="auth-container-inner">
+    <div className="container-inner">
       <h3>Login</h3>
 
       <form onSubmit={submitLogin}>
@@ -84,7 +84,7 @@ function Login({ flip }) {
           />
         </div>
         <div>
-          <Button onClick={submitLogin} variant="contained">
+          <Button type="submit" variant="contained">
             Login
           </Button>
         </div>

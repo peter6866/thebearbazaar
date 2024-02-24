@@ -1,4 +1,3 @@
-import "../styles/Auth.css";
 import React, { useState } from "react";
 import SignUp from "./SignUp";
 import Login from "./Login";
@@ -11,7 +10,7 @@ function Auth() {
   };
 
   return (
-    <div className="auth-container-outer">
+    <div className="container-outer">
       <h1>The Bear Bazaar</h1>
       {loginStep && <Login flip={flip} />}
       {!loginStep && <SignUp flip={flip} />}
