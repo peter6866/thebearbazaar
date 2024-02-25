@@ -1,14 +1,24 @@
 // TODO: Create a home page for the Bear Bazaar
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Logout from "./Logout";
 import Nav from "./Nav";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import Transact from "./Transact";
+import Faq from "./Faq";
 
 function HomePage() {
   const { isLoggedIn, logout, isLoading } = useAuth();
+  const [selectedTab, setSelectedTab] = useState("transact");
   let navigate = useNavigate();
+
+  let changeTab = (e, tab) => {
+    setSelectedTab(tab);
+  };
 
   useEffect(() => {
     if (!isLoading && !isLoggedIn) {
@@ -17,22 +27,20 @@ function HomePage() {
   }, [isLoggedIn, isLoading, navigate]);
 
   return (
-    <div className="container-outer">
-      <Nav />
-      <div>
-        <Logout />
-        <br></br>
-        <Button
-          variant="contained"
-          fullWidth
-          onClick={() => navigate("/transact")}
-        >
-          Place a bid
-        </Button>
-        <p>View your bid</p>
-        <p>Your buy/seller</p>
-      </div>
-    </div>
+    !isLoading &&
+    isLoggedIn && (
+      <Box sx={{ width: "100%" }}>
+        <Tabs value={selectedTab} onChange={changeTab} aria-label="mui tab bar">
+          <Tab label="Transact" value="transact" />
+          <Tab label="FAQ" value="faq" />
+          <Tab label="Logout" value="logout" onClick={logout} />
+        </Tabs>
+        <Box sx={{ p: 3 }}>
+          {selectedTab === "transact" && <Transact />}
+          {selectedTab === "faq" && <Faq />}
+        </Box>
+      </Box>
+    )
   );
 }
 

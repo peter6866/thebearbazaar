@@ -38,19 +38,17 @@ function Faq() {
   }, [config]);
 
   return (
-    <div className="container-outer">
-      <div className="container-inner">
-        <h3>Frequently Asked Questions</h3>
-        {questionsData.map((item, index) => (
-          <QAPair
-            key={index}
-            data={{
-              question: item.question,
-              answer: item.answer,
-            }}
-          />
-        ))}
-      </div>
+    <div>
+      <h3>Frequently Asked Questions</h3>
+      {questionsData.map((item, index) => (
+        <QAPair
+          key={index}
+          data={{
+            question: item.question,
+            answer: item.answer,
+          }}
+        />
+      ))}
     </div>
   );
 }
