@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Auth from "./components/Auth";
 import Transact from "./components/Transact";
 import HomePage from "./components/HomePage";
+import Faq from "./components/Faq";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<HomePage />} exact />
             <Route path="/auth" element={<Auth />} />
             <Route path="/transact" element={<Transact />} />
+            <Route path="/faq" element={<Faq />} />
           </Routes>
         </AuthProvider>
       </ConfigProvider>

@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Logout from "./Logout";
+import Nav from "./Nav";
 
 function HomePage() {
   const { isLoggedIn, logout, isLoading } = useAuth();
@@ -17,6 +18,7 @@ function HomePage() {
 
   return (
     <div className="container-outer">
+      <Nav />
       <div>
         <Logout />
         <br></br>
