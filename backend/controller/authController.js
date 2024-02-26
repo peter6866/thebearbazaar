@@ -180,8 +180,7 @@ exports.signUpVerify = catchAsync(async (req, res, next) => {
   const token = signToken(user.id);
 
   // check if the code is correct
-  // correct = user.correctCode(verificationCode, user.verificationCode);
-  correct = true;
+  correct = user.correctCode(verificationCode, user.verificationCode);
   if (correct) {
     await user.update({
       password: passwordHash,
