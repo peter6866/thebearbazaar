@@ -2,9 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
-import Logout from "./Logout";
-import Nav from "./Nav";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
