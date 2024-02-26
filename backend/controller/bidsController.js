@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const BuyBids = require("../models/buyBidsModel");
 const SellBids = require("../models/sellBidsModel");
+const MatchBids = require("../models/matchBidsModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
@@ -114,4 +115,67 @@ exports.cancelBid = catchAsync(async (req, res, next) => {
       message: "Successfully canceled bid",
     });
   }
+});
+
+exports.match = catchAsync(async (req, res, next) => {
+  const activeBuyBids = await BuyBids.findAll({
+    where: { isActive: true },
+    order: [
+      ["price", "DESC"],
+      ["bidTimeStamp", "DESC"],
+    ],
+  });
+  const activeSellBids = await SellBids.findAll({
+    where: { isActive: true },
+    order: [
+      ["price", "ASC"],
+      ["bidTimeStamp", "DESC"],
+    ],
+  });
+
+  let bidIndex = 0;
+  let marketPrice = 0;
+  let noMatch = false;
+  let matches = [];
+
+  while (
+    bidIndex < activeSellBids.length &&
+    bidIndex < activeBuyBids.length &&
+    !noMatch
+  ) {
+    const buyBid = activeBuyBids[bidIndex];
+    const sellBid = activeSellBids[bidIndex];
+    if (buyBid.price >= sellBid.price) {
+      matches.push({ buyer_id: buyBid.user_id, seller_id: sellBid.user_id });
+      marketPrice = sellBid.price;
+      bidIndex++;
+    } else {
+      noMatch = true;
+    }
+  }
+
+  matches = matches.map((match) => {
+    return { ...match, price: marketPrice };
+  });
+
+  const matchedBuyerIds = matches.map((match) => match.buyer_id);
+  const matchedSellerIds = matches.map((match) => match.seller_id);
+
+  await MatchBids.bulkCreate(matches);
+
+  await BuyBids.update(
+    { isActive: false },
+    { where: { user_id: matchedBuyerIds } }
+  );
+
+  await SellBids.update(
+    { isActive: false },
+    { where: { user_id: matchedSellerIds } }
+  );
+
+  res.status(201).json({
+    status: "Success",
+    message: "Successfully matched bids",
+    data: matches,
+  });
 });

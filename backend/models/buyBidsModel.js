@@ -23,6 +23,10 @@ const BuyBids = sequelize.define(
       allowNull: false,
       defaultValue: new Date(),
     },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
   },
   {}
 );
