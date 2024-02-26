@@ -1,7 +1,7 @@
-const FAQ = require("../models/faqModel");
+const FAQs = require("../models/faqModel");
 const catchAsync = require("../utils/catchAsync");
 
-const faqData = [
+exports.faqData = [
   {
     question: "How often can I buy/sell meal points?",
     answer: "WashU allows students to transfer meal points once per semester.",
@@ -23,17 +23,22 @@ const faqData = [
   },
 ];
 
-const currentFAQ = FAQ.findAll();
-if (currentFAQ !== faqData) {
-  FAQ.destroy({
-    where: {},
-  });
-  FAQ.bulkCreate(faqData);
-}
+exports.initializeFAQs = async (data) => {
+  try {
+    const currentFAQ = FAQs.findAll();
+    if (currentFAQ.length !== data.length) {
+      await FAQs.destroy({
+        where: {},
+      });
+      await FAQs.bulkCreate(data);
+    }
+  } catch (error) {
+    console.error("Failed to initialize FAQ data:", error);
+  }
+};
 
-// handler for getting one-time code
 exports.getFAQ = catchAsync(async (req, res, next) => {
-  const questionsData = await FAQ.findAll();
+  const questionsData = await FAQs.findAll();
   if (!questionsData) {
     return next(new AppError("Could not load FAQ data", 404));
   }

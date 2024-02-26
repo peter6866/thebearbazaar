@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db/connection");
 
-const FAQ = sequelize.define(
-  "FAQ",
+const FAQs = sequelize.define(
+  "FAQs",
   {
     question: { type: DataTypes.STRING, allowNull: false },
     answer: { type: DataTypes.STRING, allowNull: false },
@@ -10,4 +10,4 @@ const FAQ = sequelize.define(
   {}
 );
 
-module.exports = FAQ;
+module.exports = FAQs;
