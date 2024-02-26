@@ -7,19 +7,19 @@ import {
   TextField,
   Button,
   Alert,
+  Paper,
 } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
-import { useNavigate } from "react-router-dom";
 
 function Transact() {
-  const navigate = useNavigate();
   const [bidData, setBidData] = useState({
     Price: 0,
   });
 
   const [transType, setTransType] = useState("buy");
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const config = useConfig();
   const { authToken } = useAuth();
   let update = (e) => {
@@ -49,15 +49,17 @@ function Transact() {
 
       if (!response.ok) {
         setErrorMessage(data.message);
+        setSuccessMessage("");
       } else {
-        setErrorMessage(data.message);
+        setSuccessMessage(data.message);
+        setErrorMessage("");
       }
     } catch (error) {}
   };
 
   return (
     <div className="container-outer">
-      <div>
+      <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
         <form>
           <FormControl component="fieldset" fullWidth margin="normal">
             Would you like to buy or sell mealpoints?
@@ -86,7 +88,7 @@ function Transact() {
               type="number"
               value={bidData.Price}
               onChange={update}
-              InputProps={{ inputProps: { min: 0, max: 500 } }}
+              InputProps={{ inputProps: { min: 1, max: 500 } }}
               required
               margin="normal"
               fullWidth
@@ -100,17 +102,19 @@ function Transact() {
             >
               Submit
             </Button>
-            <Button fullWidth onClick={() => navigate("/")}>
-              Back to Home
-            </Button>
           </FormControl>
           {errorMessage && (
             <div>
               <Alert severity="error">{errorMessage}</Alert>
             </div>
           )}
+          {successMessage && (
+            <div>
+              <Alert severity="success">{successMessage}</Alert>
+            </div>
+          )}
         </form>
-      </div>
+      </Paper>
     </div>
   );
 }

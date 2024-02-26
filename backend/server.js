@@ -4,7 +4,7 @@ const faqController = require("./controller/faqController");
 const app = require("./app");
 
 sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     console.log("Database synced successfully.");
     faqController.initializeFAQs(faqController.faqData).then(() => {
