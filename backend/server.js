@@ -1,4 +1,5 @@
 const sequelize = require("./db/connection");
+const faqController = require("./controller/faqController");
 
 const app = require("./app");
 
@@ -6,8 +7,10 @@ sequelize
   .sync({ force: false })
   .then(() => {
     console.log("Database synced successfully.");
-    app.listen(3001, () => {
-      console.log(`App running on port 3001`);
+    faqController.initializeFAQs(faqController.faqData).then(() => {
+      app.listen(3001, () => {
+        console.log(`App running on port 3001`);
+      });
     });
   })
   .catch((error) => {

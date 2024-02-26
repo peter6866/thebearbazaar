@@ -10,6 +10,7 @@ export function useAuth() {
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authToken, setAuthToken] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Check for a token in local storage on load
   useEffect(() => {
@@ -18,6 +19,7 @@ export const AuthProvider = ({ children }) => {
       setIsLoggedIn(true);
       setAuthToken(token);
     }
+    setIsLoading(false);
   }, []);
 
   const login = (token) => {
@@ -39,6 +41,7 @@ export const AuthProvider = ({ children }) => {
     authToken,
     login,
     logout,
+    isLoading,
   };
 
   // Check for a token in local storage on load

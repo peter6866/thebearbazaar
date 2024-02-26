@@ -1,33 +1,47 @@
 // TODO: Create a home page for the Bear Bazaar
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
 import Transact from "./Transact";
+import ViewBid from "./ViewBid";
+import Faq from "./Faq";
 
 function HomePage() {
-  const { isLoggedIn, logout } = useAuth();
-  let navigate = useNavigate();
+  const { isLoggedIn, logout, isLoading } = useAuth();
+  const [selectedTab, setSelectedTab] = useState("transact");
+  const navigate = useNavigate();
 
-  function handleLoginClick() {
-    navigate("/auth");
-  }
+  const changeTab = (e, tab) => {
+    setSelectedTab(tab);
+  };
+
+  useEffect(() => {
+    if (!isLoading && !isLoggedIn) {
+      navigate("/auth");
+    }
+  }, [isLoggedIn, isLoading, navigate]);
 
   return (
-    // FIXME: temporary style
-    <div className="auth-container-outer">
-      {isLoggedIn ? (
-        <div>
-          <h1>Welcome back!</h1>
-          <button onClick={logout}>Logout</button>
-          <Transact />
-        </div>
-      ) : (
-        <div>
-          <h1>Please log in.</h1>
-          <button onClick={handleLoginClick}>Login</button>
-        </div>
-      )}
-    </div>
+    !isLoading &&
+    isLoggedIn && (
+      <Box sx={{ width: "100%" }}>
+        <Tabs value={selectedTab} onChange={changeTab} aria-label="mui tab bar">
+          <Tab label="Transact" value="transact" />
+          <Tab label="My Bid" value="myBid" />
+          <Tab label="FAQ" value="faq" />
+          <Box sx={{ flexGrow: 1 }} />
+          <Tab label="Logout" value="logout" onClick={logout} />
+        </Tabs>
+        <Box sx={{ p: 3 }}>
+          {selectedTab === "transact" && <Transact />}
+          {selectedTab === "faq" && <Faq />}
+          {selectedTab === "myBid" && <ViewBid />}
+        </Box>
+      </Box>
+    )
   );
 }
 

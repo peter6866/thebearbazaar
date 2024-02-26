@@ -6,6 +6,7 @@ const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controller/errorController");
 const userRouter = require("./routes/userRoutes");
 const bidsRouter = require("./routes/bidsRoutes");
+const faqRouter = require("./routes/faqRoutes");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/bids", bidsRouter);
+app.use("/api/v1/faq", faqRouter);
 
 // handling unhandled routes
 app.all("*", (req, res, next) => {

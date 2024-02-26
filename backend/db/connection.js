@@ -10,6 +10,10 @@ const PGPORT = 5432;
 const connectionString = `postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}`;
 const sequelize = new Sequelize(connectionString, {
   logging: false,
+  retry: {
+    max: 5,
+    backoffBase: 1000,
+  },
 });
 
 module.exports = sequelize;
