@@ -6,20 +6,22 @@
 
 ## Contributors: <Insert Here>
 
-## TA: <Insert Here>
+## TA: Mutaz Badr
 
 ## Instructions/Link to access: [The Bear Bazaar](http://www.thebearbazaar.com)
-
 
 # Starting the Project
 
 ## Prerequisites
+
 - Docker desktop installed on your machine.
 
 ## Starting the Project
+
 To start the project, you have two options depending on your needs:
 
 ### Option 1: Starting in Detached Mode
+
 Use this option if you want to start the containers in the background:
 
 ```bash
@@ -39,10 +41,10 @@ docker-compose up --build
 This command rebuilds the images from the Dockerfiles and starts the containers. It's useful when updating dependencies or making significant changes to the container setup.
 
 ## Shutting down the Project
+
 ```bash
 docker-compose down
 ```
-
 
 ## Note for Windows Users
 
