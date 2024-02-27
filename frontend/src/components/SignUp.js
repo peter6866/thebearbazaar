@@ -188,12 +188,12 @@ function SignUp({ flip }) {
               id="email"
               name="email"
               value={userData["email"]}
-              label="email@wustl.edu"
+              label="WUSTL Email Address"
               variant="standard"
               onChange={update}
             />
           </div>
-          <div>
+          <div class="btn-wrapper">
             <Button type="submit" variant="contained">
               Get One Time Code
             </Button>
@@ -224,10 +224,10 @@ function SignUp({ flip }) {
               variant="contained"
               disabled={isButtonDisabled}
             >
-              Get a New Code
+              Send a New Code
             </Button>
             {isButtonDisabled && (
-              <Typography variant="body2">{countdown}s</Typography>
+              <Typography variant="body2">Available in {countdown}s</Typography>
             )}
           </Box>
           {successMessage && (
@@ -259,7 +259,7 @@ function SignUp({ flip }) {
               onChange={update}
             />
           </div>
-          <div>
+          <div className="btn-wrapper">
             <Button type="submit" variant="contained">
               Sign Up
             </Button>
@@ -272,7 +272,12 @@ function SignUp({ flip }) {
         </form>
       )}
       <Box
-        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: "2rem",
+        }}
       >
         <Typography variant="body1">Already have an account?</Typography>
         <Button

@@ -66,7 +66,7 @@ function Login({ flip }) {
             id="email"
             name="email"
             value={userData["email"]}
-            label="email@wustl.edu"
+            label="WUSTL Email Address"
             variant="standard"
             onChange={update}
           />
@@ -83,7 +83,7 @@ function Login({ flip }) {
             onChange={update}
           />
         </div>
-        <div>
+        <div class="btn-wrapper">
           <Button type="submit" variant="contained">
             Login
           </Button>
@@ -95,7 +95,12 @@ function Login({ flip }) {
         )}
       </form>
       <Box
-        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: "2rem",
+        }}
       >
         <Typography variant="body1">Need an account?</Typography>
         <Button

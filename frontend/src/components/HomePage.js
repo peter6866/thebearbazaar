@@ -35,10 +35,12 @@ function HomePage() {
           <Box sx={{ flexGrow: 1 }} />
           <Tab label="Logout" value="logout" onClick={logout} />
         </Tabs>
-        <Box sx={{ p: 3 }}>
-          {selectedTab === "transact" && <Transact />}
-          {selectedTab === "faq" && <Faq />}
-          {selectedTab === "myBid" && <ViewBid />}
+        <Box>
+          <div class="container-main">
+            {selectedTab === "transact" && <Transact />}
+            {selectedTab === "faq" && <Faq />}
+            {selectedTab === "myBid" && <ViewBid />}
+          </div>
         </Box>
       </Box>
     )

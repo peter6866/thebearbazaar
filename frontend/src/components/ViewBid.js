@@ -11,6 +11,17 @@ function ViewBid() {
   const [bidPrice, setBidPrice] = useState(0);
   const [hasBid, setHasBid] = useState(false);
 
+  const today = new Date();
+  const daysUntilNextSunday = 7 - today.getDay();
+  const nextSundayTimestamp =
+    today.getTime() + daysUntilNextSunday * 24 * 60 * 60 * 1000;
+  const nextSunday = new Date(nextSundayTimestamp).toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   const fetchBid = async () => {
     try {
       const response = await fetch(
@@ -62,15 +73,16 @@ function ViewBid() {
   }, []);
 
   return (
-    <div className="container-outer">
+    <Paper elevation={3} style={{ padding: "2rem" }}>
+      <h3>Bid Information</h3>
       {hasBid ? (
-        <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
+        <div>
           <Typography
-            variant="h6"
-            component="h3"
+            variant="body1"
+            component="p"
             style={{ marginBottom: "10px" }}
           >
-            Bid Information
+            <strong>Match Date:</strong> {nextSunday}{" "}
           </Typography>
           <Typography
             variant="body1"
@@ -86,16 +98,20 @@ function ViewBid() {
           >
             <strong>Bid Price:</strong> ${bidPrice}{" "}
           </Typography>
-          <Button variant="contained" fullWidth onClick={cancelBid}>
-            Cancel Bid
-          </Button>
-        </Paper>
+          <div class="btn-wrapper">
+            <Button variant="contained" onClick={cancelBid}>
+              Cancel Bid
+            </Button>
+          </div>
+        </div>
       ) : (
-        <Typography variant="body1" component="p">
-          You have not placed a bid yet.
-        </Typography>
+        <div>
+          <Typography variant="body1" component="p">
+            You currently have no bids.
+          </Typography>
+        </div>
       )}
-    </div>
+    </Paper>
   );
 }
 

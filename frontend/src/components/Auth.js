@@ -13,10 +13,16 @@ function Auth() {
   return (
     <div className="container-outer">
       <Typography
-        variant="h5"
+        variant="h4"
         style={{ margin: "20px auto", textAlign: "center", width: "100%" }}
       >
         The Bear Bazaar
+      </Typography>
+      <Typography
+        variant="h6"
+        style={{ margin: "20px auto", textAlign: "center", width: "100%" }}
+      >
+        Connect with other WashU students to exchange meal points
       </Typography>
       {loginStep && <Login flip={flip} />}
       {!loginStep && <SignUp flip={flip} />}
