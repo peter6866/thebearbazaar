@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Auth from "./components/Auth";
 import Transact from "./components/Transact";
 import HomePage from "./components/HomePage";
-import Faq from "./components/Faq";
+import Admin from "./components/Admin";
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} exact />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </AuthProvider>
       </ConfigProvider>

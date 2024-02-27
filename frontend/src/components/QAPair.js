@@ -11,10 +11,14 @@ function QAPair({ data }) {
   return (
     <Accordion style={{ width: "100%" }}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography>{question}</Typography>
+        <Typography>
+          <strong>Q</strong>: {question}
+        </Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Typography>{answer}</Typography>
+        <Typography>
+          <strong>A</strong>: {answer}
+        </Typography>
       </AccordionDetails>
     </Accordion>
   );

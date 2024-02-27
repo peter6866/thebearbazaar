@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Paper from "@mui/material/Paper";
 import { useConfig } from "../context/ConfigContext";
 import QAPair from "./QAPair";
 
@@ -38,7 +39,7 @@ function Faq() {
   }, [config]);
 
   return (
-    <div>
+    <Paper elevation={3} style={{ padding: "2rem" }}>
       <h3>Frequently Asked Questions</h3>
       {questionsData.map((item, index) => (
         <QAPair
@@ -49,7 +50,7 @@ function Faq() {
           }}
         />
       ))}
-    </div>
+    </Paper>
   );
 }
 

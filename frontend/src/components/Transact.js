@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
+import Typography from "@mui/material/Typography";
+import InfoIcon from "@mui/icons-material/Info";
 
 function Transact() {
   const [bidData, setBidData] = useState({
@@ -29,7 +31,6 @@ function Transact() {
 
   let sendBid = async (e) => {
     e.preventDefault();
-    //alert(bid);
     try {
       const response = await fetch(
         `${config.REACT_APP_API_URL}/v1/bids/${transType}-bid`,
@@ -58,64 +59,66 @@ function Transact() {
   };
 
   return (
-    <div className="container-outer">
-      <Paper elevation={3} style={{ padding: "20px", marginBottom: "20px" }}>
-        <form>
-          <FormControl component="fieldset" fullWidth margin="normal">
-            Would you like to buy or sell mealpoints?
-            <br />
-            <RadioGroup
-              row
-              name="Transact"
-              value={transType}
-              onChange={(e) => setTransType(e.target.value)}
-            >
-              <FormControlLabel
-                value="buy"
-                control={<Radio required />}
-                label="Buy"
-              />
-              <FormControlLabel
-                value="sell"
-                control={<Radio required />}
-                label="Sell"
-              />
-            </RadioGroup>
-            <TextField
-              id="Price"
-              name="Price"
-              label="Willingness to pay: $"
-              type="number"
-              value={bidData.Price}
-              onChange={update}
-              InputProps={{ inputProps: { min: 1, max: 500 } }}
-              required
-              margin="normal"
-              fullWidth
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              margin="normal"
-              fullWidth
-              onClick={sendBid}
-            >
-              Submit
-            </Button>
-          </FormControl>
-          {errorMessage && (
-            <div>
-              <Alert severity="error">{errorMessage}</Alert>
-            </div>
-          )}
-          {successMessage && (
-            <div>
-              <Alert severity="success">{successMessage}</Alert>
-            </div>
-          )}
-        </form>
-      </Paper>
-    </div>
+    <Paper elevation={3} style={{ padding: "2rem", marginBottom: "40px" }}>
+      <h3>Buy or Sell 500 Mealpoints</h3>
+      <form onSubmit={sendBid}>
+        <RadioGroup
+          row
+          name="Transact"
+          value={transType}
+          onChange={(e) => setTransType(e.target.value)}
+        >
+          <FormControlLabel value="buy" control={<Radio />} label="Buy" />
+          <FormControlLabel value="sell" control={<Radio />} label="Sell" />
+        </RadioGroup>
+        <TextField
+          id="Price"
+          name="Price"
+          label={
+            transType === "buy"
+              ? "Maximum Price to Buy 500 Meal Points"
+              : "Minimum Price to Sell 500 Meal Points"
+          }
+          type="number"
+          value={bidData.Price}
+          onChange={update}
+          margin="normal"
+          variant="standard"
+          fullWidth
+        />
+        <div className="btn-wrapper">
+          <Button type="submit" variant="contained">
+            Place Bid
+          </Button>
+        </div>
+        {errorMessage && (
+          <div>
+            <Alert severity="error">{errorMessage}</Alert>
+          </div>
+        )}
+        {successMessage && (
+          <div>
+            <Alert severity="success">{successMessage}</Alert>
+          </div>
+        )}
+      </form>
+      <Typography
+        style={{ display: "flex", alignItems: "center", marginTop: "2rem" }}
+      >
+        <InfoIcon
+          style={{
+            fontSize: 20,
+            color: "primary",
+            backgroundColor: "transparent",
+          }}
+        />
+        <span style={{ marginLeft: "1rem" }}>
+          After submitting a bid to buy or sell meal points, you will be matched
+          with another student based on your specified price range to complete
+          the transaction.
+        </span>
+      </Typography>
+    </Paper>
   );
 }
 

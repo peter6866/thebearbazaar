@@ -10,6 +10,10 @@ router.route("/buy-bid").post(authController.protect, bidsController.buyBid);
 //get current bid
 router.route("/get-bid").post(authController.protect, bidsController.getBid);
 //cancel bid
-router.route("/cancel-bid").post(authController.protect, bidsController.cancelBid);
+router
+  .route("/cancel-bid")
+  .post(authController.protect, bidsController.cancelBid);
+
+router.post("/match", bidsController.match);
 
 module.exports = router;

@@ -1,6 +1,7 @@
-form > * {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 body {
@@ -10,7 +11,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+  /* overflow: hidden; */
   height: 100%;
   width: 100%;
   padding: 0;
@@ -19,13 +20,28 @@ body {
 .container-outer {
   display: flex;
   flex-direction: column;
-  max-width: 390px;
-  width: 100%;
-  margin: 150px auto 0;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .container-inner {
   max-width: 650px;
   min-width: 300px;
   padding: 2rem;
+}
+
+.container-main {
+  max-width: 800px;
+  min-width: 300px;
+  padding: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  margin-bottom: auto;
+}
+
+.btn-wrapper {
+  display: flex;
+  justify-content: center;
 }
