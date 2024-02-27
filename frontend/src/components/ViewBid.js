@@ -98,7 +98,7 @@ function ViewBid() {
           >
             <strong>Bid Price:</strong> ${bidPrice}{" "}
           </Typography>
-          <div class="btn-wrapper">
+          <div className="btn-wrapper">
             <Button variant="contained" onClick={cancelBid}>
               Cancel Bid
             </Button>

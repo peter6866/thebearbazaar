@@ -77,10 +77,10 @@ function ViewMatched() {
           >
             <strong>Matched Price:</strong> ${matchedPrice}
           </Typography>
-          <div class="btn-wrapper">
-          <Button variant="contained" fullWidth onClick={contactSeller}>
-            Contact Seller
-          </Button>
+          <div classNem="btn-wrapper">
+            <Button variant="contained" fullWidth onClick={contactSeller}>
+              Contact Seller
+            </Button>
           </div>
         </div>
       ) : (
