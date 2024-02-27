@@ -119,14 +119,12 @@ exports.cancelBid = catchAsync(async (req, res, next) => {
 
 exports.match = catchAsync(async (req, res, next) => {
   const activeBuyBids = await BuyBids.findAll({
-    where: { isActive: true },
     order: [
       ["price", "DESC"],
       ["bidTimeStamp", "DESC"],
     ],
   });
   const activeSellBids = await SellBids.findAll({
-    where: { isActive: true },
     order: [
       ["price", "ASC"],
       ["bidTimeStamp", "DESC"],
@@ -163,15 +161,9 @@ exports.match = catchAsync(async (req, res, next) => {
 
   await MatchBids.bulkCreate(matches);
 
-  await BuyBids.update(
-    { isActive: false },
-    { where: { user_id: matchedBuyerIds } }
-  );
+  await BuyBids.destroy({ where: { user_id: matchedBuyerIds } });
 
-  await SellBids.update(
-    { isActive: false },
-    { where: { user_id: matchedSellerIds } }
-  );
+  await SellBids.destroy({ where: { user_id: matchedSellerIds } });
 
   res.status(201).json({
     status: "Success",
