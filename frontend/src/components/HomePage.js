@@ -7,6 +7,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Transact from "./Transact";
 import ViewBid from "./ViewBid";
+import ViewMatched from "./ViewMatched";
 import Faq from "./Faq";
 
 function HomePage() {
@@ -31,6 +32,7 @@ function HomePage() {
         <Tabs value={selectedTab} onChange={changeTab} aria-label="mui tab bar">
           <Tab label="Transact" value="transact" />
           <Tab label="My Bid" value="myBid" />
+          <Tab label="Match" value="match" />
           <Tab label="FAQ" value="faq" />
           <Box sx={{ flexGrow: 1 }} />
           <Tab label="Logout" value="logout" onClick={logout} />
@@ -40,6 +42,7 @@ function HomePage() {
             {selectedTab === "transact" && <Transact />}
             {selectedTab === "faq" && <Faq />}
             {selectedTab === "myBid" && <ViewBid />}
+            {selectedTab === "match" && <ViewMatched />}
           </div>
         </Box>
       </Box>
