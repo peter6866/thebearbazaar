@@ -38,7 +38,7 @@ function HomePage() {
           <Tab label="Logout" value="logout" onClick={logout} />
         </Tabs>
         <Box>
-          <div class="container-main">
+          <div className="container-main">
             {selectedTab === "transact" && <Transact />}
             {selectedTab === "faq" && <Faq />}
             {selectedTab === "myBid" && <ViewBid />}

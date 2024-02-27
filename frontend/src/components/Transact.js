@@ -8,6 +8,8 @@ import {
   Button,
   Alert,
   Paper,
+  Slider,
+  Input
 } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
@@ -16,7 +18,7 @@ import InfoIcon from "@mui/icons-material/Info";
 
 function Transact() {
   const [bidData, setBidData] = useState({
-    Price: 0,
+    Price: 1,
   });
 
   const [transType, setTransType] = useState("buy");
@@ -71,21 +73,24 @@ function Transact() {
           <FormControlLabel value="buy" control={<Radio />} label="Buy" />
           <FormControlLabel value="sell" control={<Radio />} label="Sell" />
         </RadioGroup>
-        <TextField
-          id="Price"
-          name="Price"
-          label={
-            transType === "buy"
-              ? "Maximum Price to Buy 500 Meal Points"
-              : "Minimum Price to Sell 500 Meal Points"
-          }
-          type="number"
-          value={bidData.Price}
-          onChange={update}
-          margin="normal"
-          variant="standard"
-          fullWidth
+        <Typography id="input-slider" gutterBottom>
+        {
+          transType === "buy"
+            ? "Maximum Price to Buy 500 Meal Points"
+            : "Minimum Price to Sell 500 Meal Points"
+        }
+      </Typography>
+        <Slider
+        aria-labelledby="input-slider"
+        id="Price"
+        name="Price"
+        value={bidData.Price}
+        onChange={update}
+        min={1}
+        max={500}
+        valueLabelDisplay="on"
         />
+    
         <div className="btn-wrapper">
           <Button type="submit" variant="contained">
             Place Bid

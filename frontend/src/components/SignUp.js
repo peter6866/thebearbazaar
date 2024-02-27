@@ -193,7 +193,7 @@ function SignUp({ flip }) {
               onChange={update}
             />
           </div>
-          <div class="btn-wrapper">
+          <div className="btn-wrapper">
             <Button type="submit" variant="contained">
               Get One Time Code
             </Button>
