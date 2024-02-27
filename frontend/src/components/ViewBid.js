@@ -107,7 +107,7 @@ function ViewBid() {
       ) : (
         <div>
           <Typography variant="body1" component="p">
-            You currently have no bids.
+            You have not placed a bid.
           </Typography>
         </div>
       )}
