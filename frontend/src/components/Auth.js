@@ -4,7 +4,7 @@ import SignUp from "./SignUp";
 import Login from "./Login";
 
 function Auth() {
-  const [loginStep, setLoginStep] = useState(true);
+  const [loginStep, setLoginStep] = useState(false);
 
   let flip = () => {
     setLoginStep(!loginStep);
