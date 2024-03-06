@@ -21,7 +21,9 @@
     "nodemailer": "6.9.5",
     "dotenv": "^16.4.4",
     "morgan": "^1.10.0",
-    "cors": "2.8.5"
+    "cors": "2.8.5",
+    "@aws-sdk/client-ses": "^3.525.0",
+    "@aws-sdk/credential-provider-node": "^3.525.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15",
