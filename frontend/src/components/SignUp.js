@@ -53,7 +53,9 @@ function SignUp({ flip }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: userData["email"] }),
+          body: JSON.stringify({ email: userData["email"], 
+          reset: false 
+        }),
         }
       );
 
@@ -99,7 +101,8 @@ function SignUp({ flip }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: userData["email"] }),
+          body: JSON.stringify({ email: userData["email"], 
+        }),
         }
       );
 

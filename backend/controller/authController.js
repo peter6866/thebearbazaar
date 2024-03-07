@@ -5,7 +5,6 @@ const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
-const aws = require("@aws-sdk/client-ses");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -13,34 +12,15 @@ const signToken = (id) => {
   });
 };
 
-// AWS SES Credentials
-const ses = new aws.SES({
-  apiVersion: "2012-10-17",
-  region: "us-east-2",
-  credentials: {
-    accessKeyId: process.env.ACCESS_KEY_ID,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+const transporter = nodemailer.createTransport({
+  host: "smtp.sendgrid.net",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "apikey",
+    pass: process.env.SENDGRID_API_KEY,
   },
 });
-
-let transporter;
-// use ses for production
-if (process.env.NODE_DEV_ENV === "production") {
-  transporter = nodemailer.createTransport({
-    SES: { ses, aws },
-  });
-  // use sendgrid for development
-} else {
-  transporter = nodemailer.createTransport({
-    host: "smtp.sendgrid.net",
-    port: 465,
-    secure: true,
-    auth: {
-      user: "apikey",
-      pass: process.env.SENDGRID_API_KEY,
-    },
-  });
-}
 
 // helper function to send verification email
 const sendVerificationEmail = (email, verificationCode) => {
@@ -107,8 +87,7 @@ const sendVerificationEmail = (email, verificationCode) => {
               <div class="header">
                   <h1>Welcome to The Bear Bazaar!</h1>
               </div>
-              <h3>Hello!</h3>
-              <p>Thank you for signing up. Please verify your wustl email to start using our services.</p>
+              <h3>Hello! Please verify your WashU email.</h3>
               <div class="verification-code">
                   ${verificationCode}
               </div>
@@ -138,7 +117,7 @@ const sendVerificationEmail = (email, verificationCode) => {
 
 // handler for getting one-time code
 exports.getCode = catchAsync(async (req, res, next) => {
-  const { email } = req.body;
+  const { email, reset } = req.body;
   const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@wustl\.edu$/;
@@ -149,21 +128,33 @@ exports.getCode = catchAsync(async (req, res, next) => {
   let newUser;
 
   // check if the user already verified
+  if(! reset){
+    const user = await User.findOne({ where: { email } });
+    if (user && user.isVerified) {
+      return next(new AppError("User already registered", 400));
+    } else if (user && !user.isVerified) {
+      newUser = await user.update({
+        verificationCode: verificationCode.toString(),
+        verificationCodeTimestamp: new Date(),
+      });
+    } else {
+      newUser = await User.create({
+        email,
+        verificationCode: verificationCode.toString(),
+        verificationCodeTimestamp: new Date(),
+      });
+    }
+  }else{
   const user = await User.findOne({ where: { email } });
-  if (user && user.isVerified) {
-    return next(new AppError("User already registered", 400));
-  } else if (user && !user.isVerified) {
-    newUser = await user.update({
+  if (user) {
+      newUser = await user.update({
       verificationCode: verificationCode.toString(),
       verificationCodeTimestamp: new Date(),
     });
   } else {
-    newUser = await User.create({
-      email,
-      verificationCode: verificationCode.toString(),
-      verificationCodeTimestamp: new Date(),
-    });
-  }
+    return next(new AppError("User does not exist", 400));
+  } 
+}  
 
   await sendVerificationEmail(
     email.replace(/@wustl\.edu/g, "@email.wustl.edu"),
@@ -225,11 +216,6 @@ exports.resendCode = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ where: { email } });
   if (!user) {
     return next(new AppError("User not found", 404));
-  }
-
-  // check if the user already verified
-  if (user.isVerified) {
-    return next(new AppError("User already verified", 400));
   }
 
   const verificationCode = Math.floor(100000 + Math.random() * 900000);
