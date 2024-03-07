@@ -148,7 +148,7 @@ exports.getCode = catchAsync(async (req, res, next) => {
   let newUser;
 
   // check if the user already verified
-  if(! reset){
+  if (!reset) {
     const user = await User.findOne({ where: { email } });
     if (user && user.isVerified) {
       return next(new AppError("User already registered", 400));
@@ -164,17 +164,17 @@ exports.getCode = catchAsync(async (req, res, next) => {
         verificationCodeTimestamp: new Date(),
       });
     }
-  }else{
-  const user = await User.findOne({ where: { email } });
-  if (user) {
-      newUser = await user.update({
-      verificationCode: verificationCode.toString(),
-      verificationCodeTimestamp: new Date(),
-    });
   } else {
-    return next(new AppError("User does not exist", 400));
-  } 
-}  
+    const user = await User.findOne({ where: { email } });
+    if (user) {
+      newUser = await user.update({
+        verificationCode: verificationCode.toString(),
+        verificationCodeTimestamp: new Date(),
+      });
+    } else {
+      return next(new AppError("User does not exist", 400));
+    }
+  }
 
   await sendVerificationEmail(
     email.replace(/@wustl\.edu/g, "@email.wustl.edu"),
@@ -222,6 +222,7 @@ exports.signUpVerify = catchAsync(async (req, res, next) => {
     res.status(201).json({
       status: "success",
       message: "Email verified successfully",
+      role: user.role,
       token,
     });
   } else {
@@ -270,9 +271,9 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // if everything is ok, send token to client
   const token = signToken(user.id);
-  console.log(token);
   res.status(200).json({
     status: "success",
+    role: user.role,
     token,
   });
 });
@@ -305,3 +306,15 @@ exports.protect = catchAsync(async (req, res, next) => {
   req.user = currentUser;
   next();
 });
+
+// middleware to restrict routes
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError("You do not have permission to perform this action", 403)
+      );
+    }
+    next();
+  };
+};

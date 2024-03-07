@@ -11,22 +11,27 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authToken, setAuthToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [role, setRole] = useState("");
 
   // Check for a token in local storage on load
   useEffect(() => {
     const token = localStorage.getItem("authToken");
+    const role = localStorage.getItem("role");
     if (token) {
       setIsLoggedIn(true);
       setAuthToken(token);
+      setRole(role);
     }
     setIsLoading(false);
   }, []);
 
-  const login = (token) => {
+  const login = (role, token) => {
     setIsLoggedIn(true);
+    setRole(role);
     setAuthToken(token);
     // Store the token in local storage
     localStorage.setItem("authToken", token);
+    localStorage.setItem("role", role);
   };
 
   const logout = () => {
@@ -34,11 +39,13 @@ export const AuthProvider = ({ children }) => {
     setAuthToken(null);
     // Clear the token from storage on logout
     localStorage.removeItem("authToken");
+    localStorage.removeItem("role");
   };
 
   const value = {
     isLoggedIn,
     authToken,
+    role,
     login,
     logout,
     isLoading,

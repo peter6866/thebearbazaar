@@ -53,9 +53,7 @@ function SignUp({ flip }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: userData["email"], 
-          reset: false 
-        }),
+          body: JSON.stringify({ email: userData["email"], reset: false }),
         }
       );
 
@@ -101,8 +99,7 @@ function SignUp({ flip }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: userData["email"], 
-        }),
+          body: JSON.stringify({ email: userData["email"] }),
         }
       );
 
@@ -145,7 +142,7 @@ function SignUp({ flip }) {
       if (!response.ok) {
         setErrorMessage(data.message);
       } else {
-        login(data.token);
+        login(data.role, data.token);
         navigate("/");
       }
     } catch (error) {}

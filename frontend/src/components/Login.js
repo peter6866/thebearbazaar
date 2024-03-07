@@ -77,7 +77,7 @@ function Login({ flip }) {
       if (!response.ok) {
         setErrorMessage(data.message);
       } else {
-        login(data.token);
+        login(data.role, data.token);
         navigate("/");
       }
     } catch (error) {}
@@ -108,9 +108,7 @@ function Login({ flip }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: userData["email"], 
-          reset: true, 
-        }),
+          body: JSON.stringify({ email: userData["email"], reset: true }),
         }
       );
 
@@ -156,8 +154,7 @@ function Login({ flip }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: userData["email"], 
-        }),
+          body: JSON.stringify({ email: userData["email"] }),
         }
       );
 
@@ -194,223 +191,221 @@ function Login({ flip }) {
       if (!response.ok) {
         setErrorMessage(data.message);
       } else {
-        login(data.token);
+        login(data.role, data.token);
         navigate("/");
       }
     } catch (error) {}
   };
-  if(knowPass){
-  return (
-    <div className="container-inner">
-      <h3>Login</h3>
+  if (knowPass) {
+    return (
+      <div className="container-inner">
+        <h3>Login</h3>
 
-      <form onSubmit={submitLogin}>
-        <div>
-          <TextField
-            fullWidth
-            id="email"
-            name="email"
-            value={userData["email"]}
-            label="WUSTL Email Address"
-            variant="standard"
-            onChange={update}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            type="password"
-            id="password"
-            name="password"
-            value={userData["password"]}
-            label="Password"
-            variant="standard"
-            onChange={update}
-          />
-        </div>
-        <div className="btn-wrapper">
-          <Button type="submit" variant="contained">
-            Login
-          </Button>
-        </div>
-        {errorMessage && (
+        <form onSubmit={submitLogin}>
           <div>
-            <Alert severity="error">{errorMessage}</Alert>
+            <TextField
+              fullWidth
+              id="email"
+              name="email"
+              value={userData["email"]}
+              label="WUSTL Email Address"
+              variant="standard"
+              onChange={update}
+            />
           </div>
-        )}
-      </form>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: "2rem",
-        }}
-      >
-        <Typography variant="body1">Need an account?</Typography>
-        <Button
-          onClick={flip}
-          style={{ textTransform: "none", fontSize: "1rem" }}
-        >
-          Sign up.
-        </Button>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: "1rem",
-        }}
-      >
-        <Typography variant="body1">Forget your password?</Typography>
-        <Button
-          onClick={() => {flipKnowPass(false);
-            setErrorMessage("");
-            setSuccessMessage("");}}
-          style={{ textTransform: "none", fontSize: "1rem" }}
-        >
-          Reset Password.
-        </Button>
-      </Box>
-
-      
-    </div>
-    
-    
-  );
- }else{
-  return(
-    <div className="container-inner">
-    <h3>
-      {step === 2 && (
-        <IconButton
-          aria-label="back"
-          onClick={prevStep}
-          size="small"
-          sx={{ bgcolor: "transparent", border: "none", p: 1 }}
-        >
-          <ArrowBackIcon />
-        </IconButton>
-      )}
-      Reset Password
-    </h3>
-    {step === 1 && (
-      <form onSubmit={requestCode}>
-        <div>
-          <TextField
-            fullWidth
-            id="email"
-            name="email"
-            value={userData["email"]}
-            label="WUSTL Email Address"
-            variant="standard"
-            onChange={update}
-          />
-        </div>
-        <div className="btn-wrapper">
-          <Button type="submit" variant="contained">
-            Get One Time Code
-          </Button>
-        </div>
-        {errorMessage && (
           <div>
-            <Alert severity="error">{errorMessage}</Alert>
+            <TextField
+              fullWidth
+              type="password"
+              id="password"
+              name="password"
+              value={userData["password"]}
+              label="Password"
+              variant="standard"
+              onChange={update}
+            />
           </div>
-        )}
-      </form>
-    )}
-    {step === 2 && (
-      <form onSubmit={signUp}>
-        <div>
-          <TextField
-            fullWidth
-            id="code"
-            name="code"
-            value={userData["code"]}
-            label="Verification Code"
-            variant="standard"
-            onChange={update}
-          />
-        </div>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Button
-            onClick={resendCode}
-            variant="contained"
-            disabled={isButtonDisabled}
-          >
-            Send a New Code
-          </Button>
-          {isButtonDisabled && (
-            <Typography variant="body2">Available in {countdown}s</Typography>
+          <div className="btn-wrapper">
+            <Button type="submit" variant="contained">
+              Login
+            </Button>
+          </div>
+          {errorMessage && (
+            <div>
+              <Alert severity="error">{errorMessage}</Alert>
+            </div>
           )}
-        </Box>
-        {successMessage && (
-          <div>
-            <Alert severity="success">{successMessage}</Alert>
-          </div>
-        )}
-        <div>
-          <TextField
-            fullWidth
-            type="password"
-            id="password"
-            name="password"
-            value={userData["password"]}
-            label="Password"
-            variant="standard"
-            onChange={update}
-          />
-        </div>
-        <div>
-          <TextField
-            fullWidth
-            type="password"
-            id="confirm"
-            name="confirm"
-            value={userData["confirm"]}
-            label="Confirm Password"
-            variant="standard"
-            onChange={update}
-          />
-        </div>
-        <div className="btn-wrapper">
-          <Button type="submit" variant="contained">
-            Reset Password
-          </Button>
-        </div>
-        {errorMessage && (
-          <div>
-            <Alert severity="error">{errorMessage}</Alert>
-          </div>
-        )}
-      </form>
-    )}
-    <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: "2rem",
-        }}
-      >
-        <Typography variant="body1">Remember your password?</Typography>
-        <Button
-          onClick={() => {flipKnowPass(true);
-            setErrorMessage("");
-            setSuccessMessage("");}}
-          style={{ textTransform: "none", fontSize: "1rem" }}
+        </form>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "2rem",
+          }}
         >
-          Back to login
-        </Button>
-      </Box>
-  </div>
-  
-  
-  
-  
-  );
- }
+          <Typography variant="body1">Need an account?</Typography>
+          <Button
+            onClick={flip}
+            style={{ textTransform: "none", fontSize: "1rem" }}
+          >
+            Sign up.
+          </Button>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "1rem",
+          }}
+        >
+          <Typography variant="body1">Forget your password?</Typography>
+          <Button
+            onClick={() => {
+              flipKnowPass(false);
+              setErrorMessage("");
+              setSuccessMessage("");
+            }}
+            style={{ textTransform: "none", fontSize: "1rem" }}
+          >
+            Reset Password.
+          </Button>
+        </Box>
+      </div>
+    );
+  } else {
+    return (
+      <div className="container-inner">
+        <h3>
+          {step === 2 && (
+            <IconButton
+              aria-label="back"
+              onClick={prevStep}
+              size="small"
+              sx={{ bgcolor: "transparent", border: "none", p: 1 }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          )}
+          Reset Password
+        </h3>
+        {step === 1 && (
+          <form onSubmit={requestCode}>
+            <div>
+              <TextField
+                fullWidth
+                id="email"
+                name="email"
+                value={userData["email"]}
+                label="WUSTL Email Address"
+                variant="standard"
+                onChange={update}
+              />
+            </div>
+            <div className="btn-wrapper">
+              <Button type="submit" variant="contained">
+                Get One Time Code
+              </Button>
+            </div>
+            {errorMessage && (
+              <div>
+                <Alert severity="error">{errorMessage}</Alert>
+              </div>
+            )}
+          </form>
+        )}
+        {step === 2 && (
+          <form onSubmit={signUp}>
+            <div>
+              <TextField
+                fullWidth
+                id="code"
+                name="code"
+                value={userData["code"]}
+                label="Verification Code"
+                variant="standard"
+                onChange={update}
+              />
+            </div>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Button
+                onClick={resendCode}
+                variant="contained"
+                disabled={isButtonDisabled}
+              >
+                Send a New Code
+              </Button>
+              {isButtonDisabled && (
+                <Typography variant="body2">
+                  Available in {countdown}s
+                </Typography>
+              )}
+            </Box>
+            {successMessage && (
+              <div>
+                <Alert severity="success">{successMessage}</Alert>
+              </div>
+            )}
+            <div>
+              <TextField
+                fullWidth
+                type="password"
+                id="password"
+                name="password"
+                value={userData["password"]}
+                label="Password"
+                variant="standard"
+                onChange={update}
+              />
+            </div>
+            <div>
+              <TextField
+                fullWidth
+                type="password"
+                id="confirm"
+                name="confirm"
+                value={userData["confirm"]}
+                label="Confirm Password"
+                variant="standard"
+                onChange={update}
+              />
+            </div>
+            <div className="btn-wrapper">
+              <Button type="submit" variant="contained">
+                Reset Password
+              </Button>
+            </div>
+            {errorMessage && (
+              <div>
+                <Alert severity="error">{errorMessage}</Alert>
+              </div>
+            )}
+          </form>
+        )}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "2rem",
+          }}
+        >
+          <Typography variant="body1">Remember your password?</Typography>
+          <Button
+            onClick={() => {
+              flipKnowPass(true);
+              setErrorMessage("");
+              setSuccessMessage("");
+            }}
+            style={{ textTransform: "none", fontSize: "1rem" }}
+          >
+            Back to login
+          </Button>
+        </Box>
+      </div>
+    );
+  }
 }
 
 export default Login;
