@@ -5,6 +5,7 @@ const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
+const aws = require("@aws-sdk/client-ses");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -12,15 +13,34 @@ const signToken = (id) => {
   });
 };
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.sendgrid.net",
-  port: 465,
-  secure: true,
-  auth: {
-    user: "apikey",
-    pass: process.env.SENDGRID_API_KEY,
+// AWS SES Credentials
+const ses = new aws.SES({
+  apiVersion: "2012-10-17",
+  region: "us-east-2",
+  credentials: {
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
   },
 });
+
+let transporter;
+// use ses for production
+if (process.env.NODE_DEV_ENV === "production") {
+  transporter = nodemailer.createTransport({
+    SES: { ses, aws },
+  });
+  // use sendgrid for development
+} else {
+  transporter = nodemailer.createTransport({
+    host: "smtp.sendgrid.net",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "apikey",
+      pass: process.env.SENDGRID_API_KEY,
+    },
+  });
+}
 
 // helper function to send verification email
 const sendVerificationEmail = (email, verificationCode) => {
