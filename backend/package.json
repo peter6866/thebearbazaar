@@ -23,7 +23,8 @@
     "morgan": "^1.10.0",
     "cors": "2.8.5",
     "@aws-sdk/client-ses": "^3.525.0",
-    "@aws-sdk/credential-provider-node": "^3.525.0"
+    "@aws-sdk/credential-provider-node": "^3.525.0",
+    "fast-xml-parser": "4.2.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.15",

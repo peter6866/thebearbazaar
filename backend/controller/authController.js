@@ -107,8 +107,7 @@ const sendVerificationEmail = (email, verificationCode) => {
               <div class="header">
                   <h1>Welcome to The Bear Bazaar!</h1>
               </div>
-              <h3>Hello!</h3>
-              <p>Thank you for signing up. Please verify your wustl email to start using our services.</p>
+              <h3>Hello! Please verify your WashU email.</h3>
               <div class="verification-code">
                   ${verificationCode}
               </div>
@@ -138,7 +137,7 @@ const sendVerificationEmail = (email, verificationCode) => {
 
 // handler for getting one-time code
 exports.getCode = catchAsync(async (req, res, next) => {
-  const { email } = req.body;
+  const { email, reset } = req.body;
   const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@wustl\.edu$/;
@@ -149,20 +148,32 @@ exports.getCode = catchAsync(async (req, res, next) => {
   let newUser;
 
   // check if the user already verified
-  const user = await User.findOne({ where: { email } });
-  if (user && user.isVerified) {
-    return next(new AppError("User already registered", 400));
-  } else if (user && !user.isVerified) {
-    newUser = await user.update({
-      verificationCode: verificationCode.toString(),
-      verificationCodeTimestamp: new Date(),
-    });
+  if (!reset) {
+    const user = await User.findOne({ where: { email } });
+    if (user && user.isVerified) {
+      return next(new AppError("User already registered", 400));
+    } else if (user && !user.isVerified) {
+      newUser = await user.update({
+        verificationCode: verificationCode.toString(),
+        verificationCodeTimestamp: new Date(),
+      });
+    } else {
+      newUser = await User.create({
+        email,
+        verificationCode: verificationCode.toString(),
+        verificationCodeTimestamp: new Date(),
+      });
+    }
   } else {
-    newUser = await User.create({
-      email,
-      verificationCode: verificationCode.toString(),
-      verificationCodeTimestamp: new Date(),
-    });
+    const user = await User.findOne({ where: { email } });
+    if (user) {
+      newUser = await user.update({
+        verificationCode: verificationCode.toString(),
+        verificationCodeTimestamp: new Date(),
+      });
+    } else {
+      return next(new AppError("User does not exist", 400));
+    }
   }
 
   await sendVerificationEmail(
@@ -211,6 +222,7 @@ exports.signUpVerify = catchAsync(async (req, res, next) => {
     res.status(201).json({
       status: "success",
       message: "Email verified successfully",
+      role: user.role,
       token,
     });
   } else {
@@ -225,11 +237,6 @@ exports.resendCode = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ where: { email } });
   if (!user) {
     return next(new AppError("User not found", 404));
-  }
-
-  // check if the user already verified
-  if (user.isVerified) {
-    return next(new AppError("User already verified", 400));
   }
 
   const verificationCode = Math.floor(100000 + Math.random() * 900000);
@@ -264,9 +271,9 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // if everything is ok, send token to client
   const token = signToken(user.id);
-  console.log(token);
   res.status(200).json({
     status: "success",
+    role: user.role,
     token,
   });
 });
@@ -299,3 +306,15 @@ exports.protect = catchAsync(async (req, res, next) => {
   req.user = currentUser;
   next();
 });
+
+// middleware to restrict routes
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError("You do not have permission to perform this action", 403)
+      );
+    }
+    next();
+  };
+};

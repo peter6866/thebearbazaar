@@ -9,12 +9,13 @@ import Transact from "./Transact";
 import ViewBid from "./ViewBid";
 import ViewMatched from "./ViewMatched";
 import Faq from "./Faq";
+import AdminPage from "./AdminPage";
 import Profile from "./Profile";
 import Avatar from "@mui/material/Avatar";
 import PersonIcon from "@mui/icons-material/Person";
 
 function HomePage() {
-  const { isLoggedIn, logout, isLoading } = useAuth();
+  const { isLoggedIn, logout, isLoading, role } = useAuth();
   const [selectedTab, setSelectedTab] = useState("transact");
   const navigate = useNavigate();
 
@@ -37,6 +38,7 @@ function HomePage() {
           <Tab label="My Bid" value="myBid" />
           <Tab label="Match" value="match" />
           <Tab label="FAQ" value="faq" />
+          {role === "admin" && <Tab label="Admin" value="admin" />}
           <Box sx={{ flexGrow: 1 }} />
           <Tab
             value="profile"
@@ -54,6 +56,7 @@ function HomePage() {
             {selectedTab === "faq" && <Faq />}
             {selectedTab === "myBid" && <ViewBid />}
             {selectedTab === "match" && <ViewMatched />}
+            {selectedTab === "admin" && <AdminPage />}
             {selectedTab === "profile" && <Profile />}
           </div>
         </Box>
