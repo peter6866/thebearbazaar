@@ -15,6 +15,16 @@ const User = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    sendMatchNotifications: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: false,
+    },
+    sendPriceNotifications: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: false,
+    },
     verificationCodeTimestamp: {
       type: DataTypes.DATE,
       allowNull: true,
