@@ -11,17 +11,63 @@ function Profile() {
   const [matchNotifications, setMatchNotifications] = useState(false);
   const [priceNotifications, setPriceNotifications] = useState(false);
 
-  const handleMatchNotifications = (e) => {
+  let handleMatchNotifications = (e) => {
     const isChecked = e.target.checked;
     setMatchNotifications(isChecked);
   };
 
-  const handlePriceNotifications = (e) => {
+  let handlePriceNotifications = (e) => {
     const isChecked = e.target.checked;
     setPriceNotifications(isChecked);
   };
 
-  useEffect(() => {}, []);
+  let loadNotificationSettings = async () => {
+    try {
+      const response = await fetch(
+        `${config.REACT_APP_API_URL}/v1/users/get-notifications`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok && data) {
+        setMatchNotifications(data.sendMatchNotifications);
+        setPriceNotifications(data.sendPriceNotifications);
+      }
+    } catch (error) {}
+  };
+
+  let updateNotificationSettings = async () => {
+    try {
+      const response = await fetch(
+        `${config.REACT_APP_API_URL}/v1/users/update-notifications`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({
+            sendMatchNotifications: matchNotifications,
+            sendPriceNotifications: priceNotifications,
+          }),
+        }
+      );
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    loadNotificationSettings();
+  }, []);
+
+  useEffect(() => {
+    updateNotificationSettings();
+  }, [matchNotifications, priceNotifications]);
 
   return (
     <Paper elevation={3} style={{ padding: "2rem" }}>
