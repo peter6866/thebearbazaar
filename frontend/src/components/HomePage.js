@@ -10,6 +10,9 @@ import ViewBid from "./ViewBid";
 import ViewMatched from "./ViewMatched";
 import Faq from "./Faq";
 import AdminPage from "./AdminPage";
+import Profile from "./Profile";
+import Avatar from "@mui/material/Avatar";
+import PersonIcon from "@mui/icons-material/Person";
 
 function HomePage() {
   const { isLoggedIn, logout, isLoading, role } = useAuth();
@@ -37,6 +40,14 @@ function HomePage() {
           <Tab label="FAQ" value="faq" />
           {role === "admin" && <Tab label="Admin" value="admin" />}
           <Box sx={{ flexGrow: 1 }} />
+          <Tab
+            value="profile"
+            icon={
+              <Avatar>
+                <PersonIcon />
+              </Avatar>
+            }
+          />
           <Tab label="Logout" value="logout" onClick={logout} />
         </Tabs>
         <Box>
@@ -46,6 +57,7 @@ function HomePage() {
             {selectedTab === "myBid" && <ViewBid />}
             {selectedTab === "match" && <ViewMatched />}
             {selectedTab === "admin" && <AdminPage />}
+            {selectedTab === "profile" && <Profile />}
           </div>
         </Box>
       </Box>
