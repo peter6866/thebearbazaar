@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import PasswordButton from "./PasswordButton";
 import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
@@ -115,11 +116,6 @@ function SignUp({ flip }) {
 
   let signUp = async (e) => {
     e.preventDefault();
-
-    if (userData["password"] !== userData["confirm"]) {
-      setErrorMessage("Passwords do not match");
-      return;
-    }
 
     try {
       const response = await fetch(
@@ -259,11 +255,12 @@ function SignUp({ flip }) {
               onChange={update}
             />
           </div>
-          <div className="btn-wrapper">
-            <Button type="submit" variant="contained">
-              Sign Up
-            </Button>
-          </div>
+          <PasswordButton
+            password={userData["password"]}
+            confirmPassword={userData["confirm"]}
+          >
+            Change Password
+          </PasswordButton>
           {errorMessage && (
             <div>
               <Alert severity="error">{errorMessage}</Alert>
