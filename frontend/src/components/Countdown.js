@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CircularProgress, Box, Typography, Paper, Grid } from "@mui/material";
 
-const Countdown = () => {
+const Countdown = ({ target }) => {
   const [daysRemaining, setDaysRemaining] = useState(0);
   const [hoursRemaining, setHoursRemaining] = useState(0);
   const [minutesRemaining, setMinutesRemaining] = useState(0);
@@ -9,32 +9,24 @@ const Countdown = () => {
 
   const calculateTimeRemaining = () => {
     const now = new Date();
-    const currentDay = now.getUTCDay();
-    const currentHour = now.getUTCHours();
-    const currentMinute = now.getUTCMinutes();
-    const currentSecond = now.getUTCSeconds();
+    const secondsTimeStamp =
+      now.getUTCDay() * 24 * 60 * 60 +
+      now.getUTCHours() * 60 * 60 +
+      now.getUTCMinutes() * 60 +
+      now.getUTCSeconds();
 
-    let daysLeft = 7 - currentDay;
-    let hoursLeft = 17 - currentHour;
-    let minutesLeft = 60 - currentMinute;
-    let secondsLeft = 60 - currentSecond;
-
-    if (hoursLeft < 0) {
-      daysLeft -= 1;
+    let secondsUntilTarget = target - secondsTimeStamp;
+    if (secondsUntilTarget < 0) {
+      secondsUntilTarget = 604800 - secondsTimeStamp + target;
     }
 
-    if (minutesLeft > 0) {
-      hoursLeft -= 1;
-    }
-
-    if (secondsLeft > 0) {
-      minutesLeft -= 1;
-    }
-
-    setHoursRemaining(hoursLeft);
-    setDaysRemaining(daysLeft);
-    setMinutesRemaining(minutesLeft);
-    setSecondsRemaining(secondsLeft);
+    setDaysRemaining(Math.floor(secondsUntilTarget / 86400));
+    secondsUntilTarget = secondsUntilTarget % 86400;
+    setHoursRemaining(Math.floor(secondsUntilTarget / 3600));
+    secondsUntilTarget = secondsUntilTarget % 3600;
+    setMinutesRemaining(Math.floor(secondsUntilTarget / 60));
+    secondsUntilTarget = secondsUntilTarget % 60;
+    setSecondsRemaining(secondsUntilTarget);
   };
 
   useEffect(() => {
