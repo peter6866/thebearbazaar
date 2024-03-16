@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import Dashboard from "./Dashboard";
 import Transact from "./Transact";
 import ViewBid from "./ViewBid";
 import ViewMatched from "./ViewMatched";
@@ -16,7 +17,7 @@ import PersonIcon from "@mui/icons-material/Person";
 
 function HomePage() {
   const { isLoggedIn, logout, isLoading, role } = useAuth();
-  const [selectedTab, setSelectedTab] = useState("transact");
+  const [selectedTab, setSelectedTab] = useState("dashboard");
   const navigate = useNavigate();
 
   const changeTab = (e, tab) => {
@@ -34,6 +35,7 @@ function HomePage() {
     isLoggedIn && (
       <Box sx={{ width: "100%" }}>
         <Tabs value={selectedTab} onChange={changeTab} aria-label="mui tab bar">
+          <Tab label="Dashboard" value="dashboard" />
           <Tab label="Transact" value="transact" />
           <Tab label="My Bid" value="myBid" />
           <Tab label="Match" value="match" />
@@ -52,6 +54,7 @@ function HomePage() {
         </Tabs>
         <Box>
           <div className="container-main">
+            {selectedTab === "dashboard" && <Dashboard />}
             {selectedTab === "transact" && <Transact />}
             {selectedTab === "faq" && <Faq />}
             {selectedTab === "myBid" && <ViewBid />}
