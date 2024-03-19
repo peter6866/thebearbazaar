@@ -4,6 +4,7 @@ const SellBids = require("../models/sellBidsModel");
 const MatchBids = require("../models/matchBidsModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const Sequelize = require("sequelize");
 
 exports.matchInfo = catchAsync(async (req, res, next) => {
   const { id } = req.user;
@@ -51,5 +52,21 @@ exports.deleteAllMatchBids = catchAsync(async (req, res, next) => {
   res.status(204).json({
     status: "success",
     message: "All match bids deleted",
+
+exports.priceHistory = catchAsync(async (req, res, next) => {
+  let matches = MatchBids.findAll({
+    attributes: [
+      [Sequelize.fn("DATE", Sequelize.col("matchBidTimeStamp")), "date"],
+      [Sequelize.fn("MIN", Sequelize.col("price")), "price"],
+    ],
+    group: [Sequelize.fn("DATE", Sequelize.col("matchBidTimeStamp"))],
+  });
+
+  console.log(matches);
+
+  res.status(200).json({
+    status: "success",
+    matchHistory: matches,
+
   });
 });
