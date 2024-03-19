@@ -21,4 +21,11 @@ router.post(
   bidsController.match
 );
 
+router.delete(
+  "/",
+  authController.protect,
+  authController.restrictTo("admin"),
+  bidsController.deleteAllBids
+);
+
 module.exports = router;

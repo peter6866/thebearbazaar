@@ -43,3 +43,13 @@ exports.matchInfo = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+// delete all match bids
+exports.deleteAllMatchBids = catchAsync(async (req, res, next) => {
+  await MatchBids.destroy({ where: {} });
+
+  res.status(204).json({
+    status: "success",
+    message: "All match bids deleted",
+  });
+});

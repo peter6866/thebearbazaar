@@ -7,4 +7,11 @@ router
   .route("/match-info")
   .post(authController.protect, matchController.matchInfo);
 
+router.delete(
+  "/",
+  authController.protect,
+  authController.restrictTo("admin"),
+  matchController.deleteAllMatchBids
+);
+
 module.exports = router;
