@@ -14,6 +14,11 @@ router
   .route("/cancel-bid")
   .post(authController.protect, bidsController.cancelBid);
 
-router.post("/match", bidsController.match);
+router.post(
+  "/match",
+  authController.protect,
+  authController.restrictTo("admin"),
+  bidsController.match
+);
 
 module.exports = router;

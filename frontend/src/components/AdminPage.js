@@ -8,6 +8,8 @@ function AdminPage() {
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [matchSuccess, setMatchSuccess] = useState("");
+  const [matchError, setMatchError] = useState("");
 
   const config = useConfig();
   const { authToken } = useAuth();
@@ -43,6 +45,35 @@ function AdminPage() {
     }
   };
 
+  const runMatches = async () => {
+    try {
+      const response = await fetch(
+        `${config.REACT_APP_API_URL}/v1/bids/match`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({}),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setMatchError(data.message);
+        setMatchSuccess("");
+      } else {
+        setMatchSuccess(data.message);
+        setMatchError("");
+      }
+    } catch (error) {
+      setMatchError("An error occurred");
+      setMatchSuccess("");
+    }
+  };
+
   return (
     <Paper elevation={3} style={{ padding: "2rem" }}>
       <h3>Post New FAQ</h3>
@@ -72,6 +103,15 @@ function AdminPage() {
           Post FAQ
         </Button>
       </form>
+      <h3>Run Matches</h3>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={runMatches}
+        style={{ marginBottom: "1rem" }}
+      >
+        Run Matches
+      </Button>
     </Paper>
   );
 }
