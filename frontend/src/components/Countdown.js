@@ -6,6 +6,7 @@ const Countdown = ({ target }) => {
   const [hoursRemaining, setHoursRemaining] = useState(0);
   const [minutesRemaining, setMinutesRemaining] = useState(0);
   const [secondsRemaining, setSecondsRemaining] = useState(0);
+  const [targetDate, setTargetDate] = useState("");
 
   const calculateTimeRemaining = () => {
     const now = new Date();
@@ -19,6 +20,19 @@ const Countdown = ({ target }) => {
     if (secondsUntilTarget < 0) {
       secondsUntilTarget = 604800 - secondsTimeStamp + target;
     }
+
+    const targetDate = new Date(
+      now.getTime() + secondsUntilTarget * 1000
+    ).toLocaleString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+    setTargetDate(targetDate);
 
     setDaysRemaining(Math.floor(secondsUntilTarget / 86400));
     secondsUntilTarget = secondsUntilTarget % 86400;
@@ -38,59 +52,61 @@ const Countdown = ({ target }) => {
   }, []);
 
   return (
-    <Grid container justifyContent="center" alignItems="center">
-      <CircularProgress
-        variant="determinate"
-        value={100}
-        size={250}
-        thickness={2}
-        color="inherit"
-        style={{ position: "absolute", color: "lightgray" }}
-      />
-      <CircularProgress
-        variant="determinate"
-        value={
-          ((daysRemaining * 24 * 60 * 60 +
-            hoursRemaining * 60 * 60 +
-            minutesRemaining * 60 +
-            secondsRemaining) /
-            (7 * 24 * 60 * 60)) *
-          100
-        }
-        size={250}
-        thickness={2}
-      />
-      <Typography
-        variant="h6"
-        component="div"
-        style={{
-          position: "absolute",
-        }}
-      >
-        <div>
-          {daysRemaining > 0 && (
-            <div>
-              {daysRemaining} day{daysRemaining !== 1 ? "s" : ""}
-            </div>
-          )}
-          {hoursRemaining > 0 && (
-            <div>
-              {hoursRemaining} hour{hoursRemaining !== 1 ? "s" : ""}
-            </div>
-          )}
-          {minutesRemaining > 0 && (
-            <div>
-              {minutesRemaining} minute{minutesRemaining !== 1 ? "s" : ""}
-            </div>
-          )}
-          {secondsRemaining > 0 && (
-            <div>
-              {secondsRemaining} second{secondsRemaining !== 1 ? "s" : ""}
-            </div>
-          )}
-        </div>
-      </Typography>
-    </Grid>
+    <div className="vertical-space">
+      <Grid container justifyContent="center" alignItems="center">
+        <CircularProgress
+          variant="determinate"
+          value={100}
+          size={250}
+          thickness={2}
+          color="inherit"
+          style={{ position: "absolute", color: "lightgray" }}
+        />
+        <CircularProgress
+          variant="determinate"
+          value={
+            ((daysRemaining * 24 * 60 * 60 +
+              hoursRemaining * 60 * 60 +
+              minutesRemaining * 60 +
+              secondsRemaining) /
+              (7 * 24 * 60 * 60)) *
+            100
+          }
+          size={250}
+          thickness={2}
+        />
+        <Typography
+          component="div"
+          style={{
+            position: "absolute",
+          }}
+        >
+          <div>
+            {daysRemaining > 0 && (
+              <div>
+                {daysRemaining} day{daysRemaining !== 1 ? "s" : ""}
+              </div>
+            )}
+            {hoursRemaining > 0 && (
+              <div>
+                {hoursRemaining} hour{hoursRemaining !== 1 ? "s" : ""}
+              </div>
+            )}
+            {minutesRemaining > 0 && (
+              <div>
+                {minutesRemaining} minute{minutesRemaining !== 1 ? "s" : ""}
+              </div>
+            )}
+            {secondsRemaining > 0 && (
+              <div>
+                {secondsRemaining} second{secondsRemaining !== 1 ? "s" : ""}
+              </div>
+            )}
+          </div>
+        </Typography>
+      </Grid>
+      <h5 className="center">{targetDate}</h5>
+    </div>
   );
 };
 
