@@ -45,6 +45,14 @@ exports.matchInfo = catchAsync(async (req, res, next) => {
   });
 });
 
+// delete all match bids
+exports.deleteAllMatchBids = catchAsync(async (req, res, next) => {
+  await MatchBids.destroy({ where: {} });
+
+  res.status(204).json({
+    status: "success",
+    message: "All match bids deleted",
+
 exports.priceHistory = catchAsync(async (req, res, next) => {
   let matches = MatchBids.findAll({
     attributes: [
@@ -59,5 +67,6 @@ exports.priceHistory = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     matchHistory: matches,
+
   });
 });
