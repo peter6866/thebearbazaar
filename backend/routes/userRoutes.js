@@ -21,4 +21,8 @@ router
   .route("/get-notifications")
   .post(authController.protect, userController.getNotificationSettings);
 
+router
+  .route("/change-password")
+  .post(authController.protect, userController.changePassword);
+
 module.exports = router;

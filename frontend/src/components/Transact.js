@@ -9,7 +9,7 @@ import {
   Alert,
   Paper,
   Slider,
-  Input
+  Input,
 } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
@@ -18,7 +18,7 @@ import InfoIcon from "@mui/icons-material/Info";
 
 function Transact() {
   const [bidData, setBidData] = useState({
-    Price: 1,
+    Price: 250,
   });
 
   const [transType, setTransType] = useState("buy");
@@ -74,23 +74,29 @@ function Transact() {
           <FormControlLabel value="sell" control={<Radio />} label="Sell" />
         </RadioGroup>
         <Typography id="input-slider" gutterBottom>
-        {
-          transType === "buy"
+          {transType === "buy"
             ? "Maximum Price to Buy 500 Meal Points"
-            : "Minimum Price to Sell 500 Meal Points"
-        }
-      </Typography>
+            : "Minimum Price to Sell 500 Meal Points"}
+        </Typography>
         <Slider
-        aria-labelledby="input-slider"
-        id="Price"
-        name="Price"
-        value={bidData.Price}
-        onChange={update}
-        min={1}
-        max={500}
-        valueLabelDisplay="on"
+          aria-labelledby="input-slider"
+          id="Price"
+          name="Price"
+          value={bidData.Price}
+          onChange={update}
+          min={1}
+          max={500}
+          valueLabelDisplay="on"
+          marks={[
+            { value: 1, label: "$1" },
+            { value: 100, label: "$100" },
+            { value: 200, label: "$200" },
+            { value: 300, label: "$300" },
+            { value: 400, label: "$400" },
+            { value: 500, label: "$500" },
+          ]}
         />
-    
+
         <div className="btn-wrapper">
           <Button type="submit" variant="contained">
             Place Bid
@@ -118,9 +124,8 @@ function Transact() {
           }}
         />
         <span style={{ marginLeft: "1rem" }}>
-          After submitting a bid to buy or sell meal points, you will be matched
-          with another student based on your specified price range to complete
-          the transaction.
+          Increasing the range of accepted prices will increase your chances of
+          being matched with another student.
         </span>
       </Typography>
     </Paper>
