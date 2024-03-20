@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { CircularProgress, Box, Typography, Paper, Grid } from "@mui/material";
 
 const Countdown = ({ target }) => {
-  const [daysRemaining, setDaysRemaining] = useState(0);
-  const [hoursRemaining, setHoursRemaining] = useState(0);
-  const [minutesRemaining, setMinutesRemaining] = useState(0);
-  const [secondsRemaining, setSecondsRemaining] = useState(0);
+  const [daysRemaining, setDaysRemaining] = useState("");
+  const [hoursRemaining, setHoursRemaining] = useState("");
+  const [minutesRemaining, setMinutesRemaining] = useState("");
+  const [secondsRemaining, setSecondsRemaining] = useState("");
   const [targetDate, setTargetDate] = useState("");
 
   const calculateTimeRemaining = () => {
@@ -82,26 +82,34 @@ const Countdown = ({ target }) => {
           }}
         >
           <div>
-            {daysRemaining > 0 && (
-              <div>
-                {daysRemaining} day{daysRemaining !== 1 ? "s" : ""}
-              </div>
-            )}
-            {hoursRemaining > 0 && (
-              <div>
-                {hoursRemaining} hour{hoursRemaining !== 1 ? "s" : ""}
-              </div>
-            )}
-            {minutesRemaining > 0 && (
-              <div>
-                {minutesRemaining} minute{minutesRemaining !== 1 ? "s" : ""}
-              </div>
-            )}
-            {secondsRemaining > 0 && (
-              <div>
-                {secondsRemaining} second{secondsRemaining !== 1 ? "s" : ""}
-              </div>
-            )}
+            <table>
+              <tbody>
+                {daysRemaining !== "" && (
+                  <tr>
+                    <td style={{ float: "right" }}>{daysRemaining}</td>
+                    <td>day{daysRemaining !== 1 ? "s" : ""}</td>
+                  </tr>
+                )}
+                {hoursRemaining !== "" && (
+                  <tr>
+                    <td style={{ float: "right" }}>{hoursRemaining}</td>
+                    <td>hour{hoursRemaining !== 1 ? "s" : ""}</td>
+                  </tr>
+                )}
+                {minutesRemaining !== "" && (
+                  <tr>
+                    <td style={{ float: "right" }}>{minutesRemaining}</td>
+                    <td>minute{minutesRemaining !== 1 ? "s" : ""}</td>
+                  </tr>
+                )}
+                {secondsRemaining !== "" && (
+                  <tr>
+                    <td style={{ float: "right" }}>{secondsRemaining}</td>
+                    <td>second{secondsRemaining !== 1 ? "s" : ""}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </Typography>
       </Grid>

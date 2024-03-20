@@ -16,6 +16,10 @@ function Dashboard() {
 
   let loadPriceHistory = async () => {
     try {
+      if (!config || !config.REACT_APP_API_URL) {
+        return;
+      }
+
       const response = await fetch(
         `${config.REACT_APP_API_URL}/v1/match/price-history`,
         {
@@ -36,7 +40,7 @@ function Dashboard() {
 
   useEffect(() => {
     loadPriceHistory();
-  }, [config]);
+  }, [config.REACT_APP_API_URL]);
 
   return (
     <Paper elevation={3} style={{ padding: "2rem" }}>
@@ -44,7 +48,7 @@ function Dashboard() {
       <Countdown target={61200} />
       <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
       <h4>Meal Point Price History</h4>
-      {/* <PriceHistory history={priceHistory} /> */}
+      <PriceHistory history={priceHistory} />
     </Paper>
   );
 }

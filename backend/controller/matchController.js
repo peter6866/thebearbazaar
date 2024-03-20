@@ -56,7 +56,7 @@ exports.deleteAllMatchBids = catchAsync(async (req, res, next) => {
 });
 
 exports.priceHistory = catchAsync(async (req, res, next) => {
-  let matches = MatchBids.findAll({
+  let matches = await MatchBids.findAll({
     attributes: [
       [Sequelize.fn("DATE", Sequelize.col("matchBidTimeStamp")), "date"],
       [Sequelize.fn("MIN", Sequelize.col("price")), "price"],
@@ -64,7 +64,18 @@ exports.priceHistory = catchAsync(async (req, res, next) => {
     group: [Sequelize.fn("DATE", Sequelize.col("matchBidTimeStamp"))],
   });
 
-  console.log(matches);
+  matches = [
+    { date: "2024-03-01", price: 100 },
+    { date: "2024-03-02", price: 110 },
+    { date: "2024-03-03", price: 105 },
+    { date: "2024-03-04", price: 115 },
+    { date: "2024-03-05", price: 120 },
+    { date: "2024-03-06", price: 118 },
+    { date: "2024-03-07", price: 122 },
+    { date: "2024-03-08", price: 125 },
+    { date: "2024-03-09", price: 130 },
+    { date: "2024-03-10", price: 128 },
+  ];
 
   res.status(200).json({
     status: "success",
