@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
-import { LineChart } from "@mui/x-charts/LineChart";
-import { SparkLineChart } from "@mui/x-charts/SparkLineChart";
-import { Line } from "react-chartjs-2";
+import { Box, Typography } from "@mui/material";
+import {
+  IgrCategoryChartModule,
+  IgrCategoryChart,
+} from "igniteui-react-charts";
+IgrCategoryChartModule.register();
 
 const PriceHistory = ({ history }) => {
-  const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const year = date.getFullYear();
-    return `${month}-${day}-${year}`;
-  };
-  const prices = history.map((item) => item.price);
-  const dates = history.map((item) => formatDate(item.date));
-  return <Box></Box>;
+  return (
+    <Box>
+      <IgrCategoryChart
+        width="100%"
+        height="300px"
+        dataSource={history}
+        xAxisTitle="Date"
+        yAxisTitle="Price"
+        xAxisLabelLocation="OutsideBottom"
+        yAxisLabelLocation="OutsideLeft"
+        xAxisOverlap="auto"
+        yAxisMinimumValue={0}
+        chartType="line"
+      />
+    </Box>
+  );
 };
 
 export default PriceHistory;
