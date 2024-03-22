@@ -9,6 +9,10 @@ router
 
 router
   .route("/set-scheduled-match-time")
-  .post(settingsController.setScheduledMatchTime);
+  .post(
+    authController.protect,
+    authController.restrictTo("admin"),
+    settingsController.setScheduledMatchTime
+  );
 
 module.exports = router;

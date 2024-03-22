@@ -9,9 +9,19 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Grid,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { useConfig } from "../context/ConfigContext";
 import { useAuth } from "../context/AuthContext";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 
 function AdminPage() {
   const [question, setQuestion] = useState("");
@@ -22,9 +32,14 @@ function AdminPage() {
   const [matchError, setMatchError] = useState("");
   const [openDeleteBidsDialog, setOpenDeleteBidsDialog] = useState(false);
   const [openDeleteMatchesDialog, setOpenDeleteMatchesDialog] = useState(false);
+  const [selectedDay, setSelectedDay] = useState("");
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [changeTimeError, setChangeTimeError] = useState("");
+  const [changeTimeSuccess, setChangeTimeSuccess] = useState("");
 
   const config = useConfig();
   const { authToken } = useAuth();
+  dayjs.extend(utc);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -126,6 +141,52 @@ function AdminPage() {
     }
   };
 
+  const updateMatchTime = async (e) => {
+    e.preventDefault();
+
+    if (!selectedDay || !selectedTime) {
+      setChangeTimeError("Enter a day and time");
+      return;
+    }
+
+    const formattedDate = dayjs().day(selectedDay).format("YYYY-MM-DD");
+    const formattedTime = selectedTime.format("HH:mm") + ":00";
+    const targetDate = new Date(formattedDate + "T" + formattedTime);
+    const matchTime =
+      targetDate.getUTCDay() * 86400 +
+      targetDate.getUTCHours() * 3600 +
+      targetDate.getUTCMinutes() * 60;
+
+    try {
+      const response = await fetch(
+        `${config.REACT_APP_API_URL}/v1/settings/set-scheduled-match-time`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({
+            matchTime: matchTime,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setChangeTimeError(data.message);
+        setChangeTimeSuccess("");
+      } else {
+        setChangeTimeSuccess(data.message);
+        setChangeTimeError("");
+      }
+    } catch (error) {
+      setChangeTimeError("An error occurred");
+      setChangeTimeSuccess("");
+    }
+  };
+
   const handleOpenDeleteBidsDialog = () => {
     setOpenDeleteBidsDialog(true);
   };
@@ -140,6 +201,14 @@ function AdminPage() {
 
   const handleCloseDeleteMatchesDialog = () => {
     setOpenDeleteMatchesDialog(false);
+  };
+
+  const handleDayChange = (event) => {
+    setSelectedDay(event.target.value);
+  };
+
+  const handleTimeChange = (time) => {
+    setSelectedTime(time);
   };
 
   return (
@@ -182,6 +251,52 @@ function AdminPage() {
       </Button>
       {matchError && <Alert severity="error">{matchError}</Alert>}
       {matchSuccess && <Alert severity="success">{matchSuccess}</Alert>}
+
+      <h3>Change Match Day and Time</h3>
+      <form onSubmit={updateMatchTime}>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <InputLabel id="day-label">Day</InputLabel>
+              <Select
+                labelId="day-label"
+                id="day"
+                value={selectedDay}
+                onChange={handleDayChange}
+              >
+                <MenuItem value="1">Monday</MenuItem>
+                <MenuItem value="2">Tuesday</MenuItem>
+                <MenuItem value="3">Wednesday</MenuItem>
+                <MenuItem value="4">Thursday</MenuItem>
+                <MenuItem value="5">Friday</MenuItem>
+                <MenuItem value="6">Saturday</MenuItem>
+                <MenuItem value="0">Sunday</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <FormControl fullWidth>
+                <TimePicker
+                  label="Time"
+                  value={selectedTime}
+                  onChange={handleTimeChange}
+                />
+              </FormControl>
+            </LocalizationProvider>
+          </Grid>
+        </Grid>
+        {changeTimeError && <Alert severity="error">{changeTimeError}</Alert>}
+        {changeTimeSuccess && (
+          <Alert severity="success">{changeTimeSuccess}</Alert>
+        )}
+        <div className="btn-wrapper">
+          <Button variant="contained" color="primary" type="submit">
+            Change Match Time
+          </Button>
+        </div>
+      </form>
+
       <h3>Reset Functions</h3>
       <div
         style={{
