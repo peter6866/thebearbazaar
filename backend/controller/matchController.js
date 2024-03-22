@@ -56,15 +56,29 @@ exports.deleteAllMatchBids = catchAsync(async (req, res, next) => {
 });
 
 exports.priceHistory = catchAsync(async (req, res, next) => {
-  let matches = MatchBids.findAll({
+  let matches = await MatchBids.findAll({
     attributes: [
       [Sequelize.fn("DATE", Sequelize.col("matchBidTimeStamp")), "date"],
       [Sequelize.fn("MIN", Sequelize.col("price")), "price"],
     ],
     group: [Sequelize.fn("DATE", Sequelize.col("matchBidTimeStamp"))],
+    order: [[Sequelize.fn("DATE", Sequelize.col("matchBidTimeStamp")), "ASC"]],
   });
 
-  console.log(matches);
+  matches = matches.map((match) => {
+    const formattedDate = new Date(match.dataValues.date).toLocaleDateString(
+      "en-US",
+      {
+        month: "2-digit",
+        day: "2-digit",
+        year: "numeric",
+      }
+    );
+    return {
+      date: formattedDate,
+      price: match.dataValues.price,
+    };
+  });
 
   res.status(200).json({
     status: "success",
