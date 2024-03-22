@@ -277,6 +277,14 @@ exports.deleteAllBids = catchAsync(async (req, res, next) => {
 });
 
 exports.match = catchAsync(async (req, res, next) => {
+  await generateMatches();
+  res.status(201).json({
+    status: "Success",
+    message: "Successfully matched bids",
+  });
+});
+
+const generateMatches = async () => {
   const activeBuyBids = await BuyBids.findAll({
     order: [
       ["price", "DESC"],
@@ -389,10 +397,6 @@ exports.match = catchAsync(async (req, res, next) => {
   await BuyBids.destroy({ where: { user_id: matchedBuyerIds } });
 
   await SellBids.destroy({ where: { user_id: matchedSellerIds } });
+};
 
-  res.status(201).json({
-    status: "Success",
-    message: "Successfully matched bids",
-    data: matches,
-  });
-});
+exports.generateMatches = generateMatches;

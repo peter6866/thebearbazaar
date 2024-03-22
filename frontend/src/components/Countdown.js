@@ -49,7 +49,7 @@ const Countdown = ({ target }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [target]);
 
   return (
     <div className="vertical-space">
