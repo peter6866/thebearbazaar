@@ -8,6 +8,9 @@ import { useConfig } from "../context/ConfigContext";
 function BidPage(){
     const { authToken } = useAuth();
     const config = useConfig();
+
+    //variable used to hide bid placement while fetching data
+   const [init, setInit] = useState(true);
     
     //the variables when already bid
     const [bidType, setBidType] = useState("");
@@ -48,8 +51,10 @@ function BidPage(){
             setMatchedType(matchedType);
             setmatchedEmail(email);
             setMatchedPrice(price);
+            setInit(false);
           } else {
             setIsMatched(false);
+            setInit(false);
           }
         } catch (error) {
           setIsMatched(false);
@@ -76,11 +81,14 @@ function BidPage(){
             setBidType(data.trans);
             setBidPrice(data.price);
             setHasBid(true);
+            setInit(false);
         } else {
             setHasBid(false);
+            setInit(false);
         }
         } catch (error) {
         setHasBid(false);
+        setInit(false);
         }
     };
 
@@ -146,7 +154,7 @@ function BidPage(){
 
     return(
     <div>
-    {!hasBid && !isMatched && <Transact  sendBid={sendBid} transType={transType} setTransType={setTransType} bidData={bidData} update={update} errorMessage={errorMessage}/>}
+    {!hasBid && !isMatched && !init && <Transact  sendBid={sendBid} transType={transType} setTransType={setTransType} bidData={bidData} update={update} errorMessage={errorMessage}/>}
     {hasBid && !isMatched && <ViewBid bidType={bidType} bidPrice={bidPrice} cancelBid={cancelBid}/>}
     {isMatched && !hasBid && <ViewMatched matchedEmail={matchedEmail} matchedType={matchedType} matchedPrice={matchedPrice}/>}
     </div>    );

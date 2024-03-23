@@ -10,6 +10,7 @@ import PasswordButton from "./PasswordButton";
 import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
+import Dashboard from "./Dashboard";
 
 function SignUp({ flip }) {
   const [userData, setUserData] = useState({
@@ -284,6 +285,9 @@ function SignUp({ flip }) {
           Login instead.
         </Button>
       </Box>
+      <br/>
+      <br/>
+      <Dashboard/>
     </div>
   );
 }

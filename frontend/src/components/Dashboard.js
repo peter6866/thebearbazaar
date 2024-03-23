@@ -70,8 +70,7 @@ function Dashboard() {
     <Paper elevation={3} style={{ padding: "2rem" }}>
       <h4>Time Until Next Match</h4>
       <Countdown target={matchTime} />
-      <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
-      <h4>Meal Point Price History</h4>
+      
       <PriceHistory history={priceHistory} />
     </Paper>
   );
