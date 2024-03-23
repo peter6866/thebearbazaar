@@ -24,3 +24,5 @@ log/
 *.swo
 .vscode/
 *.sublime-workspace
+
+package-lock.json

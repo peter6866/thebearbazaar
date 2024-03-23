@@ -8,7 +8,7 @@
 
 ## TA: Mutaz Badr
 
-## Instructions/Link to access: [The Bear Bazaar](http://www.thebearbazaar.com)
+## Instructions/Link to access: [The Bear Bazaar](https://www.thebearbazaar.com)
 
 # Starting the Project
 
