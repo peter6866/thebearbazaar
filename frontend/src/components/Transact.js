@@ -16,50 +16,7 @@ import { useConfig } from "../context/ConfigContext";
 import Typography from "@mui/material/Typography";
 import InfoIcon from "@mui/icons-material/Info";
 
-function Transact() {
-  const [bidData, setBidData] = useState({
-    Price: 250,
-  });
-
-  const [transType, setTransType] = useState("buy");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const config = useConfig();
-  const { authToken } = useAuth();
-  let update = (e) => {
-    const { name, value } = e.target;
-    setBidData({ ...bidData, [name]: value });
-  };
-
-  let sendBid = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/bids/${transType}-bid`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({
-            price: bidData["Price"],
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setErrorMessage(data.message);
-        setSuccessMessage("");
-      } else {
-        setSuccessMessage(data.message);
-        setErrorMessage("");
-      }
-    } catch (error) {}
-  };
-
+function Transact({sendBid,transType, setTransType, bidData, update, errorMessage}) {
   return (
     <Paper elevation={3} style={{ padding: "2rem", marginBottom: "40px" }}>
       <h3>Buy or Sell 500 Mealpoints</h3>
@@ -70,11 +27,11 @@ function Transact() {
           value={transType}
           onChange={(e) => setTransType(e.target.value)}
         >
-          <FormControlLabel value="buy" control={<Radio />} label="Buy" />
-          <FormControlLabel value="sell" control={<Radio />} label="Sell" />
+          <FormControlLabel value="Buy" control={<Radio />} label="Buy" />
+          <FormControlLabel value="Sell" control={<Radio />} label="Sell" />
         </RadioGroup>
         <Typography id="input-slider" gutterBottom>
-          {transType === "buy"
+          {transType === "Buy"
             ? "Maximum Price to Buy 500 Meal Points"
             : "Minimum Price to Sell 500 Meal Points"}
         </Typography>
@@ -105,11 +62,6 @@ function Transact() {
         {errorMessage && (
           <div>
             <Alert severity="error">{errorMessage}</Alert>
-          </div>
-        )}
-        {successMessage && (
-          <div>
-            <Alert severity="success">{successMessage}</Alert>
           </div>
         )}
       </form>

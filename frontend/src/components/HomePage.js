@@ -9,6 +9,7 @@ import Dashboard from "./Dashboard";
 import Transact from "./Transact";
 import ViewBid from "./ViewBid";
 import ViewMatched from "./ViewMatched";
+import BidPage from "./BidPage";
 import Faq from "./Faq";
 import AdminPage from "./AdminPage";
 import Profile from "./Profile";
@@ -36,9 +37,7 @@ function HomePage() {
       <Box sx={{ width: "100%" }}>
         <Tabs value={selectedTab} onChange={changeTab} aria-label="mui tab bar">
           <Tab label="Dashboard" value="dashboard" />
-          <Tab label="Transact" value="transact" />
-          <Tab label="My Bid" value="myBid" />
-          <Tab label="Match" value="match" />
+          <Tab label="My Bid" value="bidpage" />
           <Tab label="FAQ" value="faq" />
           {role === "admin" && <Tab label="Admin" value="admin" />}
           <Box sx={{ flexGrow: 1 }} />
@@ -54,11 +53,9 @@ function HomePage() {
         </Tabs>
         <Box>
           <div className="container-main">
-            {selectedTab === "dashboard" && <Dashboard />}
-            {selectedTab === "transact" && <Transact />}
+            {selectedTab === "dashboard" && <Dashboard /> }
+            {selectedTab == "bidpage" && <BidPage />}
             {selectedTab === "faq" && <Faq />}
-            {selectedTab === "myBid" && <ViewBid />}
-            {selectedTab === "match" && <ViewMatched />}
             {selectedTab === "admin" && <AdminPage />}
             {selectedTab === "profile" && <Profile />}
           </div>
