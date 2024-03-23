@@ -259,7 +259,7 @@ function SignUp({ flip }) {
             password={userData["password"]}
             confirmPassword={userData["confirm"]}
           >
-            Change Password
+            Sign up
           </PasswordButton>
           {errorMessage && (
             <div>
