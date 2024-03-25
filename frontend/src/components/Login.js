@@ -275,9 +275,6 @@ function Login({ flip }) {
             Reset Password.
           </Button>
         </Box>
-        <br/>
-        <br/>
-        <Dashboard />
       </div>
     );
   } else {

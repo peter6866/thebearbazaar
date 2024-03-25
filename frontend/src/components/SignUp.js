@@ -285,9 +285,6 @@ function SignUp({ flip }) {
           Login instead.
         </Button>
       </Box>
-      <br/>
-      <br/>
-      <Dashboard/>
     </div>
   );
 }
