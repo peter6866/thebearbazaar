@@ -10,7 +10,7 @@ import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
 import PasswordButton from "./PasswordButton";
-import Dashboard from "./Dashboard";
+// import Dashboard from "./Dashboard";
 
 function Login({ flip }) {
   const [userData, setUserData] = useState({
@@ -266,7 +266,7 @@ function Login({ flip }) {
           <Button
             onClick={() => {
               flipKnowPass(false);
-              setUserData({ ...userData, ['password']: "" });
+              setUserData({ ...userData, ["password"]: "" });
               setErrorMessage("");
               setSuccessMessage("");
             }}
@@ -375,11 +375,11 @@ function Login({ flip }) {
               />
             </div>
             <PasswordButton
-            password={userData["password"]}
-            confirmPassword={userData["confirm"]}
-          >
-            Reset Password
-          </PasswordButton>
+              password={userData["password"]}
+              confirmPassword={userData["confirm"]}
+            >
+              Reset Password
+            </PasswordButton>
             {errorMessage && (
               <div>
                 <Alert severity="error">{errorMessage}</Alert>
@@ -401,7 +401,7 @@ function Login({ flip }) {
               flipKnowPass(true);
               setErrorMessage("");
               setSuccessMessage("");
-              setUserData({ ...userData, [password]: "" });
+              setUserData({ ...userData, ["password"]: "" });
             }}
             style={{ textTransform: "none", fontSize: "1rem" }}
           >

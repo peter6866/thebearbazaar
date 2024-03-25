@@ -6,11 +6,14 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const transporter = require("../utils/emailTransporter");
 
-const sendMatchedEmail = (email, price, matchedType) => {
+const sendMatchedEmail = (email, price, matchedType, matchedEmail) => {
+  const capitalizedMatchedType = `${matchedType
+    .charAt(0)
+    .toUpperCase()}${matchedType.slice(1)}`;
   const mailOptions = {
     from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
     to: email,
-    subject: "A matched seller has been found",
+    subject: `A matched ${matchedType} has been found`,
     html: `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -57,7 +60,7 @@ const sendMatchedEmail = (email, price, matchedType) => {
             <div class="header"><h2>Match Confirmation</h2></div>
             
             <p>Congratulations! You have been matched with a <strong>${matchedType}</strong> at a price of <strong>$${price}</strong>.</p>
-            <p>Check your account for details.</p>
+            <p>${capitalizedMatchedType}'s email: ${matchedEmail}</p>
             
             <div class="footer">
                 Thank you for using our service!<br>
@@ -84,7 +87,7 @@ const sendUnmatchedEmail = (email, unmatchedType) => {
   const mailOptions = {
     from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
     to: email,
-    subject: "No matched seller has been found",
+    subject: `No matched ${unmatchedType} has been found`,
     html: `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -319,31 +322,28 @@ const generateMatches = async () => {
     }
   }
 
-  // get the user email of the matched buyer and seller
-  const matchedBuyers = await User.findAll({
-    where: {
-      id: matches.map((match) => match.buyer_id),
-    },
-  });
-  const matchedSellers = await User.findAll({
-    where: {
-      id: matches.map((match) => match.seller_id),
-    },
-  });
+  matches.forEach(async (match) => {
+    const matchedBuyer = await User.findByPk(match.buyer_id);
+    const matchedSeller = await User.findByPk(match.seller_id);
+    const matchedBuyerEmail = matchedBuyer.email;
+    const matchedSellerEmail = matchedSeller.email;
 
-  // send emails to the matched buyers
-  matchedBuyers.forEach(async (buyer) => {
-    // check if the user's matching notification is on
-    if (buyer.sendMatchNotifications) {
-      await sendMatchedEmail(buyer.email, marketPrice, "seller");
+    if (matchedBuyer.sendMatchNotifications) {
+      await sendMatchedEmail(
+        matchedBuyerEmail,
+        marketPrice,
+        "seller",
+        matchedSellerEmail
+      );
     }
-  });
 
-  // send emails to the matched sellers
-  matchedSellers.forEach(async (seller) => {
-    // check if the user's matching notification is on
-    if (seller.sendMatchNotifications) {
-      await sendMatchedEmail(seller.email, marketPrice, "buyer");
+    if (matchedSeller.sendMatchNotifications) {
+      await sendMatchedEmail(
+        matchedSellerEmail,
+        marketPrice,
+        "buyer",
+        matchedBuyerEmail
+      );
     }
   });
 
