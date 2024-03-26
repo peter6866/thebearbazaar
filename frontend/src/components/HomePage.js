@@ -31,7 +31,15 @@ function HomePage() {
     !isLoading &&
     isLoggedIn && (
       <Box sx={{ width: "100%" }}>
-        <Tabs value={selectedTab} onChange={changeTab} aria-label="mui tab bar">
+        <Tabs
+          value={selectedTab}
+          onChange={changeTab}
+          aria-label="mui tab bar"
+          variant="scrollable"
+          fullWidth
+          scrollButtons="auto"
+          allowScrollButtonsMobile
+        >
           <Tab label="Dashboard" value="dashboard" />
           <Tab label="My Bid" value="bidpage" />
           <Tab label="FAQ" value="faq" />

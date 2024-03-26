@@ -9,7 +9,7 @@ const Feedback = sequelize.define(
       allowNull: false,
     },
     feedback: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     user_id: {
