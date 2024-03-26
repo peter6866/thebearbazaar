@@ -55,3 +55,7 @@ body {
 .center {
   text-align: center;
 }
+
+.disable-touch {
+  touch-action: manipulation;
+}
