@@ -65,10 +65,10 @@ function Dashboard() {
       <h2> Welcome to The Bear Bazaar! </h2>
       <h4>How It Works:</h4>
       <List>
-        <ListItem>Submit a bid to buy/sell 500 meal points</ListItem>
+        <ListItem>Submit a single bid (which you can update later) to buy/sell 500 meal points</ListItem>
         <ListItem>
           Our matching algorithm runs weekly to generate mutually beneficial
-          matches
+          matches according to supply and demand
         </ListItem>
         <ListItem>
           If you are matched, we provide a price and the email of the other
@@ -94,6 +94,9 @@ function Dashboard() {
         </ListItem>
         <ListItem>
           Do not submit a bid that you are not willing to fulfill
+        </ListItem>
+        <ListItem>
+          Your given price in a match will always be at least as good as your bid
         </ListItem>
         <ListItem>
           It is not guaranteed that you will be matched, so submit a competitive
