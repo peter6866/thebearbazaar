@@ -107,6 +107,7 @@ const sendVerificationEmail = (email, verificationCode) => {
 
 // handler for getting one-time code
 exports.getCode = catchAsync(async (req, res, next) => {
+  req.body.email = req.body.email.toLowerCase();
   const { email, reset } = req.body;
   const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
@@ -161,6 +162,7 @@ exports.getCode = catchAsync(async (req, res, next) => {
 
 // handler for signing up
 exports.signUpVerify = catchAsync(async (req, res, next) => {
+  req.body.email = req.body.email.toLowerCase();
   const { email, verificationCode, password } = req.body;
 
   const user = await User.findOne({ where: { email } });
@@ -202,6 +204,7 @@ exports.signUpVerify = catchAsync(async (req, res, next) => {
 
 // handler for resending the verification code
 exports.resendCode = catchAsync(async (req, res, next) => {
+  req.body.email = req.body.email.toLowerCase();
   const { email } = req.body;
 
   const user = await User.findOne({ where: { email } });
@@ -225,6 +228,7 @@ exports.resendCode = catchAsync(async (req, res, next) => {
 
 // handler for logging in
 exports.login = catchAsync(async (req, res, next) => {
+  req.body.email = req.body.email.toLowerCase();
   const { email, password } = req.body;
 
   // check if email and password exist
