@@ -5,6 +5,8 @@ import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/material/Box";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { InputAdornment } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
@@ -21,6 +23,7 @@ function Login({ flip }) {
   });
 
   const [knowPass, flipKnowPass] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { login } = useAuth();
   const config = useConfig();
@@ -32,6 +35,10 @@ function Login({ flip }) {
   const [countdown, setCountdown] = useState(60);
 
   let navigate = useNavigate();
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   let update = (e) => {
     const { name, value } = e.target;
@@ -266,7 +273,7 @@ function Login({ flip }) {
           <Button
             onClick={() => {
               flipKnowPass(false);
-              setUserData({ ...userData, ["password"]: "" });
+              setUserData({ ...userData, password: "" });
               setErrorMessage("");
               setSuccessMessage("");
             }}
@@ -353,25 +360,51 @@ function Login({ flip }) {
             <div>
               <TextField
                 fullWidth
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
                 value={userData["password"]}
                 label="Password"
                 variant="standard"
                 onChange={update}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </div>
             <div>
               <TextField
                 fullWidth
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="confirm"
                 name="confirm"
                 value={userData["confirm"]}
                 label="Confirm Password"
                 variant="standard"
                 onChange={update}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </div>
             <PasswordButton
@@ -401,7 +434,7 @@ function Login({ flip }) {
               flipKnowPass(true);
               setErrorMessage("");
               setSuccessMessage("");
-              setUserData({ ...userData, ["password"]: "" });
+              setUserData({ ...userData, password: "" });
             }}
             style={{ textTransform: "none", fontSize: "1rem" }}
           >

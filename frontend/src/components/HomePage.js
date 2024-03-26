@@ -1,4 +1,3 @@
-// TODO: Create a home page for the Bear Bazaar
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -6,9 +5,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Dashboard from "./Dashboard";
-import Transact from "./Transact";
-import ViewBid from "./ViewBid";
-import ViewMatched from "./ViewMatched";
 import BidPage from "./BidPage";
 import Faq from "./Faq";
 import AdminPage from "./AdminPage";
@@ -54,8 +50,8 @@ function HomePage() {
         </Tabs>
         <Box>
           <div className="container-main">
-            {selectedTab === "dashboard" && <Dashboard /> }
-            {selectedTab == "bidpage" && <BidPage />}
+            {selectedTab === "dashboard" && <Dashboard />}
+            {selectedTab === "bidpage" && <BidPage />}
             {selectedTab === "faq" && <Faq />}
             {selectedTab === "admin" && <AdminPage />}
             {selectedTab === "profile" && <Profile />}

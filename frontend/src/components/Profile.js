@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
-  Typography,
   Paper,
   Button,
   Alert,
   TextField,
   Divider,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
 import { Switch, FormControlLabel, FormGroup } from "@mui/material";
@@ -17,6 +19,7 @@ function Profile() {
   const { authToken } = useAuth();
   const config = useConfig();
 
+  const [showPassword, setShowPassword] = useState(false);
   const [matchNotifications, setMatchNotifications] = useState(false);
   const [priceNotifications, setPriceNotifications] = useState(false);
   const [initialMatchNotifications, setInitialMatchNotifications] =
@@ -40,7 +43,11 @@ function Profile() {
     setNotificationSucessMessage("");
   };
 
-  let loadNotificationSettings = async () => {
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const loadNotificationSettings = useCallback(async () => {
     try {
       const response = await fetch(
         `${config.REACT_APP_API_URL}/v1/users/get-notifications`,
@@ -62,7 +69,7 @@ function Profile() {
         setLoading(false);
       }
     } catch (error) {}
-  };
+  }, [authToken, config]);
 
   let updateNotificationSettings = async () => {
     try {
@@ -91,12 +98,17 @@ function Profile() {
     } catch (error) {}
   };
 
-  let anyChanges = () => {
+  const anyChanges = useCallback(() => {
     return (
       matchNotifications !== initialMatchNotifications ||
       priceNotifications !== initialPriceNotifications
     );
-  };
+  }, [
+    matchNotifications,
+    priceNotifications,
+    initialMatchNotifications,
+    initialPriceNotifications,
+  ]);
 
   const [passwordData, setPasswordData] = useState({
     oldPassword: "",
@@ -159,16 +171,11 @@ function Profile() {
 
   useEffect(() => {
     loadNotificationSettings();
-  }, []);
+  }, [loadNotificationSettings]);
 
   useEffect(() => {
     setAreChanges(anyChanges());
-  }, [
-    matchNotifications,
-    priceNotifications,
-    initialMatchNotifications,
-    initialPriceNotifications,
-  ]);
+  }, [anyChanges]);
 
   return loading ? (
     <div></div>
@@ -234,7 +241,7 @@ function Profile() {
           <div>
             <TextField
               fullWidth
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="newPassword"
               value={passwordData["newPassword"]}
               onFocus={handleFocus}
@@ -242,12 +249,25 @@ function Profile() {
               onChange={updatePasswordText}
               label="New Password"
               variant="standard"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </div>
           <div>
             <TextField
               fullWidth
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="confirmNewPassword"
               value={passwordData["confirmNewPassword"]}
               onFocus={handleFocus}
@@ -255,6 +275,19 @@ function Profile() {
               onChange={updatePasswordText}
               label="Confirm New Password"
               variant="standard"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </div>
           <PasswordButton

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ViewBid from "./ViewBid";
 import ViewMatched from "./ViewMatched";
 import Transact from "./Transact";
@@ -30,7 +30,7 @@ function BidPage() {
   const [matchedEmail, setmatchedEmail] = useState("");
   const [matchedPrice, setMatchedPrice] = useState(0);
 
-  const fetchMatched = async () => {
+  const fetchMatched = useCallback(async () => {
     try {
       const response = await fetch(
         `${config.REACT_APP_API_URL}/v1/match/match-info`,
@@ -59,9 +59,9 @@ function BidPage() {
     } catch (error) {
       setIsMatched(false);
     }
-  };
+  }, [authToken, config]);
 
-  const fetchBid = async () => {
+  const fetchBid = useCallback(async () => {
     try {
       const response = await fetch(
         `${config.REACT_APP_API_URL}/v1/bids/get-bid`,
@@ -89,7 +89,7 @@ function BidPage() {
       setHasBid(false);
       setInit(false);
     }
-  };
+  }, [authToken, config]);
 
   const cancelBid = async () => {
     try {
@@ -113,7 +113,7 @@ function BidPage() {
   useEffect(() => {
     fetchBid();
     fetchMatched();
-  }, []);
+  }, [fetchBid, fetchMatched]);
 
   let update = (e) => {
     const { name, value } = e.target;

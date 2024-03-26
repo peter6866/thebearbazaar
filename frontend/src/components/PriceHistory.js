@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Box, Typography, Divider } from "@mui/material";
+import React from "react";
+import { Box, Divider } from "@mui/material";
 import {
   IgrCategoryChartModule,
   IgrCategoryChart,

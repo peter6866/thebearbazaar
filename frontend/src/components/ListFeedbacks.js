@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useConfig } from "../context/ConfigContext";
 import { useAuth } from "../context/AuthContext";
 import { List, ListItem, ListItemText, Divider } from "@mui/material";
@@ -8,7 +8,7 @@ function ListFeedback() {
   const config = useConfig();
   const { authToken } = useAuth();
 
-  const fetchFeedbacks = async () => {
+  const fetchFeedbacks = useCallback(async () => {
     try {
       const response = await fetch(
         `${config.REACT_APP_API_URL}/v1/feedback/get-feedback`,
@@ -26,11 +26,11 @@ function ListFeedback() {
         setFeedbacks(data.feedbacks);
       }
     } catch (error) {}
-  };
+  }, [authToken, config]);
 
   useEffect(() => {
     fetchFeedbacks();
-  }, [authToken]);
+  }, [fetchFeedbacks]);
 
   return (
     <div>

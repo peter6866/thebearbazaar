@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Button,
-  List,
-  ListItem,
-  ListItemText,
-  Alert,
-  show,
-} from "@mui/material";
+import { Button, List, ListItem, Alert } from "@mui/material";
 
 const PasswordButton = ({
   password = "",
@@ -20,12 +13,12 @@ const PasswordButton = ({
         <div>
           <List width="100%" disablePadding="true">
             <ListItem sx={{ padding: 0 }}>
-              {password != confirmPassword && (
+              {password !== confirmPassword && (
                 <Alert sx={{ width: "100%" }} size="sm" severity="error">
                   {"Passwords must match"}
                 </Alert>
               )}
-              {password == confirmPassword && (
+              {password === confirmPassword && (
                 <Alert sx={{ width: "100%" }} size="sm" severity="success">
                   {"Passwords must match"}
                 </Alert>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Paper from "@mui/material/Paper";
 import { useConfig } from "../context/ConfigContext";
 import { useAuth } from "../context/AuthContext";
@@ -9,7 +9,7 @@ function Faq() {
   const config = useConfig();
   const { authToken, role } = useAuth();
 
-  let loadFAQ = async () => {
+  const loadFAQ = useCallback(async () => {
     if (!config || !config.REACT_APP_API_URL) {
       return;
     }
@@ -34,7 +34,7 @@ function Faq() {
         setQuestionsData(data.questions);
       }
     } catch (error) {}
-  };
+  }, [config]);
 
   const handleDeleteFAQ = async (question) => {
     try {
@@ -58,7 +58,7 @@ function Faq() {
 
   useEffect(() => {
     loadFAQ();
-  }, [config]);
+  }, [loadFAQ]);
 
   return (
     <Paper elevation={3} style={{ padding: "2rem" }}>

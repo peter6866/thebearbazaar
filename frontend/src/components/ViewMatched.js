@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Typography, Paper, Button } from "@mui/material";
-import { useAuth } from "../context/AuthContext";
-import { useConfig } from "../context/ConfigContext";
 
 function ViewMatched({ matchedEmail, matchedType, matchedPrice }) {
   // when click contact seller, redirect to send email

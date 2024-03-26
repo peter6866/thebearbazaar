@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { CircularProgress, Box, Typography, Paper, Grid } from "@mui/material";
+import React, { useState, useEffect, useCallback } from "react";
+import { CircularProgress, Typography, Grid } from "@mui/material";
 
 const Countdown = ({ target }) => {
   const [daysRemaining, setDaysRemaining] = useState("");
@@ -8,7 +8,7 @@ const Countdown = ({ target }) => {
   const [secondsRemaining, setSecondsRemaining] = useState("");
   const [targetDate, setTargetDate] = useState("");
 
-  const calculateTimeRemaining = () => {
+  const calculateTimeRemaining = useCallback(() => {
     const now = new Date();
     const secondsTimeStamp =
       now.getUTCDay() * 24 * 60 * 60 +
@@ -41,7 +41,7 @@ const Countdown = ({ target }) => {
     setMinutesRemaining(Math.floor(secondsUntilTarget / 60));
     secondsUntilTarget = secondsUntilTarget % 60;
     setSecondsRemaining(secondsUntilTarget);
-  };
+  }, [target]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -49,7 +49,7 @@ const Countdown = ({ target }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [target]);
+  }, [calculateTimeRemaining]);
 
   return (
     <div className="vertical-space">

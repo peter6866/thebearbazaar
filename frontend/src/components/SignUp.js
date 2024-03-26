@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
@@ -6,11 +6,13 @@ import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { InputAdornment } from "@mui/material";
 import PasswordButton from "./PasswordButton";
 import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
-import Dashboard from "./Dashboard";
+// import Dashboard from "./Dashboard";
 
 function SignUp({ flip }) {
   const [userData, setUserData] = useState({
@@ -24,11 +26,17 @@ function SignUp({ flip }) {
   const config = useConfig();
   let navigate = useNavigate();
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [step, setStep] = useState(1);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [countdown, setCountdown] = useState(60);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   let requestCode = async (e) => {
     e.preventDefault();
@@ -235,25 +243,51 @@ function SignUp({ flip }) {
           <div>
             <TextField
               fullWidth
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               name="password"
               value={userData["password"]}
               label="Password"
               variant="standard"
               onChange={update}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </div>
           <div>
             <TextField
               fullWidth
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="confirm"
               name="confirm"
               value={userData["confirm"]}
               label="Confirm Password"
               variant="standard"
               onChange={update}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </div>
           <PasswordButton
