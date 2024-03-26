@@ -34,7 +34,7 @@ function ListFeedback() {
 
   return (
     <div>
-      <h3>Feedbacks</h3>
+      <h3>Feedback</h3>
       <List>
         {feedbacks.map((feedback, index) => (
           <React.Fragment key={feedback.id}>

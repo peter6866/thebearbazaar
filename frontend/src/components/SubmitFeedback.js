@@ -84,9 +84,11 @@ function SubmitFeedback() {
         />
         {feedbackError && <Alert severity="error">{feedbackError}</Alert>}
         {feedbackSuccess && <Alert severity="success">{feedbackSuccess}</Alert>}
-        <Button type="submit" variant="contained" color="primary">
-          Submit Feedback
-        </Button>
+        <div className="btn-wrapper">
+          <Button type="submit" variant="contained" color="primary">
+            Submit Feedback
+          </Button>
+        </div>
       </form>
     </div>
   );

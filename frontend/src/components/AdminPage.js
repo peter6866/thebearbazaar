@@ -238,9 +238,11 @@ function AdminPage() {
         />
         {error && <Alert severity="error">{error}</Alert>}
         {success && <Alert severity="success">{success}</Alert>}
-        <Button type="submit" variant="contained" color="primary">
-          Post FAQ
-        </Button>
+        <div className="btn-wrapper">
+          <Button type="submit" variant="contained" color="primary">
+            Post FAQ
+          </Button>
+        </div>
       </form>
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <h3>Run Matches</h3>

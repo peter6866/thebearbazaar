@@ -10,7 +10,8 @@ function BidPage() {
   const config = useConfig();
 
   //variable used to hide bid placement while fetching data
-  const [init, setInit] = useState(true);
+  const [loadingBid, setLoadingBid] = useState(true);
+  const [loadingMatch, setLoadingMatch] = useState(true);
 
   //the variables when already bid
   const [bidType, setBidType] = useState("");
@@ -51,13 +52,14 @@ function BidPage() {
         setMatchedType(matchedType);
         setmatchedEmail(email);
         setMatchedPrice(price);
-        setInit(false);
+        setLoadingMatch(false);
       } else {
         setIsMatched(false);
-        setInit(false);
+        setLoadingMatch(false);
       }
     } catch (error) {
       setIsMatched(false);
+      setLoadingMatch(false);
     }
   }, [authToken, config]);
 
@@ -80,14 +82,14 @@ function BidPage() {
         setBidType(data.trans);
         setBidPrice(data.price);
         setHasBid(true);
-        setInit(false);
+        setLoadingBid(false);
       } else {
         setHasBid(false);
-        setInit(false);
+        setLoadingBid(false);
       }
     } catch (error) {
       setHasBid(false);
-      setInit(false);
+      setLoadingBid(false);
     }
   }, [authToken, config]);
 
@@ -151,7 +153,7 @@ function BidPage() {
 
   return (
     <div>
-      {!hasBid && !isMatched && !init && (
+      {!hasBid && !isMatched && !loadingMatch && !loadingBid && (
         <Transact
           sendBid={sendBid}
           transType={transType}

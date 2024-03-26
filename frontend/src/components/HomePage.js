@@ -37,15 +37,7 @@ function HomePage() {
           <Tab label="FAQ" value="faq" />
           {role === "admin" && <Tab label="Admin" value="admin" />}
           <Box sx={{ flexGrow: 1 }} />
-          <Tab
-            value="profile"
-            icon={
-              <Avatar>
-                <PersonIcon />
-              </Avatar>
-            }
-            label="Profile"
-          />
+          <Tab value="profile" label="Profile" />
           <Tab label="Logout" value="logout" onClick={logout} />
         </Tabs>
         <Box>

@@ -34,8 +34,8 @@ function Transact({
         </RadioGroup>
         <Typography id="input-slider" gutterBottom>
           {transType === "Buy"
-            ? "Maximum Price to Buy 500 Meal Points"
-            : "Minimum Price to Sell 500 Meal Points"}
+            ? "Maximum Price to Pay for 500 Meal Points"
+            : "Minimum Price to Receive for 500 Meal Points"}
         </Typography>
         {transType === "Buy" && (
           <Slider

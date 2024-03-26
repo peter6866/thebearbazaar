@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Countdown from "./Countdown";
 import PriceHistory from "./PriceHistory";
-import { Paper } from "@mui/material";
+import { Paper, Typography, List, ListItem, Divider } from "@mui/material";
 import { useConfig } from "../context/ConfigContext";
 
 function Dashboard() {
@@ -62,52 +62,50 @@ function Dashboard() {
 
   return (
     <Paper elevation={3} style={{ padding: "2rem" }}>
-      <h2> Welcome to The Bear Bazaar! Here's how it works: </h2>
-      <ul>
-        <li> Submit a bid to buy/sell 500 meal points </li>
-        <li>
-          {" "}
+      <h2> Welcome to The Bear Bazaar! </h2>
+      <h4>How It Works:</h4>
+      <List>
+        <ListItem>Submit a bid to buy/sell 500 meal points</ListItem>
+        <ListItem>
           Our matching algorithm runs weekly to generate mutually beneficial
           matches
-        </li>
-        <li>
-          {" "}
+        </ListItem>
+        <ListItem>
           If you are matched, we provide a price and the email of the other
-          student to carry out the transaction{" "}
-        </li>
-        <li>
-          {" "}
+          student to carry out the transaction
+        </ListItem>
+        <ListItem>
           Coordinate a time to meet at the Dining Services Office (in BD) and
-          carry out the transaction (M-F, 8:30-4:30){" "}
-        </li>
-      </ul>
+          carry out the transaction (M-F, 8:30-4:30)
+        </ListItem>
+      </List>
 
-      <h4> Important Information </h4>
-      <ul>
-        <li>
-          {" "}
-          Do not pay the other person until at the Dining Services Office{" "}
-        </li>
-        <li>
-          {" "}
+      <h4>Important Information:</h4>
+      <List>
+        <ListItem>
+          Do not pay the other person until at the Dining Services Office
+        </ListItem>
+        <ListItem>
           You can only transfer meal points once per semester (per WashU rules)
-        </li>
-        <li>
-          {" "}
+        </ListItem>
+        <ListItem>
           You cannot transfer meal points if you have an off-campus plan (per
-          WashU rules){" "}
-        </li>
-        <li> Do not submit a bid that you are not willing to fulfill </li>
-        <li>
-          {" "}
+          WashU rules)
+        </ListItem>
+        <ListItem>
+          Do not submit a bid that you are not willing to fulfill
+        </ListItem>
+        <ListItem>
           It is not guaranteed that you will be matched, so submit a competitive
-          bid to increase your chances{" "}
-        </li>
-      </ul>
+          bid to increase your chances
+        </ListItem>
+      </List>
 
-      <h4>Time Until Next Match</h4>
+      <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
+      <h3>Time Until Next Match</h3>
       <Countdown target={matchTime} />
-
+      <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
+      <h3>Meal Point Price History</h3>
       <PriceHistory history={priceHistory} />
     </Paper>
   );
