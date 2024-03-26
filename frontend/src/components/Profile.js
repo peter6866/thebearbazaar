@@ -11,6 +11,7 @@ import { useAuth } from "../context/AuthContext";
 import { useConfig } from "../context/ConfigContext";
 import { Switch, FormControlLabel, FormGroup } from "@mui/material";
 import PasswordButton from "./PasswordButton";
+import SubmitFeedback from "./SubmitFeedback";
 
 function Profile() {
   const { authToken } = useAuth();
@@ -105,6 +106,16 @@ function Profile() {
 
   const [passwordSuccessMessage, setPasswordSuccessMessage] = useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+
+  const [passwordFieldFocused, setPasswordFieldFocused] = useState(false);
+
+  const handleFocus = () => {
+    setPasswordFieldFocused(true);
+  };
+
+  const handleBlur = () => {
+    setPasswordFieldFocused(false);
+  };
 
   let updatePasswordText = (e) => {
     const { name, value } = e.target;
@@ -212,6 +223,8 @@ function Profile() {
               fullWidth
               type="password"
               name="oldPassword"
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               onChange={updatePasswordText}
               value={passwordData["oldPassword"]}
               label="Current Password"
@@ -224,6 +237,8 @@ function Profile() {
               type="password"
               name="newPassword"
               value={passwordData["newPassword"]}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               onChange={updatePasswordText}
               label="New Password"
               variant="standard"
@@ -235,6 +250,8 @@ function Profile() {
               type="password"
               name="confirmNewPassword"
               value={passwordData["confirmNewPassword"]}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               onChange={updatePasswordText}
               label="Confirm New Password"
               variant="standard"
@@ -243,6 +260,7 @@ function Profile() {
           <PasswordButton
             password={passwordData["newPassword"]}
             confirmPassword={passwordData["confirmNewPassword"]}
+            show={passwordFieldFocused}
           >
             Change Password
           </PasswordButton>
@@ -258,6 +276,8 @@ function Profile() {
           )}
         </form>
       </div>
+      <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
+      <SubmitFeedback />
     </Paper>
   );
 }

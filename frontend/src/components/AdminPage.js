@@ -14,6 +14,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Divider,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -22,6 +23,7 @@ import { useConfig } from "../context/ConfigContext";
 import { useAuth } from "../context/AuthContext";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import ListFeedbacks from "./ListFeedbacks";
 
 function AdminPage() {
   const [question, setQuestion] = useState("");
@@ -240,6 +242,7 @@ function AdminPage() {
           Post FAQ
         </Button>
       </form>
+      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <h3>Run Matches</h3>
       <Button
         variant="contained"
@@ -251,7 +254,7 @@ function AdminPage() {
       </Button>
       {matchError && <Alert severity="error">{matchError}</Alert>}
       {matchSuccess && <Alert severity="success">{matchSuccess}</Alert>}
-
+      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <h3>Change Match Day and Time</h3>
       <form onSubmit={updateMatchTime}>
         <Grid container spacing={2}>
@@ -296,7 +299,7 @@ function AdminPage() {
           </Button>
         </div>
       </form>
-
+      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <h3>Reset Functions</h3>
       <div
         style={{
@@ -320,6 +323,8 @@ function AdminPage() {
           Delete Matches
         </Button>
       </div>
+      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
+      <ListFeedbacks />
 
       {/* Delete Bids Dialog */}
       <Dialog

@@ -9,6 +9,7 @@ const bidsRouter = require("./routes/bidsRoutes");
 const faqRouter = require("./routes/faqRoutes");
 const matchRouter = require("./routes/matchRoutes");
 const settingsRouter = require("./routes/settingsRoutes");
+const feedbackRouter = require("./routes/feedbackRoutes");
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use("/api/v1/bids", bidsRouter);
 app.use("/api/v1/faq", faqRouter);
 app.use("/api/v1/match", matchRouter);
 app.use("/api/v1/settings", settingsRouter);
+app.use("/api/v1/feedback", feedbackRouter);
 
 // handling unhandled routes
 app.all("*", (req, res, next) => {
