@@ -48,6 +48,7 @@ function HomePage() {
                 <PersonIcon />
               </Avatar>
             }
+            label="Profile"
           />
           <Tab label="Logout" value="logout" onClick={logout} />
         </Tabs>

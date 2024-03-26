@@ -1,40 +1,54 @@
 import React from "react";
-import { Button, List, ListItem, ListItemText, Alert } from "@mui/material";
+import { Button, List, ListItem, ListItemText, Alert} from "@mui/material";
 
 const PasswordButton = ({ password = "", confirmPassword = "", children }) => {
-  let requirements = [];
-
-  if (password !== confirmPassword) {
-    requirements.push("Passwords must match");
-  }
-  if (password.length < 8) {
-    requirements.push("Password must contain at least 8 characters");
-  }
-  if (!/[A-Z]/.test(password)) {
-    requirements.push("Password must contain an uppercase letter");
-  }
-  if (!/[a-z]/.test(password)) {
-    requirements.push("Password must contain a lowercase letter");
-  }
-  const disabled = requirements.length !== 0;
-
   return (
     <div>
-      {disabled && (password || confirmPassword) && (
         <div>
-          <Alert severity="error" style={{ marginBottom: "2rem" }}>
-            <List>
-              {requirements.map((requirement, index) => (
-                <ListItem key={index}>
-                  <ListItemText primary={requirement} />
+          
+            <List width="100%" disablePadding="true">
+                <ListItem sx={{padding:0}}>
+                  {password!=confirmPassword && <Alert sx={{width: '100%'}} size="sm" severity="error" >
+                  {"Passwords must match"}
+                  </Alert>}
+                  {password==confirmPassword && <Alert sx={{width: '100%'}} size="sm" severity="success">
+                  {"Passwords must match"}
+                  </Alert>}
                 </ListItem>
-              ))}
+
+                <ListItem sx={{padding:0}}>
+                  {password.length < 8 && <Alert sx={{width: '100%'}} size="sm" severity="error" >
+                  {"Passwords must contain at least 8 characters"}
+                  </Alert>}
+                  {password.length >= 8 && <Alert sx={{width: '100%'}} size="sm" severity="success">
+                  {"Passwords must contain at least 8 characters"}
+                  </Alert>}
+                </ListItem>
+
+                <ListItem sx={{padding:0}}>
+                  {!/[A-Z]/.test(password) && <Alert sx={{width: '100%'}} size="sm" severity="error" >
+                  {"Password must contain uppercase letter"}
+                  </Alert>}
+                  {/[A-Z]/.test(password) && <Alert sx={{width: '100%'}} size="sm" severity="success">
+                  {"Password must contain uppercase letter"}
+                  </Alert>}
+                </ListItem>
+
+                <ListItem sx={{padding:0}}>
+                  {!/[a-z]/.test(password) && <Alert sx={{width: '100%'}} size="sm" severity="error" >
+                  {"Password must contain lowercase letter"}
+                  </Alert>}
+                  {/[a-z]/.test(password) && <Alert sx={{width: '100%'}} size="sm" severity="success">
+                  {"Password must contain lowercase letter"}
+                  </Alert>}
+                </ListItem>
+
+              
             </List>
-          </Alert>
+            <br/>
         </div>
-      )}
       <div className="btn-wrapper">
-        <Button type="submit" variant="contained" disabled={disabled}>
+        <Button type="submit" variant="contained" >
           {children}
         </Button>
       </div>
