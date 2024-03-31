@@ -1,6 +1,7 @@
 const express = require("express");
 const authController = require("../controller/authController");
 const userController = require("../controller/userController");
+const banController = require("../controller/banController");
 const router = express.Router();
 
 // get code route
@@ -24,5 +25,12 @@ router
 router
   .route("/change-password")
   .post(authController.protect, userController.changePassword);
+
+router.post(
+  "/ban-user",
+  authController.protect,
+  authController.restrictTo("admin"),
+  banController.banUser
+);
 
 module.exports = router;
