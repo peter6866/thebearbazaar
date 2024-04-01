@@ -14,6 +14,10 @@ const PhoneNum = sequelize.define("phoneNum", {
       key: "id",
     },
   },
+  isPrefered: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 });
 
 module.exports = PhoneNum;

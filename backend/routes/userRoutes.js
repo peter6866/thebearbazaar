@@ -38,4 +38,10 @@ router
   .get(authController.protect, userController.getPhoneNum)
   .post(authController.protect, userController.addPhoneNum);
 
+router.post(
+  "/update-preference",
+  authController.protect,
+  userController.updatePreference
+);
+
 module.exports = router;

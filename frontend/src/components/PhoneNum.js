@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Button, TextField, Alert, Box } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Alert,
+  Box,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
 import { useConfig } from "../context/ConfigContext";
 import { useAuth } from "../context/AuthContext";
 
@@ -10,6 +18,9 @@ function PhoneNum() {
   const [success, setSuccess] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [hasPhoneNumber, setHasPhoneNumber] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [usePhoneAsDefault, setUsePhoneAsDefault] = useState(false);
+  const [isCheckboxChanged, setIsCheckboxChanged] = useState(false);
 
   const formatPhoneNumber = (value) => {
     const numbers = value.replace(/[^\d]/g, "");
@@ -62,6 +73,36 @@ function PhoneNum() {
     }
   };
 
+  const handleUpdatePreference = async () => {
+    try {
+      const response = await fetch(
+        `${config.REACT_APP_API_URL}/v1/users/update-preference`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({ isPrefered: usePhoneAsDefault }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess(data.message);
+        setError("");
+        setIsCheckboxChanged(false);
+      } else {
+        setError(data.message);
+        setSuccess("");
+      }
+    } catch (error) {
+      setError("Something went wrong. Please try again later.");
+      setSuccess("");
+    }
+  };
+
   useEffect(() => {
     const fetchPhoneNumber = async () => {
       try {
@@ -79,8 +120,10 @@ function PhoneNum() {
         const data = await response.json();
         if (response.ok) {
           setPhoneNumber(data.phoneNum);
+          setUsePhoneAsDefault(data.isPrefered);
           setHasPhoneNumber(true);
         }
+        setIsLoading(false);
       } catch (error) {}
     };
     fetchPhoneNumber();
@@ -88,51 +131,97 @@ function PhoneNum() {
 
   return (
     <div>
-      <h4>Phone Number</h4>
-      {hasPhoneNumber ? (
+      <h4>Communication Preference</h4>
+      {isLoading ? (
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            visibility: "hidden",
           }}
         >
-          <p>Your phone Number:</p>
-          <p>{phoneNumber}</p>
+          <p>---</p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit}>
-          <Box display="flex" alignItems="center" gap={2}>
-            <TextField
-              label="Phone Number"
-              variant="outlined"
-              name="phoneNum"
-              onChange={(e) =>
-                setPhoneNumber(formatPhoneNumber(e.target.value))
-              }
-              value={phoneNumber}
-              sx={{ flexGrow: 1 }}
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-            >
-              add phone number
-            </Button>
-          </Box>
-        </form>
-      )}
-      {error && (
-        <Alert severity="error" sx={{ marginTop: 2 }}>
-          {error}
-        </Alert>
-      )}
-      {success && (
-        <Alert severity="success" sx={{ marginTop: 2 }}>
-          {success}
-        </Alert>
+        <>
+          {hasPhoneNumber ? (
+            <>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Typography variant="body1" color="textPrimary">
+                  Your phone number:
+                </Typography>
+                <Typography variant="body1" color="textSecondary">
+                  {phoneNumber}
+                </Typography>
+              </Box>
+              <div style={{ marginTop: "5px", marginBottom: "5px" }}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={usePhoneAsDefault}
+                      onChange={(e) => {
+                        setUsePhoneAsDefault(e.target.checked);
+                        setIsCheckboxChanged(!isCheckboxChanged);
+                      }}
+                      color="primary"
+                    />
+                  }
+                  label="Prefered communication method"
+                />
+              </div>
+              {isCheckboxChanged && (
+                <div className="btn-wrapper">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleUpdatePreference}
+                    sx={{ mt: 1 }}
+                  >
+                    Save Changes
+                  </Button>
+                </div>
+              )}
+            </>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <Box display="flex" alignItems="center" gap={2}>
+                <TextField
+                  label="Phone Number"
+                  variant="outlined"
+                  name="phoneNum"
+                  onChange={(e) =>
+                    setPhoneNumber(formatPhoneNumber(e.target.value))
+                  }
+                  value={phoneNumber}
+                  sx={{ flexGrow: 1 }}
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                >
+                  add phone number
+                </Button>
+              </Box>
+            </form>
+          )}
+          {error && (
+            <Alert severity="error" sx={{ marginTop: 1 }}>
+              {error}
+            </Alert>
+          )}
+          {success && (
+            <Alert severity="success" sx={{ marginTop: 1 }}>
+              {success}
+            </Alert>
+          )}
+        </>
       )}
     </div>
   );

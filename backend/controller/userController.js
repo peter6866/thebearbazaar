@@ -57,6 +57,7 @@ exports.getPhoneNum = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     phoneNum: phoneNum.phoneNum,
+    isPrefered: phoneNum.isPrefered,
   });
 });
 
@@ -75,5 +76,24 @@ exports.addPhoneNum = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     message: "Successfully added phone number",
+  });
+});
+
+exports.updatePreference = catchAsync(async (req, res, next) => {
+  const user_id = req.user.id;
+  const { isPrefered } = req.body;
+
+  // get the phone num for this user
+  const phoneNum = await PhoneNum.findOne({ where: { userId: user_id } });
+
+  if (!phoneNum) {
+    return next(new AppError("Phone number not found", 404));
+  }
+
+  await phoneNum.update({ isPrefered });
+
+  res.status(201).json({
+    status: "success",
+    message: "Successfully updated preference",
   });
 });
