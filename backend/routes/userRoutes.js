@@ -33,4 +33,9 @@ router.post(
   banController.banUser
 );
 
+router
+  .route("/phone-num")
+  .get(authController.protect, userController.getPhoneNum)
+  .post(authController.protect, userController.addPhoneNum);
+
 module.exports = router;
