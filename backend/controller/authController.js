@@ -247,7 +247,7 @@ exports.login = catchAsync(async (req, res, next) => {
   // // check if user exists && password is correct
   const user = await User.findOne({ where: { email } });
 
-  if (!user.isVerified) {
+  if (user && !user.isVerified) {
     return next(new AppError("Please verify your email", 401));
   }
 
