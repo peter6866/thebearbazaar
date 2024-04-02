@@ -400,3 +400,63 @@ const generateMatches = async () => {
 };
 
 exports.generateMatches = generateMatches;
+
+exports.getMarketInfo = catchAsync(async (req, res, next) => {
+  const activeBuyBids = await BuyBids.findAll({
+    order: [
+      ["price", "DESC"],
+      ["bidTimeStamp", "DESC"],
+    ],
+  });
+  const activeSellBids = await SellBids.findAll({
+    order: [
+      ["price", "ASC"],
+      ["bidTimeStamp", "DESC"],
+    ],
+  });
+  let bidIndex = 0;
+  let sellPrice = 0;
+  let buyPrice = 0;
+  let noMatch = false;
+  let matches = [];
+
+  while (
+    bidIndex < activeSellBids.length &&
+    bidIndex < activeBuyBids.length &&
+    !noMatch
+  ) {
+    const buyBid = activeBuyBids[bidIndex];
+    const sellBid = activeSellBids[bidIndex];
+    if (buyBid.price >= sellBid.price) {
+      matches.push({ buyer_id: buyBid.user_id, seller_id: sellBid.user_id });
+      sellPrice = sellBid.price;
+      buyPrice = buyBid.price;
+      bidIndex++;
+    } else {
+      noMatch = true;
+    }
+  }
+  //indicates that there are no matches
+  if (buyPrice == 0 && sellPrice == 0) {
+    if (activeBuyBids.length > 0) {
+      sellPrice = activeBuyBids[activeBuyBids.length - 1].price;
+    } else {
+      sellPrice = 0;
+    }
+
+    if (activeSellBids.length > 0) {
+      buyPrice = activeSellBids[activeSellBids.length - 1].price;
+    } else {
+      buyPrice = 0;
+    }
+  }
+  res.status(201).json({
+    status: "Success",
+    info: {
+      numBuyers: activeBuyBids.length,
+      numSellers: activeSellBids.length,
+      buyPrice: buyPrice,
+      sellPrice: sellPrice,
+    },
+  });
+});
