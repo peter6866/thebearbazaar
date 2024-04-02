@@ -113,7 +113,12 @@ const Countdown = ({ target }) => {
           </div>
         </Typography>
       </Grid>
-      <h5 className="center">{targetDate}</h5>
+      <div>
+        <h4 className="center">{targetDate}</h4>
+        <Typography variant="body2" color="textSecondary" align="center">
+          At this time, buyers and sellers will be paired together.
+        </Typography>
+      </div>
     </div>
   );
 };
