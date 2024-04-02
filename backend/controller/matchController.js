@@ -85,3 +85,18 @@ exports.priceHistory = catchAsync(async (req, res, next) => {
     matchHistory: matches,
   });
 });
+
+exports.cancelTrans = catchAsync(async (req, res, next) => {
+  const { id } = req.user;
+  await MatchBids.destroy({ where: { buyer_id: id } });
+  await MatchBids.destroy({ where: { seller_id: id } });
+
+ 
+
+  res.status(200).json({
+    status: "success",
+    message: "Transaction canceled",
+  });
+});
+
+

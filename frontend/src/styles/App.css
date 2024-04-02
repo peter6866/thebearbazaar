@@ -59,3 +59,9 @@ body {
 .disable-touch {
   touch-action: manipulation;
 }
+
+.double-button{
+  display:flex;
+  gap:1rem;
+  justify-content:center;
+}

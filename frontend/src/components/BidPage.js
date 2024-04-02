@@ -31,6 +31,7 @@ function BidPage() {
   const [matchedEmail, setmatchedEmail] = useState("");
   const [matchedPrice, setMatchedPrice] = useState(0);
 
+
   const fetchMatched = useCallback(async () => {
     try {
       const response = await fetch(
@@ -151,6 +152,31 @@ function BidPage() {
     } catch (error) {}
   };
 
+  const cancelTrans = async () => {
+    try {
+      const response = await fetch(`${config.REACT_APP_API_URL}/v1/match/cancel-trans`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.log("Error canceling transaction");
+      } else {
+        alert("Transaction canceled");
+        setHasBid(false);
+        setIsMatched(false);
+      }
+      
+     
+    } catch (error) {
+    }
+  };
+
+  
+
   return (
     <div>
       {!hasBid && !isMatched && !loadingMatch && !loadingBid && (
@@ -167,11 +193,15 @@ function BidPage() {
         <ViewBid bidType={bidType} bidPrice={bidPrice} cancelBid={cancelBid} />
       )}
       {isMatched && !hasBid && (
+        <div>
         <ViewMatched
           matchedEmail={matchedEmail}
           matchedType={matchedType}
           matchedPrice={matchedPrice}
+          cancelTrans={cancelTrans}
         />
+        
+        </div>
       )}
     </div>
   );
