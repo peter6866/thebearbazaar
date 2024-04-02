@@ -94,50 +94,6 @@ function Dashboard() {
   return (
     <Paper elevation={3} style={{ padding: "2rem" }}>
       <h2> Welcome to The Bear Bazaar! </h2>
-      <h4>How It Works:</h4>
-      <List>
-        <ListItem>
-          Submit a single bid (which you can update later) to buy/sell 500 meal
-          points
-        </ListItem>
-        <ListItem>
-          Our matching algorithm runs weekly to generate mutually beneficial
-          matches according to supply and demand
-        </ListItem>
-        <ListItem>
-          If you are matched, we provide a price and the email of the other
-          student to carry out the transaction
-        </ListItem>
-        <ListItem>
-          Coordinate a time to meet at the Dining Services Office (in BD) and
-          carry out the transaction (M-F, 8:30-4:30)
-        </ListItem>
-      </List>
-
-      <h4>Important Information:</h4>
-      <List>
-        <ListItem>
-          Do not pay the other person until at the Dining Services Office
-        </ListItem>
-        <ListItem>
-          You can only transfer meal points once per semester (per WashU rules)
-        </ListItem>
-        <ListItem>
-          You cannot transfer meal points if you have an off-campus plan (per
-          WashU rules)
-        </ListItem>
-        <ListItem>
-          Do not submit a bid that you are not willing to fulfill
-        </ListItem>
-        <ListItem>
-          Your given price in a match will always be at least as good as your
-          bid
-        </ListItem>
-        <ListItem>
-          It is not guaranteed that you will be matched, so submit a competitive
-          bid to increase your chances
-        </ListItem>
-      </List>
 
       <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
       <h3>Active Market Information for 500 Meal Points</h3>
