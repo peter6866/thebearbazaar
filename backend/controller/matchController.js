@@ -88,8 +88,17 @@ exports.priceHistory = catchAsync(async (req, res, next) => {
 
 exports.cancelTrans = catchAsync(async (req, res, next) => {
   const { id } = req.user;
-  await MatchBids.destroy({ where: { buyer_id: id } });
-  await MatchBids.destroy({ where: { seller_id: id } });
+  const match = await MatchBids.destroy({ where: 
+    $or: [
+      {
+        seller_id:id 
+      }, 
+      {
+          buyer_id:id
+      }
+    ]
+  });
+
 
  
 
