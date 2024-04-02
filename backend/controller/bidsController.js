@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const PhoneNum = require("../models/phoneNumModel");
 const BuyBids = require("../models/buyBidsModel");
 const SellBids = require("../models/sellBidsModel");
 const MatchBids = require("../models/matchBidsModel");
@@ -6,7 +7,14 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const transporter = require("../utils/emailTransporter");
 
-const sendMatchedEmail = (email, price, matchedType, matchedEmail) => {
+const sendMatchedEmail = (
+  email,
+  price,
+  matchedType,
+  matchedEmail,
+  phoneNum,
+  phoneIsPrefered
+) => {
   const capitalizedMatchedType = `${matchedType
     .charAt(0)
     .toUpperCase()}${matchedType.slice(1)}`;
@@ -61,6 +69,16 @@ const sendMatchedEmail = (email, price, matchedType, matchedEmail) => {
             
             <p>Congratulations! You have been matched with a <strong>${matchedType}</strong> at a price of <strong>$${price}</strong>.</p>
             <p>${capitalizedMatchedType}'s email: ${matchedEmail}</p>
+            ${
+              phoneIsPrefered
+                ? `<p>${capitalizedMatchedType}'s phone number: ${phoneNum}</p>`
+                : ""
+            } 
+            ${
+              phoneIsPrefered
+                ? `<p>The ${matchedType} prefers to use phone number.</p>`
+                : ""
+            }
             
             <div class="footer">
                 Thank you for using our service!<br>
@@ -328,12 +346,31 @@ const generateMatches = async () => {
     const matchedBuyerEmail = matchedBuyer.email;
     const matchedSellerEmail = matchedSeller.email;
 
+    // check if buyer prefered phone number
+    const buyerPhoneNum = await PhoneNum.findOne({
+      where: { userId: matchedBuyer.id },
+    });
+
+    // check if seller prefered phone number
+    const sellerPhoneNum = await PhoneNum.findOne({
+      where: { userId: matchedSeller.id },
+    });
+
+    let buyerPhone = buyerPhoneNum ? buyerPhoneNum.phoneNum : null;
+    let sellerPhone = sellerPhoneNum ? sellerPhoneNum.phoneNum : null;
+    let buyerPhonePrefered = buyerPhoneNum ? buyerPhoneNum.isPrefered : false;
+    let sellerPhonePrefered = sellerPhoneNum
+      ? sellerPhoneNum.isPrefered
+      : false;
+
     if (matchedBuyer.sendMatchNotifications) {
       await sendMatchedEmail(
         matchedBuyerEmail,
         marketPrice,
         "seller",
-        matchedSellerEmail
+        matchedSellerEmail,
+        sellerPhone,
+        sellerPhonePrefered
       );
     }
 
@@ -342,7 +379,9 @@ const generateMatches = async () => {
         matchedSellerEmail,
         marketPrice,
         "buyer",
-        matchedBuyerEmail
+        matchedBuyerEmail,
+        buyerPhone,
+        buyerPhonePrefered
       );
     }
   });

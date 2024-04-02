@@ -14,6 +14,7 @@ import { useConfig } from "../context/ConfigContext";
 import { Switch, FormControlLabel, FormGroup } from "@mui/material";
 import PasswordButton from "./PasswordButton";
 import SubmitFeedback from "./SubmitFeedback";
+import PhoneNum from "./PhoneNum";
 
 function Profile() {
   const { authToken } = useAuth();
@@ -182,6 +183,8 @@ function Profile() {
   ) : (
     <Paper elevation={3} style={{ padding: "2rem" }}>
       <h3>Profile</h3>
+      <PhoneNum />
+      <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
       <div>
         <h4>Email Notification Settings</h4>
         <form>

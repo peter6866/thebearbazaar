@@ -24,6 +24,7 @@ import { useAuth } from "../context/AuthContext";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import ListFeedbacks from "./ListFeedbacks";
+import BanUser from "./BanUser";
 
 function AdminPage() {
   const [question, setQuestion] = useState("");
@@ -325,6 +326,8 @@ function AdminPage() {
           Delete Matches
         </Button>
       </div>
+      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
+      <BanUser />
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <ListFeedbacks />
 

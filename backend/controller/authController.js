@@ -1,6 +1,7 @@
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
+const BanUsers = require("../models/banUsersModel");
 const bcrypt = require("bcrypt");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
@@ -137,7 +138,14 @@ exports.getCode = catchAsync(async (req, res, next) => {
     }
   } else {
     const user = await User.findOne({ where: { email } });
+
     if (user) {
+      // check if the user is banned
+      const ban = await BanUsers.findOne({ where: { user_id: user.id } });
+      if (ban) {
+        return next(new AppError("You are banned from the bear bazaar.", 403));
+      }
+
       newUser = await user.update({
         verificationCode: verificationCode.toString(),
         verificationCodeTimestamp: new Date(),
@@ -239,8 +247,18 @@ exports.login = catchAsync(async (req, res, next) => {
   // // check if user exists && password is correct
   const user = await User.findOne({ where: { email } });
 
+  if (!user.isVerified) {
+    return next(new AppError("Please verify your email", 401));
+  }
+
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect email or password", 401));
+  }
+
+  // check if the user is banned
+  const ban = await BanUsers.findOne({ where: { user_id: user.id } });
+  if (ban) {
+    return next(new AppError("You are banned from the bear bazaar.", 403));
   }
 
   // if everything is ok, send token to client
@@ -271,6 +289,12 @@ exports.protect = catchAsync(async (req, res, next) => {
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   const currentUser = await User.findByPk(decoded.id);
+  // check if the user is banned
+  const ban = await BanUsers.findOne({ where: { user_id: currentUser.id } });
+  if (ban) {
+    return next(new AppError("You are banned from the bear bazaar.", 403));
+  }
+
   if (!currentUser) {
     return next(
       new AppError("The user belonging to this token no longer exist.", 401)
