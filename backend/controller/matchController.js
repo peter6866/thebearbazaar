@@ -98,5 +98,3 @@ exports.cancelTrans = catchAsync(async (req, res, next) => {
     message: "Transaction canceled",
   });
 });
-
-
