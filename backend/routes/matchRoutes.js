@@ -17,4 +17,6 @@ router.delete(
 
 router.route("/price-history").post(matchController.priceHistory);
 
+router.route("/cancel-trans").post(authController.protect, matchController.cancelTrans);
+
 module.exports = router;
