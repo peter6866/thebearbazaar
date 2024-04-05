@@ -5,6 +5,7 @@ const MatchBids = require("../models/matchBidsModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const Sequelize = require("sequelize");
+const { Op } = require("sequelize");
 
 exports.matchInfo = catchAsync(async (req, res, next) => {
   const { id } = req.user;
@@ -88,19 +89,12 @@ exports.priceHistory = catchAsync(async (req, res, next) => {
 
 exports.cancelTrans = catchAsync(async (req, res, next) => {
   const { id } = req.user;
-  const match = await MatchBids.destroy({ where: 
-    $or: [
-      {
-        seller_id:id 
-      }, 
-      {
-          buyer_id:id
-      }
-    ]
+
+  await MatchBids.destroy({
+    where: {
+      [Op.or]: [{ seller_id: id }, { buyer_id: id }],
+    },
   });
-
-
- 
 
   res.status(200).json({
     status: "success",
