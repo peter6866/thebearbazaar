@@ -28,4 +28,6 @@ router.delete(
   bidsController.deleteAllBids
 );
 
+router.route("/get-market-info").post(bidsController.getMarketInfo);
+
 module.exports = router;

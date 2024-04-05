@@ -1,6 +1,7 @@
 const express = require("express");
 const authController = require("../controller/authController");
 const userController = require("../controller/userController");
+const banController = require("../controller/banController");
 const router = express.Router();
 
 // get code route
@@ -24,5 +25,23 @@ router
 router
   .route("/change-password")
   .post(authController.protect, userController.changePassword);
+
+router.post(
+  "/ban-user",
+  authController.protect,
+  authController.restrictTo("admin"),
+  banController.banUser
+);
+
+router
+  .route("/phone-num")
+  .get(authController.protect, userController.getPhoneNum)
+  .post(authController.protect, userController.addPhoneNum);
+
+router.post(
+  "/update-preference",
+  authController.protect,
+  userController.updatePreference
+);
 
 module.exports = router;
