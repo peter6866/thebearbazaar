@@ -3,7 +3,7 @@ const app = require("./app");
 const { initializeJob } = require("./utils/scheduler");
 
 sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     console.log("Database synced successfully.");
     initializeJob();

@@ -7,6 +7,7 @@ const AppError = require("../utils/appError");
 const Sequelize = require("sequelize");
 const { Op } = require("sequelize");
 const transporter = require("../utils/emailTransporter");
+const CanceledTrans = require("../models/canceledTransModel");
 
 exports.matchInfo = catchAsync(async (req, res, next) => {
   const { id } = req.user;
@@ -120,8 +121,9 @@ exports.cancelTrans = catchAsync(async (req, res, next) => {
   if(user2.sendMatchNotifications){
     sendCancelEmail(user2.email);
   }
-  
-  
+
+  CanceledTrans.create({user_id: id});
+
 
 
   res.status(200).json({
