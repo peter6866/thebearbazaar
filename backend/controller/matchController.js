@@ -114,8 +114,14 @@ exports.cancelTrans = catchAsync(async (req, res, next) => {
 
   const user1 = await User.findByPk(id);
   const user2 = await User.findByPk(user);
-  sendCancelEmail(user1.email);
-  sendCancelEmail(user2.email);
+  if (user1.sendMatchNotifications) {
+    sendCancelEmail(user1.email);
+  }
+  if(user2.sendMatchNotifications){
+    sendCancelEmail(user2.email);
+  }
+  
+  
 
 
   res.status(200).json({
