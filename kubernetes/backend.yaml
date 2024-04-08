@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 3001
+      targetPort: 3001
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels: app
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: peter6866/thebearbazaar-backend:beta4
+          env:
+            - name: PGUSER
+              value: "postgre_user"
+            - name: PGPASSWORD
+              value: "postgre_password"
+            - name: PGDATABASE
+              value: "meal_point"
+            - name: PGHOST
+              value: "db"
