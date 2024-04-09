@@ -104,6 +104,9 @@ function BidPage() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
           },
+          body: JSON.stringify({
+            type: matchedType,
+          })
         }
       );
 
@@ -161,11 +164,11 @@ function BidPage() {
           Authorization: `Bearer ${authToken}`,
         },
       });
-
+      const data = await response.json();
       if (!response.ok) {
         console.log("Error canceling transaction");
       } else {
-        alert("Transaction canceled");
+        alert(data.message);
         setHasBid(false);
         setIsMatched(false);
       }

@@ -6,6 +6,8 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const Sequelize = require("sequelize");
 const { Op } = require("sequelize");
+const transporter = require("../utils/emailTransporter");
+const CanceledTrans = require("../models/canceledTransModel");
 
 exports.matchInfo = catchAsync(async (req, res, next) => {
   const { id } = req.user;
@@ -89,15 +91,133 @@ exports.priceHistory = catchAsync(async (req, res, next) => {
 
 exports.cancelTrans = catchAsync(async (req, res, next) => {
   const { id } = req.user;
+  const {type} = req.body;
+  let user = "";
 
-  await MatchBids.destroy({
-    where: {
-      [Op.or]: [{ seller_id: id }, { buyer_id: id }],
-    },
-  });
+  if(type == "Buyer"){
+    let matches = await MatchBids.findOne({
+      where: {seller_id: id}
+    });
+    user = matches.buyer_id;
+    await MatchBids.destroy({
+      where: {seller_id: id}
+    });
+
+  }else{
+    let matches = await MatchBids.findOne({
+      where: {buyer_id: id}
+    });
+    user = matches.seller_id;
+    await MatchBids.destroy({
+      where: {buyer_id: id}
+    });
+  }
+
+  const user1 = await User.findByPk(id);
+  const user2 = await User.findByPk(user);
+  if (user1.sendMatchNotifications) {
+    sendCancelEmail(user1.email);
+  }
+  if(user2.sendMatchNotifications){
+    sendCancelEmail(user2.email);
+  }
+
+  CanceledTrans.create({user_id: id});
+
+
 
   res.status(200).json({
     status: "success",
     message: "Transaction canceled",
   });
 });
+
+const sendCancelEmail = (email) => {
+  const mailOptions = {
+    from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
+    to: email,
+    subject: "Your match was canceled",
+    html: `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Match Cancel</title>
+        <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #222222;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .header {
+            background-color: #a51417; /* Main red color */
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .verification-code {
+            background-color: #f8e6e7; /* Lighter shade of red for contrast */
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #a51417; /* Main red color for text */
+            border-radius: 5px;
+            border: 1px dashed #a51417; /* Main red color for border */
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+        }
+        a {
+            color: #a51417; /* Main red color for links */
+        }
+    </style>
+  
+    </head>
+      <body>
+          <div class="email-container">
+              <div class="header">
+                  <h1> The Bear Bazaar</h1>
+              </div>
+              <h3>Your match has been canceled.</h3>
+              <p>Contact support if you have any concerns.</p>
+              <div class="footer">
+                  Thank you for using our service!<br>
+                  <a href="mailto:hjiayu@wustl.edu" style="color: #005a9c;">Contact Support</a>
+              </div>
+          </div>
+      </body>
+    </html>
+          `,
+  };
+
+
+
+  // return a promise to send the email
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(info);
+      }
+    });
+  });
+};
