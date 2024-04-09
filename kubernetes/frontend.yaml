@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      volumes:
+        - name: config
+          secret:
+            secretName: frontend-config
+        - name: certs
+          secret:
+            secretName: frontend-certs
+      containers:
+        - name: frontend
+          image: peter6866/thebearbazaar-frontend:beta5
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+          volumeMounts:
+            - name: config
+              mountPath: /usr/share/nginx/html/
+              readOnly: true
+            - name: certs
+              mountPath: /etc/letsencrypt/live/thebearbazaar.com/
+              readOnly: true

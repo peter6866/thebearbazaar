@@ -9,7 +9,7 @@ spec:
     - protocol: TCP
       port: 3001
       targetPort: 3001
-  type: ClusterIP
+  type: LoadBalancer
 
 ---
 apiVersion: apps/v1
@@ -19,7 +19,8 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchLabels: app
+    matchLabels:
+      app: backend
   template:
     metadata:
       labels:
@@ -28,12 +29,6 @@ spec:
       containers:
         - name: backend
           image: peter6866/thebearbazaar-backend:beta4
-          env:
-            - name: PGUSER
-              value: "postgre_user"
-            - name: PGPASSWORD
-              value: "postgre_password"
-            - name: PGDATABASE
-              value: "meal_point"
-            - name: PGHOST
-              value: "db"
+          envFrom:
+            - configMapRef:
+                name: backend-config
