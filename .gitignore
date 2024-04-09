@@ -1,1 +1,4 @@
 /env/*.env
+/kubernetes/backend-config.yaml
+/secrets/*.pem
+/secrets/*.json
