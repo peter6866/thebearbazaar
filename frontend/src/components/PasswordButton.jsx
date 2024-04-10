@@ -68,7 +68,16 @@ const PasswordButton = ({
         </div>
       )}
       <div className="btn-wrapper">
-        <Button type="submit" variant="contained">
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={
+            password !== confirmPassword ||
+            password.length < 8 ||
+            !/[A-Z]/.test(password) ||
+            !/[a-z]/.test(password)
+          }
+        >
           {children}
         </Button>
       </div>

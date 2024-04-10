@@ -18,7 +18,7 @@ const sendVerificationEmail = (email, verificationCode) => {
   const mailOptions = {
     from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
     to: email,
-    subject: "Please verify your email for the bearbazaar!",
+    subject: "Please verify your email for The Bear Bazaar!",
     html: `
     <!DOCTYPE html>
     <html lang="en">
