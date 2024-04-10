@@ -103,6 +103,29 @@ function PhoneNum() {
     }
   };
 
+  const deleteNum = async () => {
+    try {
+      const response = await fetch(
+        `${config.REACT_APP_API_URL}/v1/users/delete-num`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess(data.message);
+        setHasPhoneNumber(false);
+        setPhoneNumber("");
+      }
+    } catch (error) {}
+  };
+
   useEffect(() => {
     const fetchPhoneNumber = async () => {
       try {
@@ -159,6 +182,7 @@ function PhoneNum() {
                   {phoneNumber}
                 </Typography>
               </Box>
+
               <div style={{ marginTop: "5px", marginBottom: "5px" }}>
                 <FormControlLabel
                   control={
@@ -175,17 +199,30 @@ function PhoneNum() {
                 />
               </div>
               {isCheckboxChanged && (
-                <div className="btn-wrapper">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleUpdatePreference}
-                    sx={{ mt: 1 }}
-                  >
-                    Save Changes
-                  </Button>
+                <div>
+                  <div className="btn-wrapper">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleUpdatePreference}
+                      sx={{ mt: 1 }}
+                    >
+                      Save Changes
+                    </Button>
+                  </div>
+                  <br />
                 </div>
               )}
+              <div className="btn-wrapper">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  onClick={deleteNum}
+                >
+                  Delete Phone Number
+                </Button>
+              </div>
             </>
           ) : (
             <form onSubmit={handleSubmit}>
