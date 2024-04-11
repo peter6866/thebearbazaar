@@ -28,7 +28,23 @@ exports.getFeedback = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.removeFeedback = catchAsync(async (req, res, next) => {
+exports.deleteFeedback = catchAsync(async (req, res, next) => {
+  const { feedback_id } = req.body;
+
+  const deletedRows = await Feedback.destroy({
+    where: { id: feedback_id },
+  });
+
+  if (deletedRows === 0) {
+    return next(new AppError("Feedback not found", 404));
+  }
+
+  res.status(201).json({
+    status: "success",
+  });
+});
+
+exports.archiveFeedback = catchAsync(async (req, res, next) => {
   const { feedback_id } = req.body;
 
   const [updatedRows] = await Feedback.update(

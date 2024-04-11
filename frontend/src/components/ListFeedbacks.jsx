@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useConfig } from "../context/ConfigContext";
 import { useAuth } from "../context/AuthContext";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Delete, Archive } from "@mui/icons-material";
 import {
   Box,
   List,
@@ -43,10 +43,33 @@ function ListFeedback() {
     } catch (error) {}
   }, [authToken, config]);
 
-  const removeFeedback = async (id) => {
+  const deleteFeedback = async (id) => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/feedback/remove-feedback`,
+        `${config.REACT_APP_API_URL}/v1/feedback/delete-feedback`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({
+            feedback_id: id,
+          }),
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        fetchFeedbacks();
+      }
+    } catch (error) {}
+  };
+
+  const archiveFeedback = async (id) => {
+    try {
+      const response = await fetch(
+        `${config.REACT_APP_API_URL}/v1/feedback/archive-feedback`,
         {
           method: "POST",
           headers: {
@@ -88,8 +111,13 @@ function ListFeedback() {
             {feedbacks.map((feedback) => (
               <TableRow key={feedback.id}>
                 <TableCell>
-                  <DeleteIcon
-                    onClick={() => removeFeedback(feedback.id)}
+                  <Delete
+                    onClick={() => deleteFeedback(feedback.id)}
+                    color="primary"
+                    style={{ cursor: "pointer", marginRight: "1rem" }}
+                  />
+                  <Archive
+                    onClick={() => archiveFeedback(feedback.id)}
                     color="primary"
                     style={{ cursor: "pointer" }}
                   />

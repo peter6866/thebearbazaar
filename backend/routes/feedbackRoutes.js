@@ -12,10 +12,17 @@ router.post(
 );
 
 router.post(
-  "/remove-feedback",
+  "/delete-feedback",
   authController.protect,
   authController.restrictTo("admin"),
-  feedbackController.removeFeedback
+  feedbackController.deleteFeedback
+);
+
+router.post(
+  "/archive-feedback",
+  authController.protect,
+  authController.restrictTo("admin"),
+  feedbackController.archiveFeedback
 );
 
 router.post("/", authController.protect, feedbackController.postFeedback);
