@@ -154,7 +154,9 @@ function PhoneNum() {
 
   return (
     <div>
-      <h4>Communication Preference</h4>
+      <p className="text-md font-bold my-4 text-gray-800">
+        Communication Preference
+      </p>
       {isLoading ? (
         <div
           style={{

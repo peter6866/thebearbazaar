@@ -269,7 +269,7 @@ function Login({ flip }) {
             marginTop: "1rem",
           }}
         >
-          <Typography variant="body1">Forget your password?</Typography>
+          <Typography variant="body1">Can't log in?</Typography>
           <Button
             onClick={() => {
               flipKnowPass(false);
@@ -436,9 +436,9 @@ function Login({ flip }) {
               setSuccessMessage("");
               setUserData({ ...userData, password: "" });
             }}
-            style={{ textTransform: "none", fontSize: "0.9rem" }}
+            style={{ textTransform: "none", fontSize: "1rem" }}
           >
-            Back to login
+            Log in.
           </Button>
         </Box>
       </div>

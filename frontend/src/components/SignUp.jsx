@@ -316,7 +316,7 @@ function SignUp({ flip }) {
           onClick={flip}
           style={{ textTransform: "none", fontSize: "1rem" }}
         >
-          Login instead.
+          Log in.
         </Button>
       </Box>
     </div>

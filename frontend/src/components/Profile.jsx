@@ -208,12 +208,14 @@ function Profile() {
   return loading ? (
     <div></div>
   ) : (
-    <Paper elevation={3} style={{ padding: "2rem" }}>
-      <h3>Profile</h3>
+    <>
+      <p className="text-xl font-bold my-4 text-gray-800">Profile</p>
       <PhoneNum />
       <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
       <div>
-        <h4>Email Notification Settings</h4>
+        <p className="text-md font-bold my-4 text-gray-800">
+          Email Notification Settings
+        </p>
         <form>
           <FormGroup>
             <FormControlLabel
@@ -253,7 +255,7 @@ function Profile() {
       </div>
       <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
       <div>
-        <h4>Change Password</h4>
+        <p className="text-md font-bold my-4 text-gray-800">Change Password</p>
         <form onSubmit={updatePassword}>
           <div>
             <TextField
@@ -335,7 +337,7 @@ function Profile() {
       </div>
       <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
       <SubmitFeedback />
-    </Paper>
+    </>
   );
 }
 
