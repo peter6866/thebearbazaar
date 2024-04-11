@@ -208,7 +208,7 @@ function Login({ flip }) {
   if (knowPass) {
     return (
       <div className="container-inner">
-        <h3>Login</h3>
+        <p className="font-bold text-lg mb-4">Login</p>
 
         <form onSubmit={submitLogin}>
           <div>
@@ -287,7 +287,7 @@ function Login({ flip }) {
   } else {
     return (
       <div className="container-inner">
-        <h3>
+        <p className="font-bold text-lg mb-4">
           {step === 2 && (
             <IconButton
               aria-label="back"
@@ -299,7 +299,7 @@ function Login({ flip }) {
             </IconButton>
           )}
           Reset Password
-        </h3>
+        </p>
         {step === 1 && (
           <form onSubmit={requestCode}>
             <div>
@@ -436,7 +436,7 @@ function Login({ flip }) {
               setSuccessMessage("");
               setUserData({ ...userData, password: "" });
             }}
-            style={{ textTransform: "none", fontSize: "1rem" }}
+            style={{ textTransform: "none", fontSize: "0.9rem" }}
           >
             Back to login
           </Button>

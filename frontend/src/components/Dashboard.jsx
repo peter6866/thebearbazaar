@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import Countdown from "./Countdown";
 import PriceHistory from "./PriceHistory";
 import MarketInfo from "./MarketInfo";
-import { Paper, Typography, List, ListItem, Divider } from "@mui/material";
+import { Paper, Divider } from "@mui/material";
 import { useConfig } from "../context/ConfigContext";
 
-function Dashboard() {
+function Dashboard({ useInAuth = false }) {
   const config = useConfig();
   const [priceHistory, setPriceHistory] = useState([]);
   const [matchTime, setMatchTime] = useState();
@@ -92,21 +92,43 @@ function Dashboard() {
   }, [loadPriceHistory, loadMatchTime, loadMarketInfo]);
 
   return (
-    <Paper elevation={3} style={{ padding: "2rem" }}>
-      <h2> Welcome to The Bear Bazaar! </h2>
+    <>
+      {!useInAuth && (
+        <>
+          <p className="text-2xl font-bold my-4 text-gray-800">
+            Welcome to The Bear Bazaar!
+          </p>
+          <Divider
+            style={{ marginTop: "2rem", marginBottom: "2rem" }}
+          ></Divider>
+        </>
+      )}
 
-      <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
-      <h3>Active Market Information for 500 Meal Points</h3>
+      <p className="text-xl font-bold my-4 text-gray-800">
+        Active Market Information for 500 Meal Points
+      </p>
       <MarketInfo info={marketInfo} />
-      <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
-      <h3 style={{ marginBottom: "3rem" }}>
-        Countdown to Next Buyer/Seller Matching
-      </h3>
-      <Countdown target={matchTime} />
-      <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
-      <h3>Price History</h3>
+      {useInAuth ? (
+        <Divider style={{ marginTop: "18px", marginBottom: "1rem" }}></Divider>
+      ) : (
+        <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
+      )}
+
+      {!useInAuth && (
+        <>
+          <p className="text-xl font-bold mb-12 text-gray-800">
+            Countdown to Next Buyer/Seller Matching
+          </p>
+          <Countdown target={matchTime} />
+          <Divider
+            style={{ marginTop: "2rem", marginBottom: "2rem" }}
+          ></Divider>
+        </>
+      )}
+
+      <p className="text-xl font-bold mb-8 text-gray-800">Price History</p>
       <PriceHistory history={priceHistory} />
-    </Paper>
+    </>
   );
 }
 

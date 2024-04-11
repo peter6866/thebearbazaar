@@ -61,8 +61,10 @@ function Faq() {
   }, [loadFAQ]);
 
   return (
-    <Paper elevation={3} style={{ padding: "2rem" }}>
-      <h3>Frequently Asked Questions</h3>
+    <>
+      <p className="text-xl font-bold my-4 text-gray-800">
+        Frequently Asked Questions
+      </p>
       {questionsData.map((item, index) => (
         <QAPair
           key={index}
@@ -74,7 +76,7 @@ function Faq() {
           role={role}
         />
       ))}
-    </Paper>
+    </>
   );
 }
 

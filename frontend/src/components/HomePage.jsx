@@ -9,8 +9,7 @@ import BidPage from "./BidPage";
 import Faq from "./Faq";
 import AdminPage from "./AdminPage";
 import Profile from "./Profile";
-import Avatar from "@mui/material/Avatar";
-import PersonIcon from "@mui/icons-material/Person";
+import Paper from "@mui/material/Paper";
 
 function HomePage() {
   const { isLoggedIn, logout, isLoading, role } = useAuth();
@@ -50,11 +49,13 @@ function HomePage() {
         </Tabs>
         <Box>
           <div className="container-main">
-            {selectedTab === "dashboard" && <Dashboard />}
-            {selectedTab === "bidpage" && <BidPage />}
-            {selectedTab === "faq" && <Faq />}
-            {selectedTab === "admin" && <AdminPage />}
-            {selectedTab === "profile" && <Profile />}
+            <Paper elevation={3} className="p-8">
+              {selectedTab === "dashboard" && <Dashboard />}
+              {selectedTab === "bidpage" && <BidPage />}
+              {selectedTab === "faq" && <Faq />}
+              {selectedTab === "admin" && <AdminPage />}
+              {selectedTab === "profile" && <Profile />}
+            </Paper>
           </div>
         </Box>
       </Box>

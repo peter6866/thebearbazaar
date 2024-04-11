@@ -44,7 +44,7 @@ function BanUser() {
 
   return (
     <div>
-      <h3>Ban User</h3>
+      <p className="text-xl font-bold my-4 text-gray-800">Ban User</p>
       <form onSubmit={handleBanUser}>
         <Box display="flex" alignItems="center" gap={2}>
           <TextField

@@ -20,8 +20,10 @@ function Transact({
   errorMessage,
 }) {
   return (
-    <Paper elevation={3} style={{ padding: "2rem", marginBottom: "40px" }}>
-      <h3>Buy or Sell 500 Mealpoints</h3>
+    <>
+      <p className="text-xl font-bold my-4 text-gray-800">
+        Buy or Sell 500 Mealpoints
+      </p>
       <form onSubmit={sendBid}>
         <RadioGroup
           row
@@ -105,7 +107,7 @@ function Transact({
           being matched with another student.
         </span>
       </Typography>
-    </Paper>
+    </>
   );
 }
 

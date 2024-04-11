@@ -215,8 +215,8 @@ function AdminPage() {
   };
 
   return (
-    <Paper elevation={3} style={{ padding: "2rem" }}>
-      <h3>Post New FAQ</h3>
+    <>
+      <p className="text-xl font-bold my-4 text-gray-800">Post New FAQ</p>
       <form
         onSubmit={handleSubmit}
         style={{ display: "flex", flexDirection: "column", gap: "20px" }}
@@ -246,7 +246,7 @@ function AdminPage() {
         </div>
       </form>
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
-      <h3>Run Matches</h3>
+      <p className="text-xl font-bold my-4 text-gray-800">Run Matches</p>
       <Button
         variant="contained"
         color="primary"
@@ -258,7 +258,9 @@ function AdminPage() {
       {matchError && <Alert severity="error">{matchError}</Alert>}
       {matchSuccess && <Alert severity="success">{matchSuccess}</Alert>}
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
-      <h3>Change Match Day and Time</h3>
+      <p className="text-xl font-bold my-4 text-gray-800">
+        Change Match Day and Time
+      </p>
       <form onSubmit={updateMatchTime}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
@@ -303,7 +305,7 @@ function AdminPage() {
         </div>
       </form>
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
-      <h3>Reset Functions</h3>
+      <p className="text-xl font-bold my-4 text-gray-800">Reset Functions</p>
       <div
         style={{
           display: "flex",
@@ -386,7 +388,7 @@ function AdminPage() {
           </Button>
         </DialogActions>
       </Dialog>
-    </Paper>
+    </>
   );
 }
 

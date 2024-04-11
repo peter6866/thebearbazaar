@@ -29,8 +29,8 @@ function BidPage() {
   const [isMatched, setIsMatched] = useState(false);
   const [matchedType, setMatchedType] = useState("");
   const [matchedEmail, setmatchedEmail] = useState("");
+  const [matchedPhone, setMatchedPhone] = useState("");
   const [matchedPrice, setMatchedPrice] = useState(0);
-
 
   const fetchMatched = useCallback(async () => {
     try {
@@ -49,9 +49,10 @@ function BidPage() {
 
       if (response.ok && data) {
         setIsMatched(true);
-        const { matchedType, email, price } = data.data.matchDetails;
+        const { matchedType, email, phoneNum, price } = data.data.matchDetails;
         setMatchedType(matchedType);
         setmatchedEmail(email);
+        setMatchedPhone(phoneNum);
         setMatchedPrice(price);
         setLoadingMatch(false);
       } else {
@@ -106,7 +107,7 @@ function BidPage() {
           },
           body: JSON.stringify({
             type: matchedType,
-          })
+          }),
         }
       );
 
@@ -157,13 +158,16 @@ function BidPage() {
 
   const cancelTrans = async () => {
     try {
-      const response = await fetch(`${config.REACT_APP_API_URL}/v1/match/cancel-trans`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      const response = await fetch(
+        `${config.REACT_APP_API_URL}/v1/match/cancel-trans`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
       const data = await response.json();
       if (!response.ok) {
         console.log("Error canceling transaction");
@@ -172,13 +176,8 @@ function BidPage() {
         setHasBid(false);
         setIsMatched(false);
       }
-      
-     
-    } catch (error) {
-    }
+    } catch (error) {}
   };
-
-  
 
   return (
     <div>
@@ -197,13 +196,13 @@ function BidPage() {
       )}
       {isMatched && !hasBid && (
         <div>
-        <ViewMatched
-          matchedEmail={matchedEmail}
-          matchedType={matchedType}
-          matchedPrice={matchedPrice}
-          cancelTrans={cancelTrans}
-        />
-        
+          <ViewMatched
+            matchedEmail={matchedEmail}
+            matchedPhone={matchedPhone}
+            matchedType={matchedType}
+            matchedPrice={matchedPrice}
+            cancelTrans={cancelTrans}
+          />
         </div>
       )}
     </div>

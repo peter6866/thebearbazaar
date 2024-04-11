@@ -172,7 +172,7 @@ function SignUp({ flip }) {
 
   return (
     <div className="container-inner">
-      <h3>
+      <p className="font-bold text-lg mb-4">
         {step === 2 && (
           <IconButton
             aria-label="back"
@@ -184,7 +184,7 @@ function SignUp({ flip }) {
           </IconButton>
         )}
         Sign Up
-      </h3>
+      </p>
       {step === 1 && (
         <form onSubmit={requestCode}>
           <div>

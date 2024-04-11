@@ -2,8 +2,8 @@ import { Typography, Paper, Button } from "@mui/material";
 
 function ViewBid({ bidType, bidPrice, cancelBid }) {
   return (
-    <Paper elevation={3} style={{ padding: "2rem" }}>
-      <h3>Bid Information</h3>
+    <>
+      <p className="text-xl font-bold my-4 text-gray-800">Bid Information</p>
       <div>
         <Typography
           variant="body1"
@@ -46,7 +46,7 @@ function ViewBid({ bidType, bidPrice, cancelBid }) {
           </Button>
         </div>
       </div>
-    </Paper>
+    </>
   );
 }
 

@@ -6,15 +6,21 @@ function MarketInfo({ info }) {
     <Box>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <h4>Number of Buyers:</h4>
+          <p className="text-md font-bold my-4 text-gray-800">
+            Number of Buyers:
+          </p>
           <Typography>{info.numBuyers}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <h4>Number of Sellers:</h4>
+          <p className="text-md font-bold my-4 text-gray-800">
+            Number of Sellers:
+          </p>
           <Typography>{info.numSellers}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <h4>Competitive Buy Price:</h4>
+          <p className="text-md font-bold my-4 text-gray-800">
+            Competitive Buy Price:
+          </p>
           <Typography>
             {info.buyPrice !== 0 ? `$${info.buyPrice}` : "None"}
           </Typography>
@@ -28,7 +34,9 @@ function MarketInfo({ info }) {
           </Typography>
         </Grid>
         <Grid item xs={6}>
-          <h4>Competitive Sell Price:</h4>
+          <p className="text-md font-bold my-4 text-gray-800">
+            Competitive Sell Price:
+          </p>
           <Typography>
             {info.sellPrice !== 0 ? `$${info.sellPrice}` : "None"}
           </Typography>

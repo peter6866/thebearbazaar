@@ -1,6 +1,5 @@
 const User = require("../models/userModel");
-const BuyBids = require("../models/buyBidsModel");
-const SellBids = require("../models/sellBidsModel");
+const phoneNum = require("../models/phoneNumModel");
 const MatchBids = require("../models/matchBidsModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
@@ -26,16 +25,41 @@ exports.matchInfo = catchAsync(async (req, res, next) => {
   let matchDetails;
   if (matchBuy) {
     const seller = await User.findByPk(matchBuy.seller_id);
+    // check if the seller has a phone number
+    const sellerPhone = await phoneNum.findOne({
+      where: { userId: seller.id },
+    });
+
+    // get the phoneNumer if is preferred
+    let sellerPhoneNum = "";
+    if (sellerPhone && sellerPhone.isPrefered) {
+      sellerPhoneNum = sellerPhone.phoneNum;
+    }
+
     matchDetails = {
       matchedType: "Seller",
       email: seller.email,
+      phoneNum: sellerPhoneNum,
       price: matchBuy.price,
     };
   } else {
     const buyer = await User.findByPk(matchSell.buyer_id);
+
+    // check if the buyer has a phone number
+    const buyerPhone = await phoneNum.findOne({
+      where: { userId: buyer.id },
+    });
+
+    // get the phoneNumer if is preferred
+    let buyerPhoneNum = "";
+    if (buyerPhone && buyerPhone.isPrefered) {
+      buyerPhoneNum = buyerPhone.phoneNum;
+    }
+
     matchDetails = {
       matchedType: "Buyer",
       email: buyer.email,
+      phoneNum: buyerPhoneNum,
       price: matchSell.price,
     };
   }
@@ -91,25 +115,24 @@ exports.priceHistory = catchAsync(async (req, res, next) => {
 
 exports.cancelTrans = catchAsync(async (req, res, next) => {
   const { id } = req.user;
-  const {type} = req.body;
+  const { type } = req.body;
   let user = "";
 
-  if(type == "Buyer"){
+  if (type == "Buyer") {
     let matches = await MatchBids.findOne({
-      where: {seller_id: id}
+      where: { seller_id: id },
     });
     user = matches.buyer_id;
     await MatchBids.destroy({
-      where: {seller_id: id}
+      where: { seller_id: id },
     });
-
-  }else{
+  } else {
     let matches = await MatchBids.findOne({
-      where: {buyer_id: id}
+      where: { buyer_id: id },
     });
     user = matches.seller_id;
     await MatchBids.destroy({
-      where: {buyer_id: id}
+      where: { buyer_id: id },
     });
   }
 
@@ -118,13 +141,11 @@ exports.cancelTrans = catchAsync(async (req, res, next) => {
   if (user1.sendMatchNotifications) {
     sendCancelEmail(user1.email);
   }
-  if(user2.sendMatchNotifications){
+  if (user2.sendMatchNotifications) {
     sendCancelEmail(user2.email);
   }
 
-  CanceledTrans.create({user_id: id});
-
-
+  CanceledTrans.create({ user_id: id });
 
   res.status(200).json({
     status: "success",
@@ -207,8 +228,6 @@ const sendCancelEmail = (email) => {
     </html>
           `,
   };
-
-
 
   // return a promise to send the email
   return new Promise((resolve, reject) => {

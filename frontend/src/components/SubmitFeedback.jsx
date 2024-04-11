@@ -53,7 +53,7 @@ function SubmitFeedback() {
   };
   return (
     <div>
-      <h3>Submit Feedback</h3>
+      <p className="text-xl font-bold my-4 text-gray-800">Submit Feedback</p>
       <form
         onSubmit={handleFeedbackSubmit}
         style={{ display: "flex", flexDirection: "column", gap: "20px" }}

@@ -28,7 +28,6 @@ body {
 .container-inner {
   max-width: 650px;
   min-width: 300px;
-  padding: 2rem;
 }
 
 .container-main {
@@ -60,8 +59,8 @@ body {
   touch-action: manipulation;
 }
 
-.double-button{
-  display:flex;
-  gap:1rem;
-  justify-content:center;
+.double-button {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
 }
