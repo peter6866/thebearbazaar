@@ -122,17 +122,43 @@ function Profile() {
 
   const [passwordFieldFocused, setPasswordFieldFocused] = useState(false);
 
-  const handleFocus = () => {
-    setPasswordFieldFocused(true);
-  };
-
-  const handleBlur = () => {
-    setPasswordFieldFocused(false);
-  };
-
   let updatePasswordText = (e) => {
     const { name, value } = e.target;
     setPasswordData({ ...passwordData, [name]: value });
+    if (!passwordFieldFocused) {
+      if (value != "") {
+        setPasswordFieldFocused(true);
+      }
+    } else {
+      if (value.length == 0) {
+        switch (name) {
+          case "oldPassword":
+            if (
+              passwordData["confirmNewPassword"].length == 0 &&
+              passwordData["newPassword"].length == 0
+            ) {
+              setPasswordFieldFocused(false);
+            }
+            break;
+          case "newPassword":
+            if (
+              passwordData["oldPassword"].length == 0 &&
+              passwordData["confirmNewPassword"].length == 0
+            ) {
+              setPasswordFieldFocused(false);
+            }
+            break;
+          case "confirmNewPassword":
+            if (
+              passwordData["oldPassword"].length == 0 &&
+              passwordData["newPassword"].length == 0
+            ) {
+              setPasswordFieldFocused(false);
+            }
+            break;
+        }
+      }
+    }
   };
 
   let updatePassword = async (e) => {
@@ -163,6 +189,7 @@ function Profile() {
         });
         setPasswordSuccessMessage(data.message);
         setPasswordErrorMessage("");
+        setPasswordFieldFocused(false);
       } else {
         setPasswordErrorMessage(data.message);
         setPasswordSuccessMessage("");
@@ -233,8 +260,6 @@ function Profile() {
               fullWidth
               type="password"
               name="oldPassword"
-              onFocus={handleFocus}
-              onBlur={handleBlur}
               onChange={updatePasswordText}
               value={passwordData["oldPassword"]}
               label="Current Password"
@@ -247,8 +272,6 @@ function Profile() {
               type={showPassword ? "text" : "password"}
               name="newPassword"
               value={passwordData["newPassword"]}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
               onChange={updatePasswordText}
               label="New Password"
               variant="standard"
@@ -273,8 +296,6 @@ function Profile() {
               type={showPassword ? "text" : "password"}
               name="confirmNewPassword"
               value={passwordData["confirmNewPassword"]}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
               onChange={updatePasswordText}
               label="Confirm New Password"
               variant="standard"

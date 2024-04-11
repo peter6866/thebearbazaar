@@ -44,4 +44,8 @@ router.post(
   userController.updatePreference
 );
 
+router
+  .route("/delete-num")
+  .post(authController.protect, userController.deletePhoneNum);
+
 module.exports = router;

@@ -97,3 +97,17 @@ exports.updatePreference = catchAsync(async (req, res, next) => {
     message: "Successfully updated preference",
   });
 });
+
+exports.deletePhoneNum = catchAsync(async (req, res, next) => {
+  const user_id = req.user.id;
+
+  // get the phone num for this user
+  await PhoneNum.destroy({ where: { userId: user_id } });
+
+
+
+  res.status(201).json({
+    status: "success",
+    message: "Successfully deleted phone number",
+  });
+});
