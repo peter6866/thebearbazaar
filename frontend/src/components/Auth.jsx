@@ -37,7 +37,7 @@ function Auth() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="bg-white w-full max-w-[80rem] p-8 border border-gray-300 rounded-lg shadow-lg flex flex-col md:flex-row h-full md:h-[52rem]">
+      <div className="bg-white w-full max-w-[80rem] py-5 px-5 md:px-8 md:py-7 border border-gray-300 rounded-lg shadow-lg flex flex-col md:flex-row h-full md:h-[52rem]">
         <div className="md:w-2/3 p-2 flex flex-col mb-4 md:mb-0 md:mr-4">
           <div className="flex items-center mb-3">
             <img src="/pawlogo.png" alt="Ghostlamp logo" className="h-8 mr-3" />
