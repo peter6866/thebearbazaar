@@ -231,8 +231,8 @@ function PhoneNum() {
               <Box display="flex" alignItems="center" gap={2}>
                 <TextField
                   label="Phone Number"
-                  variant="outlined"
                   name="phoneNum"
+                  variant="standard"
                   onChange={(e) =>
                     setPhoneNumber(formatPhoneNumber(e.target.value))
                   }
@@ -245,7 +245,7 @@ function PhoneNum() {
                   color="primary"
                   size="large"
                 >
-                  add phone number
+                  Add
                 </Button>
               </Box>
             </form>

@@ -6,6 +6,7 @@ const User = require("../models/userModel");
 exports.getFeedback = catchAsync(async (req, res, next) => {
   // find all feedbacks in time descending order
   const feedbacks = await Feedback.findAll({
+    where: { hidden: false },
     order: [["createdAt", "DESC"]],
   });
 
@@ -24,6 +25,23 @@ exports.getFeedback = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     feedbacks,
+  });
+});
+
+exports.removeFeedback = catchAsync(async (req, res, next) => {
+  const { feedback_id } = req.body;
+
+  const [updatedRows] = await Feedback.update(
+    { hidden: true },
+    { where: { id: feedback_id } }
+  );
+
+  if (updatedRows === 0) {
+    return next(new AppError("Feedback not found", 404));
+  }
+
+  res.status(201).json({
+    status: "success",
   });
 });
 
