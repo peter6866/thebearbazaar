@@ -37,9 +37,9 @@ function Auth() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="bg-white w-full max-w-[80rem] py-5 px-5 md:px-8 md:py-7 border border-gray-300 rounded-lg shadow-lg flex flex-col md:flex-row h-full md:h-[52rem]">
+      <div className="bg-white w-full max-w-[80rem] py-5 px-5 md:px-8 md:py-6 border border-gray-300 rounded-lg shadow-lg flex flex-col md:flex-row h-full md:h-[48rem]">
         <div className="md:w-2/3 p-2 flex flex-col mb-4 md:mb-0 md:mr-4">
-          <div className="flex items-center mb-3">
+          <div className="flex items-center mb-2">
             <img src="/pawlogo.png" alt="Ghostlamp logo" className="h-8 mr-3" />
             <span className="text-2xl font-bold text-gray-800">
               The Bear Bazaar
@@ -65,7 +65,7 @@ function Auth() {
 
       <button
         onClick={scrollToAuth}
-        className="fixed bottom-5 right-5 z-10 bg-[#a51417] text-white px-3 pt-2 pb-3 rounded-full shadow-lg md:hidden focus:outline-none"
+        className="fixed bottom-4 right-5 z-10 bg-[#a51417] text-white px-3 pt-2 pb-3 rounded-full shadow-lg md:hidden focus:outline-none"
       >
         Go to Login
       </button>

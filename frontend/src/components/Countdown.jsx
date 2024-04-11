@@ -86,25 +86,25 @@ const Countdown = ({ target }) => {
               <tbody>
                 {daysRemaining !== "" && (
                   <tr>
-                    <td style={{ float: "right" }}>{daysRemaining}</td>
+                    <td className="text-right px-[10px]">{daysRemaining}</td>
                     <td>day{daysRemaining !== 1 ? "s" : ""}</td>
                   </tr>
                 )}
                 {hoursRemaining !== "" && (
                   <tr>
-                    <td style={{ float: "right" }}>{hoursRemaining}</td>
+                    <td className="text-right px-[10px]">{hoursRemaining}</td>
                     <td>hour{hoursRemaining !== 1 ? "s" : ""}</td>
                   </tr>
                 )}
                 {minutesRemaining !== "" && (
                   <tr>
-                    <td style={{ float: "right" }}>{minutesRemaining}</td>
+                    <td className="text-right px-[10px]">{minutesRemaining}</td>
                     <td>minute{minutesRemaining !== 1 ? "s" : ""}</td>
                   </tr>
                 )}
                 {secondsRemaining !== "" && (
                   <tr>
-                    <td style={{ float: "right" }}>{secondsRemaining}</td>
+                    <td className="text-right px-[10px]">{secondsRemaining}</td>
                     <td>second{secondsRemaining !== 1 ? "s" : ""}</td>
                   </tr>
                 )}
