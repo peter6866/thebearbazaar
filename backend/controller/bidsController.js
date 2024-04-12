@@ -174,6 +174,156 @@ const sendUnmatchedEmail = (email, unmatchedType) => {
   });
 };
 
+const sendBuyHigherEmail = (email) => {
+  const mailOptions = {
+    from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
+    to: email,
+    subject: `Current bid price may be too low`,
+    html: `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Big Price Too High</title>
+        <style>
+            body {
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                background-color: #f9f9f9;
+                margin: 0;
+                padding: 20px;
+            }
+            .email-container {
+                max-width: 600px;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                padding: 20px;
+                margin: auto;
+            }
+            .header {
+              background-color: #a51417; /* Main red color */
+              color: #ffffff;
+              padding: 10px;
+              text-align: center;
+              border-radius: 5px 5px 0 0;
+          }
+          .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+        }
+        a {
+            color: #a51417; /* Main red color for links */
+        }
+        
+        </style>
+    </head>
+    <body>
+        <div class="email-container">
+            <div class="header"><h2>Your current bid price may be too low to be matched with a seller</h2></div>
+            
+            <p>If the next match is day is soon, consider raising your maximum price to increase your chances of matching with a seller.</p>
+
+            <p>You will only recieve this message once per bid.</p>
+            
+            <div class="footer">
+                Thank you for using our service!<br>
+                <a href="mailto:hjiayu@wustl.edu" style="color: #005a9c;">Contact Support</a>
+            </div>
+        </div>
+    </body>
+    </html>
+    `,
+  };
+
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(info);
+      }
+    });
+  });
+};
+
+const sendSellLowerEmail = (email) => {
+  const mailOptions = {
+    from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
+    to: email,
+    subject: `Current bid price may be too high`,
+    html: `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Big Price Too High</title>
+        <style>
+            body {
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                background-color: #f9f9f9;
+                margin: 0;
+                padding: 20px;
+            }
+            .email-container {
+                max-width: 600px;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                padding: 20px;
+                margin: auto;
+            }
+            .header {
+              background-color: #a51417; /* Main red color */
+              color: #ffffff;
+              padding: 10px;
+              text-align: center;
+              border-radius: 5px 5px 0 0;
+          }
+          .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+        }
+        a {
+            color: #a51417; /* Main red color for links */
+        }
+        
+        </style>
+    </head>
+    <body>
+        <div class="email-container">
+            <div class="header"><h2>Your current bid price may be too high to be matched with a buyer</h2></div>
+            
+            <p>If the next match is day is soon, consider lowering your minimum price to increase your chances of matching with a buyer.</p>
+
+            <p>You will only recieve this message once per bid.</p>
+            
+            <div class="footer">
+                Thank you for using our service!<br>
+                <a href="mailto:hjiayu@wustl.edu" style="color: #005a9c;">Contact Support</a>
+            </div>
+        </div>
+    </body>
+    </html>
+    `,
+  };
+
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(info);
+      }
+    });
+  });
+};
+
 exports.sellBid = catchAsync(async (req, res, next) => {
   const { id } = req.user;
   const { price } = req.body;
@@ -199,6 +349,7 @@ exports.sellBid = catchAsync(async (req, res, next) => {
     price,
   });
 
+  sendPricingEmails();
   res.status(201).json({
     status: "success",
     message: "Successfully placed a sell bid",
@@ -225,6 +376,7 @@ exports.buyBid = catchAsync(async (req, res, next) => {
     return next(new AppError("You have already placed a bid!", 400));
   }
 
+  sendPricingEmails();
   await BuyBids.create({
     user_id: id,
     price,
@@ -235,6 +387,99 @@ exports.buyBid = catchAsync(async (req, res, next) => {
     message: "Successfully placed a buy bid",
   });
 });
+
+const sendPricingEmails = async () => {
+  const activeBuyBids = await BuyBids.findAll({
+    order: [
+      ["price", "DESC"],
+      ["bidTimeStamp", "DESC"],
+    ],
+  });
+  const activeSellBids = await SellBids.findAll({
+    order: [
+      ["price", "ASC"],
+      ["bidTimeStamp", "DESC"],
+    ],
+  });
+
+  //if there arent any potential matches anyway, don't notify
+  if (activeBuyBids.length < 1 || activeSellBids.length < 1) {
+    return;
+  }
+
+  let bidIndex = 0;
+  let noMatch = false;
+  let matches = [];
+
+  while (
+    bidIndex < activeSellBids.length &&
+    bidIndex < activeBuyBids.length &&
+    !noMatch
+  ) {
+    const buyBid = activeBuyBids[bidIndex];
+    const sellBid = activeSellBids[bidIndex];
+    if (buyBid.price >= sellBid.price) {
+      matches.push({ buyer_id: buyBid.user_id, seller_id: sellBid.user_id });
+      bidIndex++;
+    } else {
+      noMatch = true;
+    }
+  }
+
+  const matchedBuyerIds = matches.map((match) => match.buyer_id);
+  const matchedSellerIds = matches.map((match) => match.seller_id);
+
+  // get the unmatched buyer id
+  const notifyBuyerIds = activeBuyBids
+    .filter((bid) => !matchedBuyerIds.includes(bid.user_id))
+    .filter((bid) => bid.notified === false)
+    .map((bid) => bid.user_id);
+  // get the users
+  const notifyBuyers = await User.findAll({
+    where: {
+      id: notifyBuyerIds,
+    },
+  });
+
+  // get the unmatched seller ids who haven't been notified yet
+  const notifySellerIds = activeSellBids
+    .filter((bid) => !matchedSellerIds.includes(bid.user_id))
+    .filter((bid) => bid.notified === false)
+    .map((bid) => bid.user_id);
+  // get the users
+  const notifySellers = await User.findAll({
+    where: {
+      id: notifySellerIds,
+    },
+  });
+
+  // send emails to the unmatched buyers
+  notifyBuyers.forEach(async (buyer) => {
+    // check if the user's price notification is on
+    if (buyer.sendPriceNotifications) {
+      await sendBuyHigherEmail(buyer.email);
+    }
+  });
+
+  // send emails to the unmatched sellers
+  notifySellers.forEach(async (seller) => {
+    // check if the user's price notification is on
+    if (seller.sendPriceNotifications) {
+      await sendSellLowerEmail(seller.email);
+    }
+  });
+
+  // update all the bids to not get notified again
+  await BuyBids.update(
+    { notified: true },
+    { where: { user_id: notifyBuyerIds } }
+  );
+
+  await SellBids.update(
+    { notified: true },
+    { where: { user_id: notifySellerIds } }
+  );
+};
 
 exports.getBid = catchAsync(async (req, res, next) => {
   const { id } = req.user;
