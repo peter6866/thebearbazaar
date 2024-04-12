@@ -17,6 +17,11 @@ const BuyBids = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    notified: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     // set default current time for bidTimeStamp
     bidTimeStamp: {
       type: DataTypes.DATE,

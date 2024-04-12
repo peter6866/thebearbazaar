@@ -20,6 +20,7 @@ const Feedback = sequelize.define(
         key: "id",
       },
     },
+    hidden: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
   },
   {}
 );

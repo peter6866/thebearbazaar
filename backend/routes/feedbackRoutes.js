@@ -11,6 +11,20 @@ router.post(
   feedbackController.getFeedback
 );
 
+router.post(
+  "/delete-feedback",
+  authController.protect,
+  authController.restrictTo("admin"),
+  feedbackController.deleteFeedback
+);
+
+router.post(
+  "/archive-feedback",
+  authController.protect,
+  authController.restrictTo("admin"),
+  feedbackController.archiveFeedback
+);
+
 router.post("/", authController.protect, feedbackController.postFeedback);
 
 module.exports = router;

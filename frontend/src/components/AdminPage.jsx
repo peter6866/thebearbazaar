@@ -309,8 +309,9 @@ function AdminPage() {
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "center",
           marginTop: "20px",
+          gap: "2rem",
         }}
       >
         <Button

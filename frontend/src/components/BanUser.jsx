@@ -49,7 +49,7 @@ function BanUser() {
         <Box display="flex" alignItems="center" gap={2}>
           <TextField
             label="User Email"
-            variant="outlined"
+            variant="standard"
             value={userEmail}
             onChange={(e) => setUserEmail(e.target.value)}
             sx={{ flexGrow: 1 }}
