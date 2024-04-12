@@ -10,10 +10,11 @@ import Faq from "./Faq";
 import AdminPage from "./AdminPage";
 import Profile from "./Profile";
 import Paper from "@mui/material/Paper";
+import NavbarPhone from "./NavbarPhone";
 
 function HomePage() {
   const { isLoggedIn, logout, isLoading, role } = useAuth();
-  const [selectedTab, setSelectedTab] = useState("dashboard");
+  const [selectedTab, setSelectedTab] = useState("Dashboard");
   const navigate = useNavigate();
 
   const changeTab = (e, tab) => {
@@ -29,36 +30,44 @@ function HomePage() {
   return (
     !isLoading &&
     isLoggedIn && (
-      <Box sx={{ width: "100%" }}>
-        <Tabs
-          value={selectedTab}
-          onChange={changeTab}
-          aria-label="mui tab bar"
-          variant="scrollable"
-          fullWidth
-          scrollButtons="auto"
-          allowScrollButtonsMobile
-        >
-          <Tab label="Dashboard" value="dashboard" />
-          <Tab label="My Bid" value="bidpage" />
-          <Tab label="FAQ" value="faq" />
-          {role === "admin" && <Tab label="Admin" value="admin" />}
-          <Box sx={{ flexGrow: 1 }} />
-          <Tab value="profile" label="Profile" />
-          <Tab label="Logout" value="logout" onClick={logout} />
-        </Tabs>
+      <div className="flex flex-col min-h-screen">
+        <div className="hidden md:block">
+          <Tabs
+            value={selectedTab}
+            onChange={changeTab}
+            aria-label="mui tab bar"
+            variant="scrollable"
+            scrollButtons="auto"
+            allowScrollButtonsMobile
+          >
+            <Tab label="Dashboard" value="Dashboard" />
+            <Tab label="My Bid" value="My Bid" />
+            <Tab label="FAQ" value="FAQ" />
+            {role === "admin" && <Tab label="Admin" value="Admin" />}
+            <Box sx={{ flexGrow: 1 }} />
+            <Tab value="Profile" label="Profile" />
+            <Tab label="Logout" value="Log out" onClick={logout} />
+          </Tabs>
+        </div>
         <Box>
-          <div className="container-main">
+          <div className="max-w-[800px] min-w-[300px] p-8 mx-auto md:mt-4 mb-12">
             <Paper elevation={3} className="p-8">
-              {selectedTab === "dashboard" && <Dashboard />}
-              {selectedTab === "bidpage" && <BidPage />}
-              {selectedTab === "faq" && <Faq />}
-              {selectedTab === "admin" && <AdminPage />}
-              {selectedTab === "profile" && <Profile />}
+              {selectedTab === "Dashboard" && <Dashboard />}
+              {selectedTab === "My Bid" && <BidPage />}
+              {selectedTab === "FAQ" && <Faq />}
+              {selectedTab === "Admin" && <AdminPage />}
+              {selectedTab === "Profile" && <Profile />}
             </Paper>
           </div>
         </Box>
-      </Box>
+        <div className="fixed inset-x-0 bottom-0 z-10 md:hidden">
+          <NavbarPhone
+            activeTab={selectedTab}
+            setActiveTab={setSelectedTab}
+            handleClick={logout}
+          />
+        </div>
+      </div>
     )
   );
 }

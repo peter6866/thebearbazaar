@@ -237,7 +237,7 @@ function PhoneNum() {
                     setPhoneNumber(formatPhoneNumber(e.target.value))
                   }
                   value={phoneNumber}
-                  sx={{ flexGrow: 1 }}
+                  sx={{ flexGrow: 1, marginRight: "30px" }}
                 />
                 <Button
                   type="submit"
@@ -245,7 +245,7 @@ function PhoneNum() {
                   color="primary"
                   size="large"
                 >
-                  Add
+                  add
                 </Button>
               </Box>
             </form>
