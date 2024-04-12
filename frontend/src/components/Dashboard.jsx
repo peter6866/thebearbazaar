@@ -104,7 +104,11 @@ function Dashboard({ useInAuth = false }) {
         </>
       )}
 
-      <p className="text-xl font-bold my-4 text-gray-800">
+      <p
+        className={`text-xl font-bold ${
+          useInAuth ? "mt-3" : "my-4"
+        } text-gray-800`}
+      >
         Active Market Information for 500 Meal Points
       </p>
       <MarketInfo info={marketInfo} />
@@ -126,7 +130,13 @@ function Dashboard({ useInAuth = false }) {
         </>
       )}
 
-      <p className="text-xl font-bold mb-8 text-gray-800">Price History</p>
+      <p
+        className={`text-xl font-bold ${
+          useInAuth ? "mb-4" : "mb-8"
+        } text-gray-800`}
+      >
+        Price History
+      </p>
       <PriceHistory history={priceHistory} />
     </>
   );
