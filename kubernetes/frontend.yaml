@@ -18,7 +18,7 @@ spec:
             secretName: frontend-config
       containers:
         - name: frontend
-          image: peter6866/thebearbazaar-frontend:beta8
+          image: peter6866/thebearbazaar-frontend:betak8
           ports:
             - containerPort: 80
           volumeMounts:
