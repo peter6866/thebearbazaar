@@ -224,7 +224,7 @@ const sendBuyHigherEmail = (email) => {
         <div class="email-container">
             <div class="header"><h2>Your current bid price may be too low to be matched with a seller</h2></div>
             
-            <p>If the next match is day is soon, consider raising your maximum price to increase your chances of matching with a seller.</p>
+            <p>If the next match day is soon, consider raising your maximum price to increase your chances of matching with a seller.</p>
 
             <p>You will only recieve this message once per bid.</p>
             
@@ -299,7 +299,7 @@ const sendSellLowerEmail = (email) => {
         <div class="email-container">
             <div class="header"><h2>Your current bid price may be too high to be matched with a buyer</h2></div>
             
-            <p>If the next match is day is soon, consider lowering your minimum price to increase your chances of matching with a buyer.</p>
+            <p>If the next match day is soon, consider lowering your minimum price to increase your chances of matching with a buyer.</p>
 
             <p>You will only recieve this message once per bid.</p>
             
@@ -701,6 +701,10 @@ exports.getMarketInfo = catchAsync(async (req, res, next) => {
   let bidIndex = 0;
   let sellPrice = 0;
   let buyPrice = 0;
+  let lastMatchSellPrice = 0;
+  let lastMatchBuyPrice = 0;
+  let firstUnmatchedSellPrice = 0;
+  let firstUnmatchedBuyPrice = 0;
   let noMatch = false;
   let matches = [];
 
@@ -713,27 +717,34 @@ exports.getMarketInfo = catchAsync(async (req, res, next) => {
     const sellBid = activeSellBids[bidIndex];
     if (buyBid.price >= sellBid.price) {
       matches.push({ buyer_id: buyBid.user_id, seller_id: sellBid.user_id });
-      sellPrice = sellBid.price;
-      buyPrice = buyBid.price;
+      lastMatchSellPrice = sellBid.price;
+      lastMatchBuyPrice = buyBid.price;
       bidIndex++;
     } else {
       noMatch = true;
     }
   }
-  //indicates that there are no matches
-  if (buyPrice == 0 && sellPrice == 0) {
-    if (activeBuyBids.length > 0) {
-      sellPrice = activeBuyBids[activeBuyBids.length - 1].price;
-    } else {
-      sellPrice = 0;
-    }
 
-    if (activeSellBids.length > 0) {
-      buyPrice = activeSellBids[activeSellBids.length - 1].price;
-    } else {
-      buyPrice = 0;
-    }
+  //get the first unmatched seller price
+  if (bidIndex < activeSellBids.length) {
+    firstUnmatchedSellPrice = activeSellBids[bidIndex].price;
   }
+
+  //get the first unmatched buyer price
+  if (bidIndex < activeBuyBids.length) {
+    firstUnmatchedBuyPrice = activeBuyBids[bidIndex].price;
+  }
+
+  //To buy I need to be above the first unmatched seller or the last matched buyer
+  if (lastMatchBuyPrice !== 0 && firstUnmatchedSellPrice !== 0) {
+    buyPrice = Math.min(lastMatchBuyPrice, firstUnmatchedSellPrice);
+  } else {
+    buyPrice = Math.max(lastMatchBuyPrice, firstUnmatchedSellPrice);
+  }
+
+  //To sell I need to be below the first unmatched buyer or the last matched seller
+  sellPrice = Math.max(lastMatchSellPrice, firstUnmatchedBuyPrice);
+
   res.status(201).json({
     status: "Success",
     info: {
