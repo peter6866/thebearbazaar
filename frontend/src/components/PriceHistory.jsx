@@ -4,10 +4,23 @@ import {
   IgrCategoryChartModule,
   IgrCategoryChart,
 } from "igniteui-react-charts";
+import moment from "moment-timezone";
 
 IgrCategoryChartModule.register();
 
+function formatDate(isoString) {
+  const date = moment.utc(isoString);
+  return date.local().format("MM/DD/YYYY");
+}
+
 const PriceHistory = ({ history }) => {
+  history = history.map((record) => {
+    return {
+      Date: formatDate(record.createdAt),
+      Price: record.price,
+    };
+  });
+
   return (
     <Box className="disable-touch">
       {history.length > 0 ? (

@@ -86,22 +86,16 @@ exports.deleteAllMatchBids = catchAsync(async (req, res, next) => {
 exports.priceHistory = catchAsync(async (req, res, next) => {
   let matches = await MatchBids.findAll({
     attributes: [
-      [Sequelize.fn("DATE", Sequelize.col("createdAt")), "date"],
+      "createdAt",
       [Sequelize.fn("MIN", Sequelize.col("price")), "price"],
     ],
-    group: [Sequelize.fn("DATE", Sequelize.col("createdAt"))],
-    order: [[Sequelize.fn("DATE", Sequelize.col("createdAt")), "ASC"]],
+    group: ["createdAt"],
+    order: [["createdAt", "ASC"]],
   });
 
   matches = matches.map((match) => {
-    const date = match.dataValues.date;
-    // Convert the date to the Chicago timezone and format it
-    const formattedDate = moment(date)
-      .tz("America/Chicago")
-      .format("MM/DD/YYYY");
-
     return {
-      date: formattedDate,
+      createdAt: match.dataValues.createdAt,
       price: match.dataValues.price,
     };
   });
