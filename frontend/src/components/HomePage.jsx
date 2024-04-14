@@ -50,7 +50,7 @@ function HomePage() {
           </Tabs>
         </div>
         <Box>
-          <div className="max-w-[800px] min-w-[300px] p-8 mx-auto md:mt-4 mb-12">
+          <div className="max-w-[800px] min-w-[300px] p-4 md:p-6 mx-auto md:mt-4 mb-12">
             <Paper elevation={3} className="p-8">
               {selectedTab === "Dashboard" && <Dashboard />}
               {selectedTab === "My Bid" && <BidPage />}

@@ -53,7 +53,7 @@ function Auth() {
           </div>
         </div>
 
-        <div className="md:w-1/3 py-8 flex flex-col">
+        <div className="md:w-1/3 py-12 md:py-8 flex flex-col">
           <div
             className="flex-grow flex flex-col justify-center border-t md:border-t-0 md:border-l border-gray-300 pt-8 md:pt-0 px-2 md:px-8"
             ref={authRef}
@@ -67,7 +67,7 @@ function Auth() {
         onClick={scrollToAuth}
         className="fixed bottom-4 right-5 z-10 bg-[#a51417] text-white px-3 pt-2 pb-3 rounded-full shadow-lg md:hidden focus:outline-none"
       >
-        Go to Login
+        Go to Sign Up
       </button>
     </div>
   );
