@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend
+  name: backend-internal-service
 spec:
   selector:
     app: backend
   ports:
     - protocol: TCP
-      port: 3001
+      port: 80
       targetPort: 3001
-  type: LoadBalancer
+  type: ClusterIP
 
 ---
 apiVersion: apps/v1
@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: peter6866/thebearbazaar-backend:beta4
+          image: peter6866/thebearbazaar-backend:beta8
           envFrom:
             - configMapRef:
                 name: backend-config

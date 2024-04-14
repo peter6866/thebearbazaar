@@ -1,0 +1,3 @@
+eksctl create cluster --name thebearbazaar --region us-east-2 --nodegroup-name my-nodegroup --node-type t3.medium --nodes 2 --nodes-min 1 --nodes-max 3 --managed --node-volume-size=30 --node-volume-type=gp3
+
+kubectl create secret generic frontend-config --from-file=config.json=../secrets/config.json

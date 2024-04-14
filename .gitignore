@@ -1,4 +1,5 @@
 /env/*.env
 /kubernetes/backend-config.yaml
+/kubernetes/tls-secret.yaml
 /secrets/*.pem
 /secrets/*.json
