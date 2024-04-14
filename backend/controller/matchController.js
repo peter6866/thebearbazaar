@@ -4,6 +4,7 @@ const MatchBids = require("../models/matchBidsModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const Sequelize = require("sequelize");
+const moment = require("moment-timezone");
 const { Op } = require("sequelize");
 const transporter = require("../utils/emailTransporter");
 const CanceledTrans = require("../models/canceledTransModel");
@@ -85,22 +86,20 @@ exports.deleteAllMatchBids = catchAsync(async (req, res, next) => {
 exports.priceHistory = catchAsync(async (req, res, next) => {
   let matches = await MatchBids.findAll({
     attributes: [
-      [Sequelize.fn("DATE", Sequelize.col("matchBidTimeStamp")), "date"],
+      [Sequelize.fn("DATE", Sequelize.col("createdAt")), "date"],
       [Sequelize.fn("MIN", Sequelize.col("price")), "price"],
     ],
-    group: [Sequelize.fn("DATE", Sequelize.col("matchBidTimeStamp"))],
-    order: [[Sequelize.fn("DATE", Sequelize.col("matchBidTimeStamp")), "ASC"]],
+    group: [Sequelize.fn("DATE", Sequelize.col("createdAt"))],
+    order: [[Sequelize.fn("DATE", Sequelize.col("createdAt")), "ASC"]],
   });
 
   matches = matches.map((match) => {
-    const formattedDate = new Date(match.dataValues.date).toLocaleDateString(
-      "en-US",
-      {
-        month: "2-digit",
-        day: "2-digit",
-        year: "numeric",
-      }
-    );
+    const date = match.dataValues.date;
+    // Convert the date to the Chicago timezone and format it
+    const formattedDate = moment(date)
+      .tz("America/Chicago")
+      .format("MM/DD/YYYY");
+
     return {
       date: formattedDate,
       price: match.dataValues.price,
