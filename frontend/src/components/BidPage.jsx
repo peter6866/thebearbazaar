@@ -166,6 +166,9 @@ function BidPage() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
           },
+          body: JSON.stringify({
+            type: matchedType,
+          }),
         }
       );
       const data = await response.json();

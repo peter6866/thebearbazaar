@@ -111,7 +111,7 @@ exports.cancelTrans = catchAsync(async (req, res, next) => {
   const { type } = req.body;
   let user = "";
 
-  if (type == "Buyer") {
+  if (type === "Buyer") {
     let matches = await MatchBids.findOne({
       where: { seller_id: id },
     });
