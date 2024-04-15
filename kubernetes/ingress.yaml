@@ -4,8 +4,11 @@ metadata:
   name: my-app-ingress
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if ($host = 'thebearbazaar.com') {
+        return 301 https://www.thebearbazaar.com$request_uri;
+      }
 spec:
   tls:
     - hosts:
@@ -13,7 +16,7 @@ spec:
         - www.thebearbazaar.com
       secretName: thebearbazaar-tls
   rules:
-    - host: thebearbazaar.com
+    - host: www.thebearbazaar.com
       http:
         paths:
           - path: /api/

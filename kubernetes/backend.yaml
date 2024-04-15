@@ -28,7 +28,9 @@ spec:
     spec:
       containers:
         - name: backend
-          image: peter6866/thebearbazaar-backend:beta8
+          image: peter6866/thebearbazaar-backend:beta9
           envFrom:
             - configMapRef:
                 name: backend-config
+      imagePullSecrets:
+        - name: regcred
