@@ -719,6 +719,12 @@ exports.getMarketInfo = catchAsync(async (req, res, next) => {
       matches.push({ buyer_id: buyBid.user_id, seller_id: sellBid.user_id });
       lastMatchSellPrice = sellBid.price;
       lastMatchBuyPrice = buyBid.price;
+      if (lastMatchSellPrice > 0) {
+        lastMatchSellPrice -= 1;
+      }
+      if (lastMatchBuyPrice < 500) {
+        lastMatchBuyPrice += 1;
+      }
       bidIndex++;
     } else {
       noMatch = true;

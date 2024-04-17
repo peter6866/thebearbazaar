@@ -29,7 +29,7 @@ const PriceHistory = ({ history }) => {
           height="300px"
           dataSource={history}
           xAxisTitle="Date"
-          yAxisTitle="Price of 500 meal points"
+          yAxisTitle="Price"
           xAxisLabelLocation="OutsideBottom"
           yAxisLabelLocation="OutsideLeft"
           xAxisOverlap="auto"

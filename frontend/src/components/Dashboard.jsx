@@ -135,7 +135,7 @@ function Dashboard({ useInAuth = false }) {
           useInAuth ? "mb-4" : "mb-8"
         } text-gray-800`}
       >
-        Price History
+        Price History for 500 Meal Points
       </p>
       <PriceHistory history={priceHistory} />
     </>
