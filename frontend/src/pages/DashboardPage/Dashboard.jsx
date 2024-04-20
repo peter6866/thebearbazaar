@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import Countdown from "./Countdown";
 import PriceHistory from "./PriceHistory";
 import MarketInfo from "./MarketInfo";
-import { Paper, Divider } from "@mui/material";
-import { useConfig } from "../context/ConfigContext";
+import { Divider } from "@mui/material";
+import { useConfig } from "../../context/ConfigContext";
 
 function Dashboard({ useInAuth = false }) {
   const config = useConfig();

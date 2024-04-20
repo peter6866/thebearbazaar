@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 
 import {
   Typography,
-  Paper,
   Button,
   Dialog,
   DialogActions,

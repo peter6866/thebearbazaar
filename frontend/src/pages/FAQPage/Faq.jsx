@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-import Paper from "@mui/material/Paper";
-import { useConfig } from "../context/ConfigContext";
-import { useAuth } from "../context/AuthContext";
+import { useConfig } from "../../context/ConfigContext";
+import { useAuth } from "../../context/AuthContext";
 import QAPair from "./QAPair";
 
 function Faq() {

@@ -33,6 +33,8 @@ router.post(
   banController.banUser
 );
 
+// router.get("/error", authController.shutDownNode);
+
 router
   .route("/phone-num")
   .get(authController.protect, userController.getPhoneNum)

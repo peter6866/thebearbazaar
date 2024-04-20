@@ -8,8 +8,8 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
-import { useConfig } from "../context/ConfigContext";
-import { useAuth } from "../context/AuthContext";
+import { useConfig } from "../../context/ConfigContext";
+import { useAuth } from "../../context/AuthContext";
 
 function PhoneNum() {
   const config = useConfig();

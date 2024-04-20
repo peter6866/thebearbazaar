@@ -4,7 +4,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { ConfigProvider } from "./context/ConfigContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material";
-import Auth from "./components/Auth";
+import Auth from "./pages/AuthPage/Auth";
 import HomePage from "./components/HomePage";
 
 const theme = createTheme({

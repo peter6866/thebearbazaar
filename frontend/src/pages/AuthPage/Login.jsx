@@ -8,10 +8,10 @@ import Box from "@mui/material/Box";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { InputAdornment } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { useAuth } from "../context/AuthContext";
-import { useConfig } from "../context/ConfigContext";
+import { useAuth } from "../../context/AuthContext";
+import { useConfig } from "../../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
-import PasswordButton from "./PasswordButton";
+import PasswordButton from "../../components/PasswordButton";
 // import Dashboard from "./Dashboard";
 
 function Login({ flip }) {

@@ -1,21 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useConfig } from "../context/ConfigContext";
-import { useAuth } from "../context/AuthContext";
+import { useConfig } from "../../context/ConfigContext";
+import { useAuth } from "../../context/AuthContext";
 import { Delete, Archive } from "@mui/icons-material";
 import {
   Box,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
   TableContainer,
   Table,
   TableHead,
   TableBody,
   TableRow,
   TableCell,
-  Button,
-  Paper,
 } from "@mui/material";
 
 function ListFeedback() {
@@ -59,7 +53,6 @@ function ListFeedback() {
         }
       );
 
-      const data = await response.json();
       if (response.ok) {
         fetchFeedbacks();
       }
@@ -82,7 +75,6 @@ function ListFeedback() {
         }
       );
 
-      const data = await response.json();
       if (response.ok) {
         fetchFeedbacks();
       }

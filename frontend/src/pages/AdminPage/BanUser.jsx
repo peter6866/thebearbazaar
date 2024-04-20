@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, TextField, Alert, Box } from "@mui/material";
-import { useConfig } from "../context/ConfigContext";
-import { useAuth } from "../context/AuthContext";
+import { useConfig } from "../../context/ConfigContext";
+import { useAuth } from "../../context/AuthContext";
 
 function BanUser() {
   const config = useConfig();

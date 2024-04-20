@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
-  Paper,
   Button,
   Alert,
   TextField,
@@ -9,10 +8,10 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useAuth } from "../context/AuthContext";
-import { useConfig } from "../context/ConfigContext";
+import { useAuth } from "../../context/AuthContext";
+import { useConfig } from "../../context/ConfigContext";
 import { Switch, FormControlLabel, FormGroup } from "@mui/material";
-import PasswordButton from "./PasswordButton";
+import PasswordButton from "../../components/PasswordButton";
 import SubmitFeedback from "./SubmitFeedback";
 import PhoneNum from "./PhoneNum";
 
@@ -126,35 +125,37 @@ function Profile() {
     const { name, value } = e.target;
     setPasswordData({ ...passwordData, [name]: value });
     if (!passwordFieldFocused) {
-      if (value != "") {
+      if (value !== "") {
         setPasswordFieldFocused(true);
       }
     } else {
-      if (value.length == 0) {
+      if (value.length === 0) {
         switch (name) {
           case "oldPassword":
             if (
-              passwordData["confirmNewPassword"].length == 0 &&
-              passwordData["newPassword"].length == 0
+              passwordData["confirmNewPassword"].length === 0 &&
+              passwordData["newPassword"].length === 0
             ) {
               setPasswordFieldFocused(false);
             }
             break;
           case "newPassword":
             if (
-              passwordData["oldPassword"].length == 0 &&
-              passwordData["confirmNewPassword"].length == 0
+              passwordData["oldPassword"].length === 0 &&
+              passwordData["confirmNewPassword"].length === 0
             ) {
               setPasswordFieldFocused(false);
             }
             break;
           case "confirmNewPassword":
             if (
-              passwordData["oldPassword"].length == 0 &&
-              passwordData["newPassword"].length == 0
+              passwordData["oldPassword"].length === 0 &&
+              passwordData["newPassword"].length === 0
             ) {
               setPasswordFieldFocused(false);
             }
+            break;
+          default:
             break;
         }
       }

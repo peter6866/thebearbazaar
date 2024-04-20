@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import Dashboard from "./Dashboard";
-import BidPage from "./BidPage";
-import Faq from "./Faq";
-import AdminPage from "./AdminPage";
-import Profile from "./Profile";
+import Dashboard from "../pages/DashboardPage/Dashboard";
+import BidPage from "../pages/MyBidPage/BidPage";
+import Faq from "../pages/FAQPage/Faq";
+import AdminPage from "../pages/AdminPage/AdminPage";
+import Profile from "../pages/ProfilePage/Profile";
 import Paper from "@mui/material/Paper";
 import NavbarPhone from "./NavbarPhone";
 
@@ -39,6 +39,11 @@ function HomePage() {
             variant="scrollable"
             scrollButtons="auto"
             allowScrollButtonsMobile
+            sx={{
+              borderBottom: 1,
+              borderColor: "divider",
+              ".MuiTab-root": { textTransform: "none" },
+            }}
           >
             <Tab label="Dashboard" value="Dashboard" />
             <Tab label="My Bid" value="My Bid" />

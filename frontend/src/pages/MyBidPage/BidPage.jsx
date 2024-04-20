@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import ViewBid from "./ViewBid";
 import ViewMatched from "./ViewMatched";
 import Transact from "./Transact";
-import { useAuth } from "../context/AuthContext";
-import { useConfig } from "../context/ConfigContext";
+import { useAuth } from "../../context/AuthContext";
+import { useConfig } from "../../context/ConfigContext";
 
 function BidPage() {
   const { authToken } = useAuth();

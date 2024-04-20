@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { useConfig } from "../context/ConfigContext";
+import { useAuth } from "../../context/AuthContext";
+import { useConfig } from "../../context/ConfigContext";
 import {
   Button,
   Alert,

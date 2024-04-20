@@ -8,9 +8,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { InputAdornment } from "@mui/material";
-import PasswordButton from "./PasswordButton";
-import { useAuth } from "../context/AuthContext";
-import { useConfig } from "../context/ConfigContext";
+import PasswordButton from "../../components/PasswordButton";
+import { useAuth } from "../../context/AuthContext";
+import { useConfig } from "../../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
 // import Dashboard from "./Dashboard";
 

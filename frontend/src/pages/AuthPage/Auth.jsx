@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import SignUp from "./SignUp";
 import Login from "./Login";
-import Dashboard from "./Dashboard";
+import Dashboard from "../DashboardPage/Dashboard";
 
 function AuthPrompt() {
   const [loginStep, setLoginStep] = useState(false);

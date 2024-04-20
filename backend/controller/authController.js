@@ -316,3 +316,7 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+exports.shutDownNode = (req, res) => {
+  process.exit(1);
+};
