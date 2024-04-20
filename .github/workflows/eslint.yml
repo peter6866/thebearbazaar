@@ -44,7 +44,7 @@ jobs:
       - name: Run ESLint on Backend
         run: |
           cd backend
-          npx eslint . --ext .js --format @microsoft/eslint-formatter-sarif --output-file ../eslint-backend-results.sarif
+          npx eslint . --config .eslint.config.js --ext .js --format @microsoft/eslint-formatter-sarif --output-file ../eslint-backend-results.sarif
         continue-on-error: true
 
       - name: Upload Frontend analysis results to GitHub
