@@ -1,6 +1,8 @@
 module.exports = {
-  extends: ["airbnb", "plugin:node/recommended"],
+  extends: ["airbnb", "prettier", "plugin:node/recommended"],
+  plugins: ["prettier"],
   rules: {
+    "prettier/prettier": ["error", { endOfLine: "auto" }],
     "comma-dangle": "off",
     "spaced-comment": "off",
     "no-console": "warn",

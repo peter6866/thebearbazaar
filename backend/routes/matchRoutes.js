@@ -7,7 +7,6 @@ router
   .route("/match-info")
   .post(authController.protect, matchController.matchInfo);
 
-
 router.delete(
   "/",
   authController.protect,
@@ -17,6 +16,8 @@ router.delete(
 
 router.route("/price-history").post(matchController.priceHistory);
 
-router.route("/cancel-trans").post(authController.protect, matchController.cancelTrans);
+router
+  .route("/cancel-trans")
+  .post(authController.protect, matchController.cancelTrans);
 
 module.exports = router;

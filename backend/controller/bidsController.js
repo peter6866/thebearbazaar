@@ -521,7 +521,7 @@ exports.cancelBid = catchAsync(async (req, res, next) => {
   }
   const buybid = await BuyBids.destroy({ where: { user_id: id } });
   const sellbid = await SellBids.destroy({ where: { user_id: id } });
-  if (buybid + sellbid == 0) {
+  if (buybid + sellbid === 0) {
     return next(new AppError("No bid found", 404));
   } else {
     res.status(201).json({
