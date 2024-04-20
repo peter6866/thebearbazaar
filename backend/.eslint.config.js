@@ -2,7 +2,10 @@ module.exports = {
   extends: ["airbnb", "prettier", "plugin:node/recommended"],
   plugins: ["prettier"],
   rules: {
-    "prettier/prettier": ["error", { endOfLine: "auto" }],
+    "prettier/prettier": [
+      "error",
+      { endOfLine: "auto", trailingComma: "none" },
+    ],
     "comma-dangle": "off",
     "spaced-comment": "off",
     "no-console": "warn",

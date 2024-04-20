@@ -104,8 +104,6 @@ exports.deletePhoneNum = catchAsync(async (req, res, next) => {
   // get the phone num for this user
   await PhoneNum.destroy({ where: { userId: user_id } });
 
-
-
   res.status(201).json({
     status: "success",
     message: "Successfully deleted phone number",
