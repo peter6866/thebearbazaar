@@ -29,16 +29,19 @@ jobs:
         run: |
           cd frontend
           npm install
+          npm install eslint@8.57.0
+          npm install @microsoft/eslint-formatter-sarif --save-dev
 
       - name: Install ESLint for Backend
         run: |
           cd backend
           npm install
+          npm install @microsoft/eslint-formatter-sarif --save-dev
 
       - name: Run ESLint on Frontend
         run: |
           cd frontend
-          npx eslint . --ext .js,.jsx --format @microsoft/eslint-formatter-sarif --output-file ../eslint-frontend-results.sarif
+          npx eslint "src/**/*.{js,jsx}" --format @microsoft/eslint-formatter-sarif --output-file ../eslint-frontend-results.sarif
         continue-on-error: true
 
       - name: Run ESLint on Backend
