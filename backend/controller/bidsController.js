@@ -543,10 +543,11 @@ exports.deleteAllBids = catchAsync(async (req, res, next) => {
 });
 
 exports.match = catchAsync(async (req, res, next) => {
-  await generateMatches();
+  const matches = await generateMatches();
   res.status(201).json({
     status: "Success",
     message: "Successfully matched bids",
+    matches,
   });
 });
 
@@ -681,6 +682,8 @@ const generateMatches = async () => {
   await BuyBids.destroy({ where: { user_id: matchedBuyerIds } });
 
   await SellBids.destroy({ where: { user_id: matchedSellerIds } });
+
+  return matches;
 };
 
 exports.generateMatches = generateMatches;

@@ -17,5 +17,7 @@ module.exports = {
     "prefer-destructuring": ["error", { object: true, array: false }],
     "no-unused-vars": ["error", { argsIgnorePattern: "req|res|next|val" }],
     "import/newline-after-import": "off",
+    camelcase: "off",
+    "import/order": "off",
   },
 };

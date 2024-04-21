@@ -23,7 +23,7 @@ const scheduleJob = (sec) => {
   cronJob = cron.schedule(
     convertSecondsToSchedule(sec),
     () => {
-      bidsController.generateMatches();
+      const matches = bidsController.generateMatches();
       console.log("RAN MATCHES " + sec);
     },
     {
