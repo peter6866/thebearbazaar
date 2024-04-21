@@ -19,5 +19,6 @@ module.exports = {
     "import/newline-after-import": "off",
     camelcase: "off",
     "import/order": "off",
+    "no-undef": "off",
   },
 };

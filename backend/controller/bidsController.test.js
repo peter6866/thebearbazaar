@@ -25,6 +25,20 @@ jest.mock("../models/matchBidsModel", () => ({
 }));
 
 describe("generateMatches", () => {
+  beforeAll(() => {
+    process.env.PGUSER = "mock_random";
+    process.env.PGPASSWORD = "mock_random";
+    process.env.PGDATABASE = "mock_random";
+    process.env.PGHOST = "mock_random";
+    process.env.JWT_SECRET = "mock_random";
+    process.env.JWT_EXPIRES_IN = "90d";
+    process.env.SENDGRID_API_KEY =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890ABCDEFGHIJKL";
+    process.env.NODE_DEV_ENV = "development";
+    process.env.ACCESS_KEY_ID = "ABCDEFGHIJKLMNOPQRST";
+    process.env.SECRET_ACCESS_KEY = "abcdefghijklmnopqrstuvwxyz1234567890";
+  });
+
   beforeEach(() => {
     // Clear all mocks before each test
     jest.clearAllMocks();
@@ -202,6 +216,17 @@ describe("generateMatches", () => {
   afterAll(async () => {
     await BuyBids.destroy({ where: {} });
     await SellBids.destroy({ where: {} });
+
+    delete process.env.PGUSER;
+    delete process.env.PGPASSWORD;
+    delete process.env.PGDATABASE;
+    delete process.env.PGHOST;
+    delete process.env.JWT_SECRET;
+    delete process.env.JWT_EXPIRES_IN;
+    delete process.env.SENDGRID_API_KEY;
+    delete process.env.NODE_DEV_ENV;
+    delete process.env.ACCESS_KEY_ID;
+    delete process.env.SECRET_ACCESS_KEY;
   });
 
   afterEach(() => {
