@@ -24,17 +24,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "pnpm"
+          cache: "npm"
 
       - name: Install ESLint for Frontend
         run: |
           cd frontend
-          pnpm install
+          npm install
 
       - name: Install ESLint for Backend
         run: |
           cd backend
-          pnpm install
+          npm install
 
       - name: Run ESLint on Frontend
         run: |
