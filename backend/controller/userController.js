@@ -3,6 +3,7 @@ const PhoneNum = require("../models/phoneNumModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const bcrypt = require("bcrypt");
+const sequelize = require("../db/connection");
 
 exports.getNotificationSettings = catchAsync(async (req, res, next) => {
   const { sendMatchNotifications, sendPriceNotifications } = req.user;
@@ -107,5 +108,23 @@ exports.deletePhoneNum = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     message: "Successfully deleted phone number",
+  });
+});
+
+exports.getWeeklyUserStats = catchAsync(async (req, res, next) => {
+  const weeklyStats = await User.findAll({
+    attributes: [
+      [sequelize.fn("date_trunc", "week", sequelize.col("createdAt")), "week"],
+      [sequelize.fn("COUNT", sequelize.col("id")), "numUsers"],
+    ],
+    group: "week",
+    order: [[sequelize.literal("week"), "ASC"]],
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      weeklyStats,
+    },
   });
 });

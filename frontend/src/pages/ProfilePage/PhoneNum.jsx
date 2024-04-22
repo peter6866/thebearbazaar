@@ -251,12 +251,12 @@ function PhoneNum() {
             </form>
           )}
           {error && (
-            <Alert severity="error" sx={{ marginTop: 1 }}>
+            <Alert severity="error" sx={{ marginTop: "20px" }}>
               {error}
             </Alert>
           )}
           {success && (
-            <Alert severity="success" sx={{ marginTop: 1 }}>
+            <Alert severity="success" sx={{ marginTop: "20px" }}>
               {success}
             </Alert>
           )}

@@ -7,11 +7,10 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const transporter = require("../utils/emailTransporter");
 
-const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+const signToken = (id) =>
+  jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
-};
 
 // helper function to send verification email
 const sendVerificationEmail = (email, verificationCode) => {
@@ -106,6 +105,16 @@ const sendVerificationEmail = (email, verificationCode) => {
   });
 };
 
+const createSendToken = (user, res) => {
+  const token = signToken(user.id);
+
+  res.status(201).json({
+    status: "success",
+    role: user.role,
+    token,
+  });
+};
+
 // handler for getting one-time code
 exports.getCode = catchAsync(async (req, res, next) => {
   req.body.email = req.body.email.toLowerCase();
@@ -187,9 +196,6 @@ exports.signUpVerify = catchAsync(async (req, res, next) => {
     return next(new AppError("Verification code expired", 400));
   }
 
-  // generate jwt token
-  const token = signToken(user.id);
-
   // check if the code is correct
   correct = user.correctCode(verificationCode, user.verificationCode);
   if (correct) {
@@ -199,12 +205,8 @@ exports.signUpVerify = catchAsync(async (req, res, next) => {
       verificationCode: null,
       verificationCodeTimestamp: null,
     });
-    res.status(201).json({
-      status: "success",
-      message: "Email verified successfully",
-      role: user.role,
-      token,
-    });
+
+    createSendToken(user, res);
   } else {
     return next(new AppError("Incorrect verification code", 400));
   }
@@ -262,12 +264,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   // if everything is ok, send token to client
-  const token = signToken(user.id);
-  res.status(200).json({
-    status: "success",
-    role: user.role,
-    token,
-  });
+  createSendToken(user, res);
 });
 
 // middleware to protect routes
@@ -306,8 +303,9 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 // middleware to restrict routes
-exports.restrictTo = (...roles) => {
-  return (req, res, next) => {
+exports.restrictTo =
+  (...roles) =>
+  (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
         new AppError("You do not have permission to perform this action", 403)
@@ -315,7 +313,6 @@ exports.restrictTo = (...roles) => {
     }
     next();
   };
-};
 
 exports.shutDownNode = (req, res) => {
   process.exit(1);
