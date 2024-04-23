@@ -233,3 +233,30 @@ const sendCancelEmail = (email) => {
     });
   });
 };
+
+exports.getMatch = catchAsync(async (req, res, next) => {
+  // find all matches in time descending order
+  const matches = await MatchBids.findAll({
+    order: [["createdAt", "DESC"]],
+  });
+
+  // given the user_id in the matches, find the email of the user
+  // and add it to the matches object
+  for (let i = 0; i < matches.length; i++) {
+    const match = matches[i];
+    const buser = await User.findByPk(match.buyer_id);
+    const suser = await User.findByPk(match.seller_id);
+    let datey = new Date(match.createdAt).toDateString;
+    matches[i] = {
+      ...matches[i].dataValues,
+      buyerid: buser.email,
+      sellerid: suser.email,
+      adjTime: datey.toDateString(),
+    };
+  }
+
+  res.status(200).json({
+    status: "success",
+    matches,
+  });
+});
