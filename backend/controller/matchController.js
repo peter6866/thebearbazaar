@@ -260,3 +260,35 @@ exports.getMatch = catchAsync(async (req, res, next) => {
     matches,
   });
 });
+
+exports.getCancels = catchAsync(async (req, res, next) => {
+  const allCancels = await CanceledTrans.findAll();
+
+  // Extracting all unique user IDs from the canceled transactions
+  const userIds = allCancels.map((cancel) => cancel.user_id);
+  const uniqueUserIds = [...new Set(userIds)]; // Getting unique user IDs
+
+  // Fetching user emails for each unique user ID
+  const userIdToEmailMap = {};
+  await Promise.all(
+    uniqueUserIds.map(async (userId) => {
+      const user = await User.findByPk(userId);
+      if (user) {
+        userIdToEmailMap[userId] = user.email;
+      }
+    })
+  );
+
+  // Generating response containing only email and createdAt
+  const cancelsWithEmail = allCancels.map((cancel) => {
+    return {
+      email: userIdToEmailMap[cancel.user_id], // Add email based on user_id
+      createdAt: cancel.createdAt,
+    };
+  });
+
+  res.status(200).json({
+    status: "success",
+    cancelsData: cancelsWithEmail,
+  });
+});

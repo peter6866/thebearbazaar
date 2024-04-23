@@ -21,10 +21,18 @@ router
   .post(authController.protect, matchController.cancelTrans);
 
 router.post(
-    "/get-match",
+  "/get-match",
+  authController.protect,
+  authController.restrictTo("admin"),
+  matchController.getMatch
+);
+
+router
+  .route("/get-cancels")
+  .post(
     authController.protect,
     authController.restrictTo("admin"),
-    matchController.getMatch
+    matchController.getCancels
   );
 
 module.exports = router;
