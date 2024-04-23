@@ -52,7 +52,8 @@ function Stats() {
 
   const newUserIncreasePercentage = useMemo(() => {
     if (cusumY.length < 2) return 0;
-    return ((cusumY.at(-1) - cusumY.at(-2)) / cusumY.at(-2)) * 100;
+    const increase = ((cusumY.at(-1) - cusumY.at(-2)) / cusumY.at(-2)) * 100;
+    return +increase.toFixed(1);
   }, [cusumY]);
 
   const newUserIncrease = useMemo(() => {
@@ -67,7 +68,8 @@ function Stats() {
 
   const newRegistersChangePercentage = useMemo(() => {
     if (y.length < 2) return 0;
-    return (newRegistersChange / y.at(-2)) * 100;
+    const changePercentage = (newRegistersChange / y.at(-2)) * 100;
+    return +changePercentage.toFixed(1);
   }, [y]);
 
   return (
