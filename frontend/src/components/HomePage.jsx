@@ -9,7 +9,6 @@ import BidPage from "../pages/MyBidPage/BidPage";
 import Faq from "../pages/FAQPage/Faq";
 import AdminPage from "../pages/AdminPage/AdminPage";
 import Profile from "../pages/ProfilePage/Profile";
-import Paper from "@mui/material/Paper";
 import NavbarPhone from "./NavbarPhone";
 
 function HomePage() {
@@ -56,13 +55,16 @@ function HomePage() {
         </div>
         <Box>
           <div className="max-w-[800px] min-w-[300px] p-4 md:p-6 mx-auto md:mt-4 mb-12">
-            <Paper elevation={3} className="p-8">
+            <div
+              elevation={3}
+              className="p-8 rounded-lg shadow-md border border-gray-200"
+            >
               {selectedTab === "Dashboard" && <Dashboard />}
               {selectedTab === "My Bid" && <BidPage />}
               {selectedTab === "FAQ" && <Faq />}
               {selectedTab === "Admin" && <AdminPage />}
               {selectedTab === "Profile" && <Profile />}
-            </Paper>
+            </div>
           </div>
         </Box>
         <div className="fixed inset-x-0 bottom-0 z-10 md:hidden">

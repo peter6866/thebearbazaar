@@ -35,11 +35,63 @@ function Stats() {
     }));
   }, [weeklyUserStats]);
 
-  const x = lineChartData.map((data) => data.x);
-  const y = lineChartData.map((data) => data.y);
+  const x = lineChartData.map((data) => `Week\n${data.x}`);
+  const y = lineChartData.map((data) => +data.y);
+
+  const cusumY = useMemo(() => {
+    let result = [];
+    let runningTotal = 0;
+
+    for (let i = 0; i < y.length; i++) {
+      runningTotal += +y[i];
+      result.push(runningTotal);
+    }
+
+    return result;
+  }, [y]);
+
+  const newUserIncreasePercentage = useMemo(() => {
+    if (cusumY.length < 2) return 0;
+    return ((cusumY.at(-1) - cusumY.at(-2)) / cusumY.at(-2)) * 100;
+  }, [cusumY]);
+
+  const newUserIncrease = useMemo(() => {
+    if (cusumY.length < 2) return 0;
+    return cusumY.at(-1) - cusumY.at(-2);
+  }, [cusumY]);
+
+  const newRegistersChange = useMemo(() => {
+    if (y.length < 2) return 0;
+    return y.at(-1) - y.at(-2);
+  }, [y]);
+
+  const newRegistersChangePercentage = useMemo(() => {
+    if (y.length < 2) return 0;
+    return (newRegistersChange / y.at(-2)) * 100;
+  }, [y]);
 
   return (
-    <div>
+    <div className="flex flex-col">
+      <div className="stats shadow mb-2">
+        <div className="stat place-items-center">
+          <div className="stat-title">Current Users</div>
+          <div className="stat-value text-secondary">{cusumY.at(-1)}</div>
+          <div className="stat-desc text-secondary">
+            ↗︎ {`${newUserIncrease} (${newUserIncreasePercentage}%)`}
+          </div>
+        </div>
+
+        <div className="stat place-items-center">
+          <div className="stat-title">New Registers</div>
+          <div className="stat-value">{y.at(-1)}</div>
+          <div className="stat-desc">
+            {newRegistersChange >= 0 ? "↗︎" : "↘︎"}{" "}
+            {`${Math.abs(newRegistersChange)} (${Math.abs(
+              newRegistersChangePercentage
+            )}%)`}
+          </div>
+        </div>
+      </div>
       <LineChart
         xAxis={[
           {
@@ -50,12 +102,12 @@ function Stats() {
         series={[
           {
             data: y.length > 12 ? y.slice(-12) : y,
-            label: "New User Weekly Signups",
+            label: "New User Weekly Registers",
             color: "#a51417",
           },
         ]}
-        margin={{ top: 40, right: 25, bottom: 20, left: 25 }}
-        height={400}
+        margin={{ top: 40, right: 25, bottom: 35, left: 30 }}
+        height={380}
         sx={{ "& .MuiChartsAxis-tickLabel tspan": { fontSize: 14 } }}
       />
     </div>

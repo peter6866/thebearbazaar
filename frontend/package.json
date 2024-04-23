@@ -60,6 +60,7 @@
     "eslint-plugin-react": "^7.34.1",
     "vite-plugin-eslint": "1.8.1",
     "eslint-config-react-app": "^7.0.1",
-    "@microsoft/eslint-formatter-sarif": "3.1.0"
+    "@microsoft/eslint-formatter-sarif": "3.1.0",
+    "daisyui": "^4.10.1"
   }
 }
