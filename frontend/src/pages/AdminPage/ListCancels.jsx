@@ -10,16 +10,22 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
+import moment from "moment-timezone";
 
-function ListMatch() {
-  const [matches, setMatches] = useState([]);
+function formatDate(isoString) {
+  const date = moment.utc(isoString);
+  return date.local().format("MM/DD/YYYY");
+}
+
+function ListCancels() {
+  const [cancels, setCancels] = useState([]);
   const config = useConfig();
   const { authToken } = useAuth();
 
-  const fetchMatches = useCallback(async () => {
+  const fetchCancels = useCallback(async () => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/match/get-match`,
+        `${config.REACT_APP_API_URL}/v1/match/get-cancels`,
         {
           method: "POST",
           headers: {
@@ -31,36 +37,31 @@ function ListMatch() {
 
       const data = await response.json();
       if (response.ok && data) {
-        setMatches(data.matches);
+        setCancels(data.cancels);
       }
     } catch (error) {}
   }, [authToken, config]);
 
   useEffect(() => {
-    fetchMatches();
-  }, [fetchMatches]);
+    fetchCancels();
+  }, [fetchCancels]);
 
   return (
     <Box>
-      <p className="text-xl font-bold my-4 text-gray-800">Matches</p>
-
+      <p className="text-xl font-bold my-4 text-gray-800">Canceled Matches</p>
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Buyer</TableCell>
-              <TableCell>Seller</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Time</TableCell>
+              <TableCell>User</TableCell>
+              <TableCell>Date</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {matches.map((match) => (
-              <TableRow key={match.id}>
-                <TableCell>{match.buyerid}</TableCell>
-                <TableCell>{match.sellerid}</TableCell>
-                <TableCell>{match.price}</TableCell>
-                <TableCell>{match.adjTime}</TableCell>
+            {cancels.map((cancel) => (
+              <TableRow>
+                <TableCell>{cancel.email}</TableCell>
+                <TableCell>{formatDate(cancel.createdAt)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -70,4 +71,4 @@ function ListMatch() {
   );
 }
 
-export default ListMatch;
+export default ListCancels;

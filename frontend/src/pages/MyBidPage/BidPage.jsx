@@ -175,7 +175,6 @@ function BidPage() {
       if (!response.ok) {
         console.log("Error canceling transaction");
       } else {
-        alert(data.message);
         setHasBid(false);
         setIsMatched(false);
       }

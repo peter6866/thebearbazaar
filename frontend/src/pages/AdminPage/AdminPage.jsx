@@ -26,6 +26,7 @@ import ListFeedbacks from "./ListFeedbacks";
 import BanUser from "./BanUser";
 import Stats from "./Stats";
 import ListMatches from "./ListMatches";
+import ListCancels from "./ListCancels";
 
 function AdminPage() {
   const [question, setQuestion] = useState("");
@@ -336,6 +337,8 @@ function AdminPage() {
       <BanUser />
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <ListMatches />
+      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
+      <ListCancels />
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <ListFeedbacks />
 
