@@ -246,12 +246,10 @@ exports.getMatch = catchAsync(async (req, res, next) => {
     const match = matches[i];
     const buser = await User.findByPk(match.buyer_id);
     const suser = await User.findByPk(match.seller_id);
-    let datey = new Date(match.createdAt).toDateString;
     matches[i] = {
       ...matches[i].dataValues,
       buyerid: buser.email,
       sellerid: suser.email,
-      adjTime: datey.toDateString(),
     };
   }
 

@@ -10,6 +10,12 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
+import moment from "moment-timezone";
+
+function formatDate(isoString) {
+  const date = moment.utc(isoString);
+  return date.local().format("MM/DD/YYYY");
+}
 
 function ListMatch() {
   const [matches, setMatches] = useState([]);
@@ -60,7 +66,7 @@ function ListMatch() {
                 <TableCell>{match.buyerid}</TableCell>
                 <TableCell>{match.sellerid}</TableCell>
                 <TableCell>{match.price}</TableCell>
-                <TableCell>{match.adjTime}</TableCell>
+                <TableCell>{formatDate(match.createdAt)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
