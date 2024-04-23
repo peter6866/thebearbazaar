@@ -57,7 +57,7 @@ function ListMatch() {
               <TableCell>Buyer</TableCell>
               <TableCell>Seller</TableCell>
               <TableCell>Price</TableCell>
-              <TableCell>Time</TableCell>
+              <TableCell>Date</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
