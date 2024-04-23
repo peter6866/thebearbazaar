@@ -24,6 +24,9 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import ListFeedbacks from "./ListFeedbacks";
 import BanUser from "./BanUser";
+import Stats from "./Stats";
+import ListMatches from "./ListMatches";
+import ListCancels from "./ListCancels";
 
 function AdminPage() {
   const [question, setQuestion] = useState("");
@@ -245,6 +248,8 @@ function AdminPage() {
         </div>
       </form>
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
+      <Stats />
+      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <p className="text-xl font-bold my-4 text-gray-800">Run Matches</p>
       <Button
         variant="contained"
@@ -330,6 +335,10 @@ function AdminPage() {
       </div>
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <BanUser />
+      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
+      <ListMatches />
+      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
+      <ListCancels />
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <ListFeedbacks />
 

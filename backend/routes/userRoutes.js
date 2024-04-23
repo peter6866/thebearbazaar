@@ -50,4 +50,6 @@ router
   .route("/delete-num")
   .post(authController.protect, userController.deletePhoneNum);
 
+router.get("/weekly-stats", userController.getWeeklyUserStats);
+
 module.exports = router;

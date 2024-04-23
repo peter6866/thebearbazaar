@@ -1,6 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controller/errorController");
@@ -14,10 +16,20 @@ const feedbackRouter = require("./routes/feedbackRoutes");
 const app = express();
 
 app.use(cors());
+app.use(helmet());
 
 if (process.env.NODE_DEV_ENV === "development") {
   app.use(morgan("dev"));
 }
+
+// Limit requests from same API
+const limiter = rateLimit({
+  max: 500,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many requests from this IP, please try again in an hour!",
+});
+if (process.env.NODE_DEV_ENV === "production") app.use("/api", limiter);
+
 app.use(express.json());
 
 app.use("/api/v1/users", userRouter);
