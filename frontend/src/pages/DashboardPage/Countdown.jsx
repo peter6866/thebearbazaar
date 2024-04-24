@@ -77,6 +77,7 @@ const Countdown = ({ target }) => {
         />
         <Typography
           component="div"
+          color="textPrimary"
           style={{
             position: "absolute",
           }}
@@ -114,7 +115,9 @@ const Countdown = ({ target }) => {
         </Typography>
       </Grid>
       <div>
-        <p className="text-md font-bold my-4 text-center">{targetDate}</p>
+        <p className="text-md font-bold my-4 text-center text-gray-900">
+          {targetDate}
+        </p>
         <Typography variant="body2" color="textSecondary" align="center">
           At this time, buyers and sellers will be paired together.
         </Typography>

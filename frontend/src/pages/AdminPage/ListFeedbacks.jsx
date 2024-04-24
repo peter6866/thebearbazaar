@@ -87,7 +87,7 @@ function ListFeedback() {
 
   return (
     <Box>
-      <p className="text-xl font-bold my-4 text-gray-800">Feedback</p>
+      <p className="text-xl font-bold my-4 text-gray-900">Feedback</p>
 
       <TableContainer>
         <Table>

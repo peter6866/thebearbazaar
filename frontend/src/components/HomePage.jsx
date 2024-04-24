@@ -29,7 +29,7 @@ function HomePage() {
   return (
     !isLoading &&
     isLoggedIn && (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-white">
         <div className="hidden md:block">
           <Tabs
             value={selectedTab}
@@ -53,7 +53,11 @@ function HomePage() {
             <Tab label="Logout" value="Log out" onClick={logout} />
           </Tabs>
         </div>
-        <Box>
+        <Box
+          sx={{
+            backgroundColor: "white",
+          }}
+        >
           <div className="max-w-[800px] min-w-[300px] p-4 md:p-6 mx-auto md:mt-4 mb-12">
             <div
               elevation={3}

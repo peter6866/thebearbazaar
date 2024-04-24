@@ -39,7 +39,9 @@ const PriceHistory = ({ history }) => {
           isVerticalZoomEnabled={false}
         />
       ) : (
-        <div>There are no past price records to show</div>
+        <div className="text-gray-600">
+          There are no past price records to show
+        </div>
       )}
     </Box>
   );

@@ -5,7 +5,6 @@ import {
   Radio,
   Button,
   Alert,
-  Paper,
   Slider,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -21,7 +20,7 @@ function Transact({
 }) {
   return (
     <>
-      <p className="text-xl font-bold my-4 text-gray-800">
+      <p className="text-xl font-bold my-4 text-gray-900">
         Buy or Sell 500 Mealpoints
       </p>
       <form onSubmit={sendBid}>
@@ -31,10 +30,20 @@ function Transact({
           value={transType}
           onChange={(e) => setTransType(e.target.value)}
         >
-          <FormControlLabel value="Buy" control={<Radio />} label="Buy" />
-          <FormControlLabel value="Sell" control={<Radio />} label="Sell" />
+          <FormControlLabel
+            value="Buy"
+            control={<Radio />}
+            label="Buy"
+            sx={{ color: "text.primary" }}
+          />
+          <FormControlLabel
+            value="Sell"
+            control={<Radio />}
+            label="Sell"
+            sx={{ color: "text.primary" }}
+          />
         </RadioGroup>
-        <Typography id="input-slider" gutterBottom>
+        <Typography id="input-slider" gutterBottom color="textPrimary">
           {transType === "Buy"
             ? "Maximum Price to Pay for 500 Meal Points"
             : "Minimum Price to Receive for 500 Meal Points"}
@@ -94,6 +103,7 @@ function Transact({
       </form>
       <Typography
         style={{ display: "flex", alignItems: "center", marginTop: "2rem" }}
+        sx={{ color: "text.primary" }}
       >
         <InfoIcon
           style={{

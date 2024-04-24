@@ -218,7 +218,7 @@ function AdminPage() {
 
   return (
     <>
-      <p className="text-xl font-bold my-4 text-gray-800">Post New FAQ</p>
+      <p className="text-xl font-bold my-4 text-gray-900">Post New FAQ</p>
       <form
         onSubmit={handleSubmit}
         style={{ display: "flex", flexDirection: "column", gap: "20px" }}
@@ -250,7 +250,7 @@ function AdminPage() {
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <Stats />
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
-      <p className="text-xl font-bold my-4 text-gray-800">Run Matches</p>
+      <p className="text-xl font-bold my-4 text-gray-900">Run Matches</p>
       <Button
         variant="contained"
         color="primary"
@@ -262,7 +262,7 @@ function AdminPage() {
       {matchError && <Alert severity="error">{matchError}</Alert>}
       {matchSuccess && <Alert severity="success">{matchSuccess}</Alert>}
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
-      <p className="text-xl font-bold my-4 text-gray-800">
+      <p className="text-xl font-bold my-4 text-gray-900">
         Change Match Day and Time
       </p>
       <form onSubmit={updateMatchTime}>
@@ -309,7 +309,7 @@ function AdminPage() {
         </div>
       </form>
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
-      <p className="text-xl font-bold my-4 text-gray-800">Reset Functions</p>
+      <p className="text-xl font-bold my-4 text-gray-900">Reset Functions</p>
       <div
         style={{
           display: "flex",

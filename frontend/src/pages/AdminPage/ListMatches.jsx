@@ -48,7 +48,7 @@ function ListMatch() {
 
   return (
     <Box>
-      <p className="text-xl font-bold my-4 text-gray-800">Matches</p>
+      <p className="text-xl font-bold my-4 text-gray-900">Matches</p>
 
       <TableContainer>
         <Table>

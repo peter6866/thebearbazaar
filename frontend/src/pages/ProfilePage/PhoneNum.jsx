@@ -154,7 +154,7 @@ function PhoneNum() {
 
   return (
     <div>
-      <p className="text-md font-bold my-4 text-gray-800">
+      <p className="text-md font-bold my-4 text-gray-900">
         Communication Preference
       </p>
       {isLoading ? (
@@ -198,6 +198,7 @@ function PhoneNum() {
                     />
                   }
                   label="Prefered communication method"
+                  sx={{ color: "text.primary" }}
                 />
               </div>
               {isCheckboxChanged && (

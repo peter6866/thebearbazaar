@@ -48,7 +48,7 @@ function ListCancels() {
 
   return (
     <Box>
-      <p className="text-xl font-bold my-4 text-gray-800">Canceled Matches</p>
+      <p className="text-xl font-bold my-4 text-gray-900">Canceled Matches</p>
       <TableContainer>
         <Table>
           <TableHead>

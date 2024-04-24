@@ -33,7 +33,7 @@ function ViewMatched({
 
   return (
     <>
-      <p className="text-xl font-bold my-4 text-gray-800">
+      <p className="text-xl font-bold my-4 text-gray-900">
         You have been matched with a{" "}
         {matchedType === "Seller" ? "seller" : "buyer"}
       </p>
@@ -41,6 +41,7 @@ function ViewMatched({
         <Typography
           variant="body1"
           component="p"
+          color="textPrimary"
           style={{ marginBottom: "10px" }}
         >
           <strong>{matchedType}'s Email:</strong> {matchedEmail}
@@ -50,6 +51,7 @@ function ViewMatched({
             <Typography
               variant="body1"
               component="p"
+              color="textPrimary"
               style={{ marginBottom: "10px" }}
             >
               <strong>{matchedType}'s Phone:</strong> {matchedPhone}
@@ -57,6 +59,7 @@ function ViewMatched({
             <Typography
               variant="body1"
               component="p"
+              color="textPrimary"
               style={{ marginBottom: "10px" }}
             >
               The {matchedType.toLowerCase()} perferred to be contacted by the
@@ -67,6 +70,7 @@ function ViewMatched({
         <Typography
           variant="body1"
           component="p"
+          color="textPrimary"
           style={{ marginBottom: "20px" }}
         >
           <strong>Price:</strong> ${matchedPrice}
@@ -74,6 +78,7 @@ function ViewMatched({
         <Typography
           variant="body1"
           component="p"
+          color="textPrimary"
           style={{ marginBottom: "10px" }}
         >
           Coordinate a time to meet at the Dining Services Office (in BD) and
@@ -82,6 +87,7 @@ function ViewMatched({
         <Typography
           variant="body1"
           component="p"
+          color="textPrimary"
           style={{ marginBottom: "20px" }}
         >
           <strong>

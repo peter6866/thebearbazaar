@@ -73,7 +73,7 @@ function Stats() {
   }, [y]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col" data-theme="light">
       <div className="stats shadow mb-2">
         <div className="stat place-items-center">
           <div className="stat-title">Current Users</div>

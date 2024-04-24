@@ -45,7 +45,7 @@ function NavbarPhone({ activeTab, setActiveTab, handleClick = null }) {
       }`}
     >
       <IconComponent
-        className={`h-6 w-6 ${isActive ? "text-[#a51417]" : "text-gray-800"}`}
+        className={`h-6 w-6 ${isActive ? "text-[#a51417]" : "text-gray-900"}`}
       />
     </div>
   );

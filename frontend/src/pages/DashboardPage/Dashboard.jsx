@@ -95,7 +95,7 @@ function Dashboard({ useInAuth = false }) {
     <>
       {!useInAuth && (
         <>
-          <p className="text-2xl font-bold my-4 text-gray-800">
+          <p className="text-2xl font-bold my-4 text-gray-900">
             Welcome to The Bear Bazaar!
           </p>
           <Divider
@@ -107,7 +107,7 @@ function Dashboard({ useInAuth = false }) {
       <p
         className={`text-xl font-bold ${
           useInAuth ? "mt-3" : "my-4"
-        } text-gray-800`}
+        } text-gray-900`}
       >
         Active Market Information for 500 Meal Points
       </p>
@@ -120,7 +120,7 @@ function Dashboard({ useInAuth = false }) {
 
       {!useInAuth && (
         <>
-          <p className="text-xl font-bold mb-12 text-gray-800">
+          <p className="text-xl font-bold mb-12 text-gray-900">
             Countdown to Next Buyer/Seller Matching
           </p>
           <Countdown target={matchTime} />
@@ -133,7 +133,7 @@ function Dashboard({ useInAuth = false }) {
       <p
         className={`text-xl font-bold ${
           useInAuth ? "mb-4" : "mb-8"
-        } text-gray-800`}
+        } text-gray-900`}
       >
         Price History for 500 Meal Points
       </p>

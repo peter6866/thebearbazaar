@@ -41,7 +41,7 @@ function Auth() {
         <div className="md:w-2/3 p-2 flex flex-col mb-4 md:mb-0 md:mr-4">
           <div className="flex items-center mb-2">
             <img src="/pawlogo.png" alt="Ghostlamp logo" className="h-8 mr-3" />
-            <span className="text-2xl font-bold text-gray-800">
+            <span className="text-2xl font-bold text-gray-900">
               The Bear Bazaar
             </span>
           </div>

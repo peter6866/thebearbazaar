@@ -3,7 +3,7 @@ import { Typography, Paper, Button } from "@mui/material";
 function ViewBid({ bidType, bidPrice, cancelBid }) {
   return (
     <>
-      <p className="text-xl font-bold my-4 text-gray-800">Bid Information</p>
+      <p className="text-xl font-bold my-4 text-gray-900">Bid Information</p>
       <div>
         <Typography
           variant="body1"
