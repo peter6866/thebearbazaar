@@ -218,49 +218,7 @@ function AdminPage() {
 
   return (
     <>
-      <p className="text-xl font-bold my-4 text-gray-900">Post New FAQ</p>
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-      >
-        <TextField
-          label="Question"
-          variant="outlined"
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          required
-        />
-        <TextField
-          label="Answer"
-          variant="outlined"
-          multiline
-          rows={4}
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-          required
-        />
-        {error && <Alert severity="error">{error}</Alert>}
-        {success && <Alert severity="success">{success}</Alert>}
-        <div className="btn-wrapper">
-          <Button type="submit" variant="contained" color="primary">
-            Post FAQ
-          </Button>
-        </div>
-      </form>
-      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <Stats />
-      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
-      <p className="text-xl font-bold my-4 text-gray-900">Run Matches</p>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={runMatches}
-        style={{ marginBottom: "1rem" }}
-      >
-        Run Matches
-      </Button>
-      {matchError && <Alert severity="error">{matchError}</Alert>}
-      {matchSuccess && <Alert severity="success">{matchSuccess}</Alert>}
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <p className="text-xl font-bold my-4 text-gray-900">
         Change Match Day and Time
@@ -275,6 +233,7 @@ function AdminPage() {
                 id="day"
                 value={selectedDay}
                 onChange={handleDayChange}
+                label="Day"
               >
                 <MenuItem value="1">Monday</MenuItem>
                 <MenuItem value="2">Tuesday</MenuItem>
@@ -309,15 +268,25 @@ function AdminPage() {
         </div>
       </form>
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
-      <p className="text-xl font-bold my-4 text-gray-900">Reset Functions</p>
+      <ListMatches />
+      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
+      <ListCancels />
+      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
+      <BanUser />
+      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
+      <p className="text-xl font-bold my-4 text-gray-900">DB Functions</p>
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           marginTop: "20px",
-          gap: "2rem",
+          marginBottom: "20px",
+          gap: "4rem",
         }}
       >
+        <Button variant="contained" color="primary" onClick={runMatches}>
+          Run Matches
+        </Button>
         <Button
           variant="contained"
           color="primary"
@@ -333,14 +302,40 @@ function AdminPage() {
           Delete Matches
         </Button>
       </div>
-      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
-      <BanUser />
-      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
-      <ListMatches />
-      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
-      <ListCancels />
+      {matchError && <Alert severity="error">{matchError}</Alert>}
+      {matchSuccess && <Alert severity="success">{matchSuccess}</Alert>}
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <ListFeedbacks />
+      <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
+      <p className="text-xl font-bold my-4 text-gray-900">Post New FAQ</p>
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+      >
+        <TextField
+          label="Question"
+          variant="outlined"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          required
+        />
+        <TextField
+          label="Answer"
+          variant="outlined"
+          multiline
+          rows={4}
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+          required
+        />
+        {error && <Alert severity="error">{error}</Alert>}
+        {success && <Alert severity="success">{success}</Alert>}
+        <div className="btn-wrapper">
+          <Button type="submit" variant="contained" color="primary">
+            Post FAQ
+          </Button>
+        </div>
+      </form>
 
       {/* Delete Bids Dialog */}
       <Dialog

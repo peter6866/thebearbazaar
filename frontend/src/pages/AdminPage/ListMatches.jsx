@@ -9,6 +9,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TablePagination,
 } from "@mui/material";
 import moment from "moment-timezone";
 
@@ -19,8 +20,20 @@ function formatDate(isoString) {
 
 function ListMatch() {
   const [matches, setMatches] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
   const config = useConfig();
   const { authToken } = useAuth();
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   const fetchMatches = useCallback(async () => {
     try {
@@ -46,6 +59,11 @@ function ListMatch() {
     fetchMatches();
   }, [fetchMatches]);
 
+  const dataToShow = matches.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
   return (
     <Box>
       <p className="text-xl font-bold my-4 text-gray-900">Matches</p>
@@ -61,8 +79,8 @@ function ListMatch() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {matches.map((match) => (
-              <TableRow key={match.id}>
+            {dataToShow.map((match) => (
+              <TableRow key={match.id} hover>
                 <TableCell>{match.buyerid}</TableCell>
                 <TableCell>{match.sellerid}</TableCell>
                 <TableCell>{match.price}</TableCell>
@@ -72,6 +90,15 @@ function ListMatch() {
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={matches.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Box>
   );
 }

@@ -95,9 +95,15 @@ function Dashboard({ useInAuth = false }) {
     <>
       {!useInAuth && (
         <>
-          <p className="text-2xl font-bold my-4 text-gray-900">
+          <p className="text-2xl font-bold mt-2 mb-4 text-gray-900">
             Welcome to The Bear Bazaar!
           </p>
+
+          <ul className="steps steps-vertical sm:steps-horizontal w-full sm:mt-2">
+            <li className="step step-secondary">Place a buy/sell bid</li>
+            <li className="step step-secondary">Wait and get matched</li>
+            <li className="step step-secondary">Contact and trade</li>
+          </ul>
           <Divider
             style={{ marginTop: "2rem", marginBottom: "2rem" }}
           ></Divider>
