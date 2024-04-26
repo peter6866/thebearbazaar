@@ -208,7 +208,7 @@ function Login({ flip }) {
   if (knowPass) {
     return (
       <div className="container-inner">
-        <p className="font-bold text-lg mb-4">Login</p>
+        <p className="font-bold text-lg mb-4 text-gray-900">Login</p>
 
         <form onSubmit={submitLogin}>
           <div>
@@ -253,7 +253,9 @@ function Login({ flip }) {
             marginTop: "2rem",
           }}
         >
-          <Typography variant="body1">Need an account?</Typography>
+          <Typography variant="body1" color="text.primary">
+            Need an account?
+          </Typography>
           <Button
             onClick={flip}
             style={{ textTransform: "none", fontSize: "1rem" }}
@@ -269,7 +271,9 @@ function Login({ flip }) {
             marginTop: "1rem",
           }}
         >
-          <Typography variant="body1">Can't log in?</Typography>
+          <Typography variant="body1" color="text.primary">
+            Can't log in?
+          </Typography>
           <Button
             onClick={() => {
               flipKnowPass(false);
@@ -428,7 +432,9 @@ function Login({ flip }) {
             marginTop: "2rem",
           }}
         >
-          <Typography variant="body1">Remember your password?</Typography>
+          <Typography variant="body1" color="text.primary">
+            Remember your password?
+          </Typography>
           <Button
             onClick={() => {
               flipKnowPass(true);

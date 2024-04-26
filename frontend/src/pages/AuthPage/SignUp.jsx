@@ -172,7 +172,7 @@ function SignUp({ flip }) {
 
   return (
     <div className="container-inner">
-      <p className="font-bold text-lg mb-4">
+      <p className="font-bold text-lg mb-4 text-gray-900">
         {step === 2 && (
           <IconButton
             aria-label="back"

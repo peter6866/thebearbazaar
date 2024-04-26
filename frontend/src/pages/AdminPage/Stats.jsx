@@ -74,7 +74,7 @@ function Stats() {
 
   return (
     <div className="flex flex-col" data-theme="light">
-      <div className="stats shadow mb-2">
+      <div className="stats border border-gray-200 shadow mb-2">
         <div className="stat place-items-center">
           <div className="stat-title">Current Users</div>
           <div className="stat-value text-secondary">{cusumY.at(-1)}</div>
@@ -104,13 +104,15 @@ function Stats() {
         series={[
           {
             data: y.length > 12 ? y.slice(-12) : y,
-            label: "New User Weekly Registers",
+            label: "New Weekly Registers",
             color: "#a51417",
+            curve: "linear",
           },
         ]}
-        margin={{ top: 40, right: 25, bottom: 35, left: 30 }}
+        margin={{ top: 45, right: 25, bottom: 35, left: 30 }}
         height={380}
         sx={{ "& .MuiChartsAxis-tickLabel tspan": { fontSize: 14 } }}
+        grid={{ horizontal: true }}
       />
     </div>
   );

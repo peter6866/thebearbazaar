@@ -16,6 +16,9 @@ function HomePage() {
   const [selectedTab, setSelectedTab] = useState("Dashboard");
   const navigate = useNavigate();
 
+  const [hasBid, setHasBid] = useState(false);
+  const [isMatched, setIsMatched] = useState(false);
+
   const changeTab = (e, tab) => {
     setSelectedTab(tab);
   };
@@ -63,8 +66,17 @@ function HomePage() {
               elevation={3}
               className="p-8 rounded-lg shadow-md border border-gray-200"
             >
-              {selectedTab === "Dashboard" && <Dashboard />}
-              {selectedTab === "My Bid" && <BidPage />}
+              {selectedTab === "Dashboard" && (
+                <Dashboard hasBid={hasBid} isMatched={isMatched} />
+              )}
+              {selectedTab === "My Bid" && (
+                <BidPage
+                  hasBid={hasBid}
+                  isMatched={isMatched}
+                  setHasBid={setHasBid}
+                  setIsMatched={setIsMatched}
+                />
+              )}
               {selectedTab === "FAQ" && <Faq />}
               {selectedTab === "Admin" && <AdminPage />}
               {selectedTab === "Profile" && <Profile />}

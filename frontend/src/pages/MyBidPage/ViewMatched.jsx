@@ -103,6 +103,7 @@ function ViewMatched({
             Cancel Transaction
           </Button>
         </div>
+
         <Dialog
           open={openCancelTransDialog}
           onClose={handleCloseCancelTransDialog}
