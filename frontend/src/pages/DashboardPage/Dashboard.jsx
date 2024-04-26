@@ -5,7 +5,7 @@ import MarketInfo from "./MarketInfo";
 import { Divider } from "@mui/material";
 import { useConfig } from "../../context/ConfigContext";
 
-function Dashboard({ useInAuth = false }) {
+function Dashboard({ hasBid = false, isMatched = false, useInAuth = false }) {
   const config = useConfig();
   const [priceHistory, setPriceHistory] = useState([]);
   const [matchTime, setMatchTime] = useState();
@@ -101,8 +101,12 @@ function Dashboard({ useInAuth = false }) {
 
           <ul className="steps steps-vertical sm:steps-horizontal w-full sm:mt-2">
             <li className="step step-secondary">Place a buy/sell bid</li>
-            <li className="step step-secondary">Wait and get matched</li>
-            <li className="step step-secondary">Contact and trade</li>
+            <li className={`step ${(hasBid || isMatched) && "step-secondary"}`}>
+              Wait and get matched
+            </li>
+            <li className={`step ${!hasBid && isMatched && "step-secondary"}`}>
+              Contact and trade
+            </li>
           </ul>
           <Divider
             style={{ marginTop: "2rem", marginBottom: "2rem" }}

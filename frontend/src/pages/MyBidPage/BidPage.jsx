@@ -5,7 +5,7 @@ import Transact from "./Transact";
 import { useAuth } from "../../context/AuthContext";
 import { useConfig } from "../../context/ConfigContext";
 
-function BidPage() {
+function BidPage({ hasBid, isMatched, setHasBid, setIsMatched }) {
   const { authToken } = useAuth();
   const config = useConfig();
 
@@ -16,7 +16,6 @@ function BidPage() {
   //the variables when already bid
   const [bidType, setBidType] = useState("");
   const [bidPrice, setBidPrice] = useState(0);
-  const [hasBid, setHasBid] = useState(false);
 
   //the vairables when making a bid
   const [transType, setTransType] = useState("Buy");
@@ -26,7 +25,6 @@ function BidPage() {
   });
 
   //the variables when matched
-  const [isMatched, setIsMatched] = useState(false);
   const [matchedType, setMatchedType] = useState("");
   const [matchedEmail, setmatchedEmail] = useState("");
   const [matchedPhone, setMatchedPhone] = useState("");
