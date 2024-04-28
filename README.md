@@ -1,14 +1,4 @@
-# Semester-Project
-
-## Team Name: <Insert Here>
-
-## Group #: 10
-
-## Contributors: <Insert Here>
-
-## TA: Mutaz Badr
-
-## Instructions/Link to access: [The Bear Bazaar](https://www.thebearbazaar.com)
+# [The Bear Bazaar](https://www.thebearbazaar.com)
 
 # Starting the Project
 
