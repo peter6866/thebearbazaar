@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: peter6866/thebearbazaar-backend:beta9
+          image: peter6866/thebearbazaar-backend:latest
           envFrom:
             - configMapRef:
                 name: backend-config
