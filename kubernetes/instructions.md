@@ -42,6 +42,12 @@ Get credentials for the AKS cluster and merge them into the local kubeconfig fil
 az aks get-credentials --resource-group rg-personal --name thebearbazaar
 ```
 
+Create a Kubernetes secret named "frontend-config" from a JSON file:
+
+```bash
+kubectl create secret generic frontend-config --from-file=config.json=../secrets/config.json
+```
+
 Install the NGINX Ingress Controller using Helm with Azure-specific annotations and settings:
 
 ```bash
