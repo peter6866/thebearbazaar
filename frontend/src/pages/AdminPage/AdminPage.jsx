@@ -27,8 +27,10 @@ import BanUser from "./BanUser";
 import Stats from "./Stats";
 import ListMatches from "./ListMatches";
 import ListCancels from "./ListCancels";
+import { useNavigate } from "react-router-dom";
 
 function AdminPage() {
+  const navigate = useNavigate();
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState("");
@@ -43,7 +45,12 @@ function AdminPage() {
   const [changeTimeSuccess, setChangeTimeSuccess] = useState("");
 
   const config = useConfig();
-  const { authToken } = useAuth();
+  const { authToken, role } = useAuth();
+
+  if (role !== "admin") {
+    navigate("/");
+  }
+
   dayjs.extend(utc);
 
   const handleSubmit = async (e) => {

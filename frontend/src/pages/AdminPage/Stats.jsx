@@ -26,7 +26,7 @@ function Stats() {
       } catch (error) {}
     };
     fetchWeeklyUserStats();
-  }, []);
+  }, [authToken, config.REACT_APP_API_URL]);
 
   const lineChartData = useMemo(() => {
     return weeklyUserStats.map((stat, index) => ({
@@ -70,7 +70,7 @@ function Stats() {
     if (y.length < 2) return 0;
     const changePercentage = (newRegistersChange / y.at(-2)) * 100;
     return +changePercentage.toFixed(1);
-  }, [y]);
+  }, [y, newRegistersChange]);
 
   return (
     <div className="flex flex-col" data-theme="light">

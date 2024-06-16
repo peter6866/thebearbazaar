@@ -4,8 +4,11 @@ import PriceHistory from "./PriceHistory";
 import MarketInfo from "./MarketInfo";
 import { Divider } from "@mui/material";
 import { useConfig } from "../../context/ConfigContext";
+import { useSelector } from "react-redux";
+import { selectHasBid } from "../../features/bidSlice";
+import { selectIsMatched } from "../../features/bidSlice";
 
-function Dashboard({ hasBid = false, isMatched = false, useInAuth = false }) {
+function Dashboard({ useInAuth = false }) {
   const config = useConfig();
   const [priceHistory, setPriceHistory] = useState([]);
   const [matchTime, setMatchTime] = useState();
@@ -15,6 +18,9 @@ function Dashboard({ hasBid = false, isMatched = false, useInAuth = false }) {
     buyPrice: 0,
     sellPrice: 0,
   });
+
+  const hasBid = useSelector(selectHasBid);
+  const isMatched = useSelector(selectIsMatched);
 
   const loadPriceHistory = useCallback(async () => {
     if (!config || !config.REACT_APP_API_URL) {

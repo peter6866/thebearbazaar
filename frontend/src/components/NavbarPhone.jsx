@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   ChartBarIcon,
   BanknotesIcon,
@@ -12,27 +12,42 @@ import {
   UserCircleIcon as UserCircleOutlined,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { useLocation } from "react-router-dom";
 
-function NavbarPhone({ activeTab, setActiveTab, handleClick = null }) {
-  const renderTabButton = (tabName, IconComponent) => {
-    const isActive = activeTab === tabName;
+function NavbarPhone() {
+  const { logout } = useAuth();
+
+  const location = useLocation();
+  const currentRoute = location.pathname;
+
+  const renderTabButton = (
+    tabName,
+    activeIconComponent,
+    IconComponent,
+    path
+  ) => {
+    const isActive = currentRoute === path;
     return (
-      <button
+      <NavLink
+        key={tabName}
+        to={path}
         className={`flex flex-col items-center text-gray-500 ${
           isActive ? "text-[#a51417]" : ""
         }`}
-        onClick={() => setActiveTab(tabName)}
       >
         <IconRenderComponent
-          IconComponent={IconComponent}
+          IconComponent={isActive ? activeIconComponent : IconComponent}
           isActive={isActive}
         />
+
         <span
           className={`text-sm ${isActive ? "text-[#a51417]" : "text-gray-500"}`}
         >
           {tabName}
         </span>
-      </button>
+      </NavLink>
     );
   };
 
@@ -54,7 +69,7 @@ function NavbarPhone({ activeTab, setActiveTab, handleClick = null }) {
     return (
       <button
         className="flex flex-col items-center text-gray-500"
-        onClick={handleClick}
+        onClick={logout}
       >
         <IconRenderComponent
           IconComponent={ArrowRightOnRectangleIcon}
@@ -67,18 +82,20 @@ function NavbarPhone({ activeTab, setActiveTab, handleClick = null }) {
 
   return (
     <div className="flex justify-between items-center bg-white px-3 pb-2 shadow-lg shadow-gray-800">
-      {activeTab === "Dashboard"
-        ? renderTabButton("Dashboard", ChartBarIcon)
-        : renderTabButton("Dashboard", ChartBarOutlined)}
-      {activeTab === "My Bid"
-        ? renderTabButton("My Bid", BanknotesIcon)
-        : renderTabButton("My Bid", BanknotesOutlined)}
-      {activeTab === "FAQ"
-        ? renderTabButton("FAQ", QuestionMarkCircleIcon)
-        : renderTabButton("FAQ", QuestionMarkCircleOutlined)}
-      {activeTab === "Profile"
-        ? renderTabButton("Profile", UserCircleIcon)
-        : renderTabButton("Profile", UserCircleOutlined)}
+      {renderTabButton("Dashboard", ChartBarIcon, ChartBarOutlined, "/")}
+      {renderTabButton("My Bid", BanknotesIcon, BanknotesOutlined, "/mybid")}
+      {renderTabButton(
+        "FAQ",
+        QuestionMarkCircleIcon,
+        QuestionMarkCircleOutlined,
+        "/faq"
+      )}
+      {renderTabButton(
+        "Profile",
+        UserCircleIcon,
+        UserCircleOutlined,
+        "/profile"
+      )}
       {renderLogoutButton()}
     </div>
   );

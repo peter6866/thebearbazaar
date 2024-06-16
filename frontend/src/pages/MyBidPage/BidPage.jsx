@@ -4,10 +4,22 @@ import ViewMatched from "./ViewMatched";
 import Transact from "./Transact";
 import { useAuth } from "../../context/AuthContext";
 import { useConfig } from "../../context/ConfigContext";
+import { useSelector } from "react-redux";
+import {
+  selectHasBid,
+  selectIsMatched,
+  setHasBid,
+  setIsMatched,
+} from "../../features/bidSlice";
+import { useDispatch } from "react-redux";
 
-function BidPage({ hasBid, isMatched, setHasBid, setIsMatched }) {
+function BidPage() {
   const { authToken } = useAuth();
   const config = useConfig();
+
+  const dispatch = useDispatch();
+  const hasBid = useSelector(selectHasBid);
+  const isMatched = useSelector(selectIsMatched);
 
   //variable used to hide bid placement while fetching data
   const [loadingBid, setLoadingBid] = useState(true);
@@ -46,7 +58,7 @@ function BidPage({ hasBid, isMatched, setHasBid, setIsMatched }) {
       const data = await response.json();
 
       if (response.ok && data) {
-        setIsMatched(true);
+        dispatch(setIsMatched(true));
         const { matchedType, email, phoneNum, price } = data.data.matchDetails;
         setMatchedType(matchedType);
         setmatchedEmail(email);
@@ -54,14 +66,14 @@ function BidPage({ hasBid, isMatched, setHasBid, setIsMatched }) {
         setMatchedPrice(price);
         setLoadingMatch(false);
       } else {
-        setIsMatched(false);
+        dispatch(setIsMatched(false));
         setLoadingMatch(false);
       }
     } catch (error) {
-      setIsMatched(false);
+      dispatch(setIsMatched(false));
       setLoadingMatch(false);
     }
-  }, [authToken, config]);
+  }, [authToken, config, dispatch]);
 
   const fetchBid = useCallback(async () => {
     try {
@@ -81,17 +93,17 @@ function BidPage({ hasBid, isMatched, setHasBid, setIsMatched }) {
       if (response.ok && data) {
         setBidType(data.trans);
         setBidPrice(data.price);
-        setHasBid(true);
+        dispatch(setHasBid(true));
         setLoadingBid(false);
       } else {
-        setHasBid(false);
+        dispatch(setHasBid(false));
         setLoadingBid(false);
       }
     } catch (error) {
-      setHasBid(false);
+      dispatch(setHasBid(false));
       setLoadingBid(false);
     }
-  }, [authToken, config]);
+  }, [authToken, config, dispatch]);
 
   const cancelBid = async () => {
     try {
@@ -110,7 +122,7 @@ function BidPage({ hasBid, isMatched, setHasBid, setIsMatched }) {
       );
 
       if (response.ok) {
-        setHasBid(false);
+        dispatch(setHasBid(false));
       }
     } catch (error) {}
   };
@@ -149,7 +161,7 @@ function BidPage({ hasBid, isMatched, setHasBid, setIsMatched }) {
       } else {
         setBidType(transType);
         setBidPrice(bidData["Price"]);
-        setHasBid(true);
+        dispatch(setHasBid(true));
       }
     } catch (error) {}
   };
@@ -169,12 +181,12 @@ function BidPage({ hasBid, isMatched, setHasBid, setIsMatched }) {
           }),
         }
       );
-      const data = await response.json();
+
       if (!response.ok) {
         console.log("Error canceling transaction");
       } else {
-        setHasBid(false);
-        setIsMatched(false);
+        dispatch(setHasBid(false));
+        dispatch(setIsMatched(false));
       }
     } catch (error) {}
   };

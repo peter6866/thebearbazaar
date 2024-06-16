@@ -1,4 +1,4 @@
-import { Typography, Paper, Button } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 
 function ViewBid({ bidType, bidPrice, cancelBid }) {
   return (
