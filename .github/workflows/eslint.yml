@@ -1,0 +1,62 @@
+name: ESLint
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: "25 4 * * 4"
+
+jobs:
+  eslint:
+    name: Run eslint scanning
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install ESLint for Frontend
+        run: |
+          cd frontend
+          npm install
+
+      - name: Install ESLint for Backend
+        run: |
+          cd backend
+          npm install
+
+      - name: Run ESLint on Frontend
+        run: |
+          cd frontend
+          npx eslint "src/**/*.{js,jsx}" --format @microsoft/eslint-formatter-sarif --output-file ../eslint-frontend-results.sarif
+        continue-on-error: true
+
+      - name: Run ESLint on Backend
+        run: |
+          cd backend
+          npx eslint . --config .eslint.config.js --ext .js --format @microsoft/eslint-formatter-sarif --output-file ../eslint-backend-results.sarif
+        continue-on-error: true
+
+      - name: Upload Frontend analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: eslint-frontend-results.sarif
+          category: "Frontend ESLint"
+          wait-for-processing: true
+
+      - name: Upload Backend analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: eslint-backend-results.sarif
+          category: "Backend ESLint"
+          wait-for-processing: true

@@ -8,7 +8,7 @@ router.route("/sell-bid").post(authController.protect, bidsController.sellBid);
 // post buy bid route
 router.route("/buy-bid").post(authController.protect, bidsController.buyBid);
 //get current bid
-router.route("/get-bid").post(authController.protect, bidsController.getBid);
+router.route("/get-bid").get(authController.protect, bidsController.getBid);
 //cancel bid
 router
   .route("/cancel-bid")

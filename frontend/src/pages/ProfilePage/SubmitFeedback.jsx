@@ -18,7 +18,7 @@ function SubmitFeedback() {
   const [feedbackSuccess, setFeedbackSuccess] = useState("");
 
   const { authToken } = useAuth();
-  const config = useConfig();
+  const { config } = useConfig();
 
   const handleFeedbackSubmit = async (e) => {
     e.preventDefault();

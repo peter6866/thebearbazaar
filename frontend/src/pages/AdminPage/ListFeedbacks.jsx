@@ -14,7 +14,7 @@ import {
 
 function ListFeedback() {
   const [feedbacks, setFeedbacks] = useState([]);
-  const config = useConfig();
+  const { config } = useConfig();
   const { authToken } = useAuth();
 
   const fetchFeedbacks = useCallback(async () => {

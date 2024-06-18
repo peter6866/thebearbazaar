@@ -20,7 +20,9 @@ exports.matchInfo = catchAsync(async (req, res, next) => {
   const matchBuy = await MatchBids.findOne({ where: { buyer_id: id } });
   const matchSell = await MatchBids.findOne({ where: { seller_id: id } });
   if (!matchBuy && !matchSell) {
-    return next(new AppError("No match found", 404));
+    res.status(200).json({
+      status: 'success'
+    });
   }
 
   let matchDetails;

@@ -23,7 +23,7 @@ function SignUp({ flip }) {
   });
 
   const { login } = useAuth();
-  const config = useConfig();
+  const { config } = useConfig();
   let navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);

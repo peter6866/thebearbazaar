@@ -19,7 +19,7 @@ function formatDate(isoString) {
 
 function ListCancels() {
   const [cancels, setCancels] = useState([]);
-  const config = useConfig();
+  const { config } = useConfig();
   const { authToken } = useAuth();
 
   const fetchCancels = useCallback(async () => {

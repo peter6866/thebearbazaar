@@ -26,7 +26,7 @@ function Login({ flip }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const { login } = useAuth();
-  const config = useConfig();
+  const { config } = useConfig();
 
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");

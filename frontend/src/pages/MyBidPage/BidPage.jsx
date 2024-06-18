@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import ViewBid from "./ViewBid";
 import ViewMatched from "./ViewMatched";
 import Transact from "./Transact";
@@ -8,26 +8,35 @@ import { useSelector } from "react-redux";
 import {
   selectHasBid,
   selectIsMatched,
+  selectLoading,
+  selectError,
+  selectMatchedType,
+  selectMatchedEmail,
+  selectMatchedPhone,
+  selectMatchedPrice,
+  selectBidType,
+  selectBidPrice,
   setHasBid,
   setIsMatched,
+  setBidType,
+  setBidPrice,
 } from "../../features/bidSlice";
 import { useDispatch } from "react-redux";
 
 function BidPage() {
   const { authToken } = useAuth();
-  const config = useConfig();
+  const { config } = useConfig();
 
   const dispatch = useDispatch();
   const hasBid = useSelector(selectHasBid);
   const isMatched = useSelector(selectIsMatched);
 
   //variable used to hide bid placement while fetching data
-  const [loadingBid, setLoadingBid] = useState(true);
-  const [loadingMatch, setLoadingMatch] = useState(true);
+  const loading = useSelector(selectLoading);
 
   //the variables when already bid
-  const [bidType, setBidType] = useState("");
-  const [bidPrice, setBidPrice] = useState(0);
+  const bidType = useSelector(selectBidType);
+  const bidPrice = useSelector(selectBidPrice);
 
   //the vairables when making a bid
   const [transType, setTransType] = useState("Buy");
@@ -37,73 +46,73 @@ function BidPage() {
   });
 
   //the variables when matched
-  const [matchedType, setMatchedType] = useState("");
-  const [matchedEmail, setmatchedEmail] = useState("");
-  const [matchedPhone, setMatchedPhone] = useState("");
-  const [matchedPrice, setMatchedPrice] = useState(0);
+  const matchedType = useSelector(selectMatchedType);
+  const matchedEmail = useSelector(selectMatchedEmail);
+  const matchedPhone = useSelector(selectMatchedPhone);
+  const matchedPrice = useSelector(selectMatchedPrice);
 
-  const fetchMatched = useCallback(async () => {
-    try {
-      const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/match/match-info`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+  // const fetchMatched = useCallback(async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `${config.REACT_APP_API_URL}/v1/match/match-info`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${authToken}`,
+  //         },
+  //       }
+  //     );
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      if (response.ok && data) {
-        dispatch(setIsMatched(true));
-        const { matchedType, email, phoneNum, price } = data.data.matchDetails;
-        setMatchedType(matchedType);
-        setmatchedEmail(email);
-        setMatchedPhone(phoneNum);
-        setMatchedPrice(price);
-        setLoadingMatch(false);
-      } else {
-        dispatch(setIsMatched(false));
-        setLoadingMatch(false);
-      }
-    } catch (error) {
-      dispatch(setIsMatched(false));
-      setLoadingMatch(false);
-    }
-  }, [authToken, config, dispatch]);
+  //     if (response.ok && data) {
+  //       dispatch(setIsMatched(true));
+  //       const { matchedType, email, phoneNum, price } = data.data.matchDetails;
+  //       setMatchedType(matchedType);
+  //       setmatchedEmail(email);
+  //       setMatchedPhone(phoneNum);
+  //       setMatchedPrice(price);
+  //       setLoadingMatch(false);
+  //     } else {
+  //       dispatch(setIsMatched(false));
+  //       setLoadingMatch(false);
+  //     }
+  //   } catch (error) {
+  //     dispatch(setIsMatched(false));
+  //     setLoadingMatch(false);
+  //   }
+  // }, [authToken, config, dispatch]);
 
-  const fetchBid = useCallback(async () => {
-    try {
-      const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/bids/get-bid`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+  // const fetchBid = useCallback(async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `${config.REACT_APP_API_URL}/v1/bids/get-bid`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${authToken}`,
+  //         },
+  //       }
+  //     );
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      if (response.ok && data) {
-        setBidType(data.trans);
-        setBidPrice(data.price);
-        dispatch(setHasBid(true));
-        setLoadingBid(false);
-      } else {
-        dispatch(setHasBid(false));
-        setLoadingBid(false);
-      }
-    } catch (error) {
-      dispatch(setHasBid(false));
-      setLoadingBid(false);
-    }
-  }, [authToken, config, dispatch]);
+  //     if (response.ok && data) {
+  //       setBidType(data.trans);
+  //       setBidPrice(data.price);
+  //       dispatch(setHasBid(true));
+  //       setLoadingBid(false);
+  //     } else {
+  //       dispatch(setHasBid(false));
+  //       setLoadingBid(false);
+  //     }
+  //   } catch (error) {
+  //     dispatch(setHasBid(false));
+  //     setLoadingBid(false);
+  //   }
+  // }, [authToken, config, dispatch]);
 
   const cancelBid = async () => {
     try {
@@ -127,17 +136,12 @@ function BidPage() {
     } catch (error) {}
   };
 
-  useEffect(() => {
-    fetchBid();
-    fetchMatched();
-  }, [fetchBid, fetchMatched]);
-
   let update = (e) => {
     const { name, value } = e.target;
     setBidData({ ...bidData, [name]: value });
   };
 
-  let sendBid = async (e) => {
+  const sendBid = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(
@@ -159,8 +163,8 @@ function BidPage() {
       if (!response.ok) {
         setErrorMessage(data.message);
       } else {
-        setBidType(transType);
-        setBidPrice(bidData["Price"]);
+        dispatch(setBidType(transType));
+        dispatch(setBidPrice(bidData["Price"]));
         dispatch(setHasBid(true));
       }
     } catch (error) {}
@@ -183,7 +187,7 @@ function BidPage() {
       );
 
       if (!response.ok) {
-        console.log("Error canceling transaction");
+        alert("Error canceling transaction");
       } else {
         dispatch(setHasBid(false));
         dispatch(setIsMatched(false));
@@ -193,7 +197,7 @@ function BidPage() {
 
   return (
     <div>
-      {!hasBid && !isMatched && !loadingMatch && !loadingBid && (
+      {!hasBid && !isMatched && !loading && (
         <Transact
           sendBid={sendBid}
           transType={transType}

@@ -44,7 +44,7 @@ function AdminPage() {
   const [changeTimeError, setChangeTimeError] = useState("");
   const [changeTimeSuccess, setChangeTimeSuccess] = useState("");
 
-  const config = useConfig();
+  const { config } = useConfig();
   const { authToken, role } = useAuth();
 
   if (role !== "admin") {

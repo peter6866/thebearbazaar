@@ -12,7 +12,7 @@ import { useConfig } from "../../context/ConfigContext";
 import { useAuth } from "../../context/AuthContext";
 
 function PhoneNum() {
-  const config = useConfig();
+  const { config } = useConfig();
   const { authToken } = useAuth();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");

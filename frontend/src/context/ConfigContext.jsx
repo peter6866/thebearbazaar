@@ -8,15 +8,21 @@ export function useConfig() {
 
 export const ConfigProvider = ({ children }) => {
   const [config, setConfig] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/config.json")
       .then((response) => response.json())
-      .then((config) => setConfig(config))
+      .then((config) => {
+        setConfig(config);
+        setLoading(false);
+      })
       .catch(console.error);
   }, []);
 
   return (
-    <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>
+    <ConfigContext.Provider value={{ config, loading }}>
+      {children}
+    </ConfigContext.Provider>
   );
 };

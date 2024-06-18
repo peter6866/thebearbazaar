@@ -36,71 +36,78 @@ function Header() {
       <div className="hidden md:block">
         <AppBar
           position="static"
-          sx={{ backgroundColor: "white", borderBottom: "1px solid lightgray" }}
+          sx={{
+            backgroundColor: "white",
+            borderBottom: "1.1px solid lightgray",
+          }}
         >
-          <Container maxWidth="lg">
-            <Toolbar disableGutters>
-              <NavLink to="/" className="flex items-center mr-8 mb-[2px]">
-                <img
-                  src="/pawlogo.png"
-                  alt="The Bear Bazaar logo"
-                  className="h-7 mr-3"
-                />
-                <span className="text-[22px] font-bold text-gray-900">
-                  The Bear Bazaar
-                </span>
-              </NavLink>
+          <Container maxWidth="lg" sx={{ display: "flex", py: "10px" }}>
+            <NavLink to="/" className="flex items-center mr-8 mb-[2px]">
+              <img
+                src="/pawlogo.png"
+                alt="The Bear Bazaar logo"
+                className="h-7 mr-3"
+              />
+              <span className="text-[22px] font-bold text-gray-900">
+                The Bear Bazaar
+              </span>
+            </NavLink>
 
-              <div className="flex-1 space-x-4">
-                {pages.map((page) =>
-                  page.name === "Admin" && role !== "admin" ? null : (
-                    <NavLink
-                      key={page.name}
-                      to={page.path}
-                      className={({ isActive }) =>
-                        isActive
-                          ? "text-[#a51417] font-semibold"
-                          : "text-gray-700 hover:text-[#bc544b]"
-                      }
-                      style={{ padding: "0.5rem 1rem" }}
-                    >
-                      {page.name}
-                    </NavLink>
-                  )
-                )}
-              </div>
+            <div className="flex-1 space-x-12 ml-6 mt-2">
+              {pages.map((page) =>
+                page.name === "Admin" && role !== "admin" ? null : (
+                  <NavLink
+                    key={page.name}
+                    to={page.path}
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-[#a51417] font-semibold border-b-[3.5px] border-[#a51417]"
+                        : "text-gray-700 hover:border-b-[3.5px] hover:border-gray-300"
+                    }
+                    style={{
+                      paddingBottom: "1.1rem",
+                    }}
+                  >
+                    {page.name}
+                  </NavLink>
+                )
+              )}
+            </div>
 
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar src="" />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar src="" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem
+                  component={NavLink}
+                  to="/profile"
+                  onClick={handleCloseUserMenu}
                 >
-                  <MenuItem component={NavLink} to="/profile">
-                    <Typography textAlign="center">Profile</Typography>
-                  </MenuItem>
-                  <MenuItem onClick={logout}>
-                    <Typography textAlign="center">Logout</Typography>
-                  </MenuItem>
-                </Menu>
-              </Box>
-            </Toolbar>
+                  <Typography textAlign="center">Profile</Typography>
+                </MenuItem>
+                <MenuItem onClick={logout}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
           </Container>
         </AppBar>
       </div>

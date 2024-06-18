@@ -5,7 +5,7 @@ import QAPair from "./QAPair";
 
 function Faq() {
   const [questionsData, setQuestionsData] = useState([]);
-  const config = useConfig();
+  const { config } = useConfig();
   const { authToken, role } = useAuth();
 
   const loadFAQ = useCallback(async () => {

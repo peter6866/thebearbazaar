@@ -9,7 +9,7 @@ import { selectHasBid } from "../../features/bidSlice";
 import { selectIsMatched } from "../../features/bidSlice";
 
 function Dashboard({ useInAuth = false }) {
-  const config = useConfig();
+  const { config } = useConfig();
   const [priceHistory, setPriceHistory] = useState([]);
   const [matchTime, setMatchTime] = useState();
   const [marketInfo, setMarketInfo] = useState({

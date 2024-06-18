@@ -17,7 +17,7 @@ import PhoneNum from "./PhoneNum";
 
 function Profile() {
   const { authToken } = useAuth();
-  const config = useConfig();
+  const { config } = useConfig();
 
   const [showPassword, setShowPassword] = useState(false);
   const [matchNotifications, setMatchNotifications] = useState(false);

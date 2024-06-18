@@ -4,7 +4,7 @@ import { useConfig } from "../../context/ConfigContext";
 import { useAuth } from "../../context/AuthContext";
 
 function Stats() {
-  const config = useConfig();
+  const { config } = useConfig();
   const { authToken } = useAuth();
 
   const [weeklyUserStats, setWeeklyUserStats] = useState([]);

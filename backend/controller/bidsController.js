@@ -491,23 +491,27 @@ exports.getBid = catchAsync(async (req, res, next) => {
   const buybid = await BuyBids.findOne({ where: { user_id: id } });
   const sellbid = await SellBids.findOne({ where: { user_id: id } });
 
-  let transType = null;
   if (buybid) {
-    res.status(201).json({
+    res.status(200).json({
       status: "success",
       message: "Here is your bid",
       trans: "Buy",
       price: buybid.price,
+      hasBid: true,
     });
   } else if (sellbid) {
-    res.status(201).json({
+    res.status(200).json({
       status: "success",
       message: "Here is your bid",
       trans: "Sell",
       price: sellbid.price,
+      hasBid: true,
     });
   } else {
-    return next(new AppError("No bid found", 404));
+    res.status(200).json({
+      status: "success",
+      hasBid: false,
+    });
   }
 });
 
