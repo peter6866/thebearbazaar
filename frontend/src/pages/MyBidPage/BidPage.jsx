@@ -51,69 +51,6 @@ function BidPage() {
   const matchedPhone = useSelector(selectMatchedPhone);
   const matchedPrice = useSelector(selectMatchedPrice);
 
-  // const fetchMatched = useCallback(async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${config.REACT_APP_API_URL}/v1/match/match-info`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${authToken}`,
-  //         },
-  //       }
-  //     );
-
-  //     const data = await response.json();
-
-  //     if (response.ok && data) {
-  //       dispatch(setIsMatched(true));
-  //       const { matchedType, email, phoneNum, price } = data.data.matchDetails;
-  //       setMatchedType(matchedType);
-  //       setmatchedEmail(email);
-  //       setMatchedPhone(phoneNum);
-  //       setMatchedPrice(price);
-  //       setLoadingMatch(false);
-  //     } else {
-  //       dispatch(setIsMatched(false));
-  //       setLoadingMatch(false);
-  //     }
-  //   } catch (error) {
-  //     dispatch(setIsMatched(false));
-  //     setLoadingMatch(false);
-  //   }
-  // }, [authToken, config, dispatch]);
-
-  // const fetchBid = useCallback(async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${config.REACT_APP_API_URL}/v1/bids/get-bid`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${authToken}`,
-  //         },
-  //       }
-  //     );
-
-  //     const data = await response.json();
-
-  //     if (response.ok && data) {
-  //       setBidType(data.trans);
-  //       setBidPrice(data.price);
-  //       dispatch(setHasBid(true));
-  //       setLoadingBid(false);
-  //     } else {
-  //       dispatch(setHasBid(false));
-  //       setLoadingBid(false);
-  //     }
-  //   } catch (error) {
-  //     dispatch(setHasBid(false));
-  //     setLoadingBid(false);
-  //   }
-  // }, [authToken, config, dispatch]);
-
   const cancelBid = async () => {
     try {
       const response = await fetch(
