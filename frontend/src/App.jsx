@@ -12,20 +12,20 @@ import Faq from "./pages/FAQPage/Faq";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import Profile from "./pages/ProfilePage/Profile";
 import PrivateRoute from "./PrivateRoute";
+import { useTheme, ToggleThemeProvider } from "./context/ThemeContext";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#a51417",
-    },
-    text: {
-      primary: "#111827",
-    },
-    mode: "light",
-  },
-});
+function AppContent() {
+  const { darkMode } = useTheme();
 
-function App() {
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#a51417",
+      },
+      mode: darkMode ? "dark" : "light",
+    },
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -81,6 +81,14 @@ function App() {
         </ConfigProvider>
       </Router>
     </ThemeProvider>
+  );
+}
+
+function App() {
+  return (
+    <ToggleThemeProvider>
+      <AppContent />
+    </ToggleThemeProvider>
   );
 }
 
