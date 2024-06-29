@@ -6,6 +6,7 @@ import {
   Divider,
   IconButton,
   InputAdornment,
+  Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAuth } from "../../context/AuthContext";
@@ -210,13 +211,29 @@ function Profile() {
     <div></div>
   ) : (
     <>
-      <p className="text-xl font-bold my-4 text-gray-900">Profile</p>
+      <Typography
+        variant="h6"
+        component="p"
+        fontWeight="bold"
+        my={2}
+        color="text.primary"
+      >
+        Profile
+      </Typography>
       <PhoneNum />
       <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
       <div>
-        <p className="text-md font-bold my-4 text-gray-900">
+        <Typography
+          variant="body1"
+          component="p"
+          sx={{
+            fontWeight: "bold",
+            my: 2,
+            color: "text.primary",
+          }}
+        >
           Email Notification Settings
-        </p>
+        </Typography>
         <form>
           <FormGroup>
             <FormControlLabel
@@ -258,7 +275,17 @@ function Profile() {
       </div>
       <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
       <div>
-        <p className="text-md font-bold my-4 text-gray-900">Change Password</p>
+        <Typography
+          variant="body1"
+          component="p"
+          sx={{
+            fontWeight: "bold",
+            my: 2,
+            color: "text.primary",
+          }}
+        >
+          Change Password
+        </Typography>
         <form onSubmit={updatePassword}>
           <div>
             <TextField

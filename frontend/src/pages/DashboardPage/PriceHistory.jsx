@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import {
   IgrCategoryChartModule,
   IgrCategoryChart,
@@ -39,9 +39,16 @@ const PriceHistory = ({ history }) => {
           isVerticalZoomEnabled={false}
         />
       ) : (
-        <div className="text-gray-600">
+        <Typography
+          variant="body1"
+          component="p"
+          sx={{
+            fontWeight: "bold",
+            color: "text.primary",
+          }}
+        >
           There are no past price records to show
-        </div>
+        </Typography>
       )}
     </Box>
   );

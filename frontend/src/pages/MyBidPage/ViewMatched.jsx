@@ -33,10 +33,16 @@ function ViewMatched({
 
   return (
     <>
-      <p className="text-xl font-bold my-4 text-gray-900">
+      <Typography
+        variant="h6"
+        component="p"
+        fontWeight="bold"
+        my={2}
+        color="text.primary"
+      >
         You have been matched with a{" "}
         {matchedType === "Seller" ? "seller" : "buyer"}
-      </p>
+      </Typography>
       <div>
         <Typography
           variant="body1"

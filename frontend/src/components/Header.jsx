@@ -49,7 +49,7 @@ function Header() {
               <img
                 src="/pawlogo.png"
                 alt="The Bear Bazaar logo"
-                className="h-7 mr-3"
+                className={`h-7 mr-3 ${darkMode && "filter invert"}`}
               />
               <Typography
                 variant="h6"
@@ -69,11 +69,16 @@ function Header() {
                   <NavLink
                     key={page.name}
                     to={page.path}
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-[#a51417] font-semibold border-b-[3.5px] border-[#a51417]"
-                        : "text-gray-700 hover:border-b-[3.5px] hover:border-gray-300"
-                    }
+                    className={({ isActive }) => {
+                      if (isActive) {
+                        return "text-[#a51417] font-semibold border-b-[3.5px] border-[#a51417]";
+                      } else {
+                        if (darkMode) {
+                          return "text-gray-300 hover:border-b-[3.5px] hover:border-gray-300";
+                        }
+                        return "text-gray-700 hover:border-b-[3.5px] hover:border-gray-300";
+                      }
+                    }}
                     style={{
                       paddingBottom: "1.1rem",
                     }}

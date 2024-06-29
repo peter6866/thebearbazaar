@@ -2,11 +2,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import Countdown from "./Countdown";
 import PriceHistory from "./PriceHistory";
 import MarketInfo from "./MarketInfo";
-import { Divider } from "@mui/material";
+import { Divider, Snackbar, Alert, Typography } from "@mui/material";
 import { useConfig } from "../../context/ConfigContext";
 import { useSelector } from "react-redux";
 import { selectHasBid } from "../../features/bidSlice";
 import { selectIsMatched } from "../../features/bidSlice";
+import axios from "axios";
 
 function Dashboard({ useInAuth = false }) {
   const { config } = useConfig();
@@ -18,6 +19,9 @@ function Dashboard({ useInAuth = false }) {
     buyPrice: 0,
     sellPrice: 0,
   });
+
+  const [infoSnackbarOpen, setInfoSnackbarOpen] = useState(false);
+  const [infoSnackbarMessage, setInfoSnackbarMessage] = useState("");
 
   const hasBid = useSelector(selectHasBid);
   const isMatched = useSelector(selectIsMatched);
@@ -74,21 +78,22 @@ function Dashboard({ useInAuth = false }) {
     }
 
     try {
-      const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/bids/get-market-info`,
+      const response = await axios.get(
+        `${config.REACT_APP_API_URL}/v1/bids/market-info`,
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
 
-      const data = await response.json();
-      if (response.ok && data) {
-        setMarketInfo(data.info);
+      if (response.status === 200 && response.data) {
+        setMarketInfo(response.data.info);
       }
-    } catch (error) {}
+    } catch (error) {
+      setInfoSnackbarMessage("Failed to load market information.");
+      setInfoSnackbarOpen(true);
+    }
   }, [config]);
 
   useEffect(() => {
@@ -97,13 +102,26 @@ function Dashboard({ useInAuth = false }) {
     loadMarketInfo();
   }, [loadPriceHistory, loadMatchTime, loadMarketInfo]);
 
+  const handleSnackbarClose = () => {
+    setInfoSnackbarOpen(false);
+  };
+
   return (
     <>
       {!useInAuth && (
         <>
-          <p className="text-2xl font-bold mt-2 mb-4 text-gray-900">
+          <Typography
+            variant="h5"
+            component="p"
+            sx={{
+              fontWeight: "bold",
+              marginTop: "0.5rem",
+              marginBottom: "1rem",
+              color: "text.primary",
+            }}
+          >
             Welcome to The Bear Bazaar!
-          </p>
+          </Typography>
 
           <ul className="steps steps-vertical sm:steps-horizontal w-full sm:mt-2">
             <li className="step step-secondary">Place a buy/sell bid</li>
@@ -120,13 +138,18 @@ function Dashboard({ useInAuth = false }) {
         </>
       )}
 
-      <p
-        className={`text-xl font-bold ${
-          useInAuth ? "mt-3" : "my-4"
-        } text-gray-900`}
+      <Typography
+        variant="h6"
+        component="p"
+        sx={{
+          fontWeight: "bold",
+          mt: useInAuth ? "0.75rem" : "1rem",
+          mb: useInAuth ? "0rem" : "1rem",
+          color: "text.primary",
+        }}
       >
         Active Market Information for 500 Meal Points
-      </p>
+      </Typography>
       <MarketInfo info={marketInfo} />
       {useInAuth ? (
         <Divider style={{ marginTop: "18px", marginBottom: "1rem" }}></Divider>
@@ -136,9 +159,17 @@ function Dashboard({ useInAuth = false }) {
 
       {!useInAuth && (
         <>
-          <p className="text-xl font-bold mb-12 text-gray-900">
+          <Typography
+            variant="h6"
+            component="p"
+            sx={{
+              fontWeight: "bold",
+              marginBottom: "3rem",
+              color: "text.primary",
+            }}
+          >
             Countdown to Next Buyer/Seller Matching
-          </p>
+          </Typography>
           <Countdown target={matchTime} />
           <Divider
             style={{ marginTop: "2rem", marginBottom: "2rem" }}
@@ -146,14 +177,28 @@ function Dashboard({ useInAuth = false }) {
         </>
       )}
 
-      <p
-        className={`text-xl font-bold ${
-          useInAuth ? "mb-4" : "mb-8"
-        } text-gray-900`}
+      <Typography
+        variant="h6"
+        component="p"
+        sx={{
+          fontWeight: "bold",
+          mb: useInAuth ? "1rem" : "2rem",
+          color: "text.primary",
+        }}
       >
         Price History for 500 Meal Points
-      </p>
+      </Typography>
       <PriceHistory history={priceHistory} />
+      <Snackbar
+        open={infoSnackbarOpen}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity="error">
+          {infoSnackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

@@ -61,7 +61,7 @@ function AppContent() {
                 <Route
                   path="/admin"
                   element={
-                    <PrivateRoute>
+                    <PrivateRoute adminPage={true}>
                       <AdminPage />
                     </PrivateRoute>
                   }

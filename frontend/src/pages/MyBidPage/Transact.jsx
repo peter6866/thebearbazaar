@@ -20,9 +20,15 @@ function Transact({
 }) {
   return (
     <>
-      <p className="text-xl font-bold my-4 text-gray-900">
+      <Typography
+        variant="h6"
+        component="p"
+        fontWeight="bold"
+        my={2}
+        color="text.primary"
+      >
         Buy or Sell 500 Mealpoints
-      </p>
+      </Typography>
       <form onSubmit={sendBid}>
         <RadioGroup
           row
