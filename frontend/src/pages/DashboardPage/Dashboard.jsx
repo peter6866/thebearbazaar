@@ -191,7 +191,7 @@ function Dashboard({ useInAuth = false }) {
       <PriceHistory history={priceHistory} />
       <Snackbar
         open={infoSnackbarOpen}
-        autoHideDuration={6000}
+        autoHideDuration={5000}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         onClose={handleSnackbarClose}
       >
