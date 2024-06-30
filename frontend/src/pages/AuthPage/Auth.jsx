@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import SignUp from "./SignUp";
 import Login from "./Login";
 import Dashboard from "../DashboardPage/Dashboard";
+import { useTheme } from "../../context/ThemeContext";
+import { Typography } from "@mui/material";
 
 function AuthPrompt() {
   const [loginStep, setLoginStep] = useState(false);
@@ -25,6 +27,8 @@ function Auth() {
   const navigate = useNavigate();
   const authRef = useRef();
 
+  const { darkMode } = useTheme();
+
   const scrollToAuth = () => {
     authRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -36,14 +40,36 @@ function Auth() {
   }, [isLoggedIn, isLoading]);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <div className="bg-white w-full max-w-[80rem] py-5 px-5 md:px-8 md:py-6 border border-gray-300 rounded-lg shadow-lg flex flex-col md:flex-row h-full md:h-[48rem]">
+    <div
+      className={`min-h-screen ${
+        darkMode ? "bg-neutral-950" : "bg-gray-100"
+      } flex items-center justify-center px-4`}
+    >
+      <div
+        className={`${
+          darkMode
+            ? "bg-neutral-800 border-gray-600"
+            : "bg-white border-gray-300"
+        } w-full max-w-[80rem] py-5 px-5 md:px-8 md:py-6 border rounded-lg shadow-lg flex flex-col md:flex-row h-full md:h-[48rem]`}
+      >
         <div className="md:w-2/3 p-2 flex flex-col mb-4 md:mb-0 md:mr-4">
           <div className="flex items-center mb-2">
-            <img src="/pawlogo.png" alt="Ghostlamp logo" className="h-8 mr-3" />
-            <span className="text-2xl font-bold text-gray-900">
+            <img
+              src="/pawlogo.png"
+              alt="Ghostlamp logo"
+              className={`h-8 mr-3 ${darkMode && "filter invert"}`}
+            />
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: "1.5rem",
+                fontWeight: "bold",
+                lineHeight: "2rem",
+                color: "text.primary",
+              }}
+            >
               The Bear Bazaar
-            </span>
+            </Typography>
           </div>
           <p className="text-[#a51417] font-semibold text-lg">
             Connect with other WashU students to exchange meal points

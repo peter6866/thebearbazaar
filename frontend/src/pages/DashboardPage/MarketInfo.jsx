@@ -6,21 +6,45 @@ function MarketInfo({ info }) {
     <Box>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <p className="text-md font-bold my-4 text-gray-900">
+          <Typography
+            variant="body1"
+            component="p"
+            sx={{
+              fontWeight: "bold",
+              my: "1rem",
+              color: "text.primary",
+            }}
+          >
             Number of Buyers:
-          </p>
+          </Typography>
           <Typography color="textPrimary">{info.numBuyers}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <p className="text-md font-bold my-4 text-gray-900">
+          <Typography
+            variant="body1"
+            component="p"
+            sx={{
+              fontWeight: "bold",
+              my: "1rem",
+              color: "text.primary",
+            }}
+          >
             Number of Sellers:
-          </p>
+          </Typography>
           <Typography color="textPrimary">{info.numSellers}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <p className="text-md font-bold my-4 text-gray-900">
+          <Typography
+            variant="body1"
+            component="p"
+            sx={{
+              fontWeight: "bold",
+              my: "1rem",
+              color: "text.primary",
+            }}
+          >
             Competitive Buy Price:
-          </p>
+          </Typography>
           <Typography color="textPrimary">
             {info.buyPrice !== 0 ? `$${info.buyPrice}` : "None"}
           </Typography>
@@ -34,9 +58,17 @@ function MarketInfo({ info }) {
           </Typography>
         </Grid>
         <Grid item xs={6}>
-          <p className="text-md font-bold my-4 text-gray-900">
+          <Typography
+            variant="body1"
+            component="p"
+            sx={{
+              fontWeight: "bold",
+              my: "1rem",
+              color: "text.primary",
+            }}
+          >
             Competitive Sell Price:
-          </p>
+          </Typography>
           <Typography color="textPrimary">
             {info.sellPrice !== 0 ? `$${info.sellPrice}` : "None"}
           </Typography>

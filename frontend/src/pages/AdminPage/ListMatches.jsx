@@ -36,6 +36,8 @@ function ListMatch() {
   };
 
   const fetchMatches = useCallback(async () => {
+    if (!config || !config.REACT_APP_API_URL) return;
+
     try {
       const response = await fetch(
         `${config.REACT_APP_API_URL}/v1/match/get-match`,

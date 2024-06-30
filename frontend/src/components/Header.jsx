@@ -1,7 +1,6 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
@@ -12,6 +11,8 @@ import MenuItem from "@mui/material/MenuItem";
 import NavbarPhone from "./NavbarPhone";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { LightModeOutlined, DarkModeOutlined } from "@mui/icons-material";
+import { useTheme } from "../context/ThemeContext";
 
 const pages = [
   { name: "My Bid", path: "/mybid" },
@@ -22,6 +23,8 @@ const pages = [
 function Header() {
   const { logout, role } = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const { darkMode, toggleTheme } = useTheme();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -37,8 +40,8 @@ function Header() {
         <AppBar
           position="static"
           sx={{
-            backgroundColor: "white",
-            borderBottom: "1.1px solid lightgray",
+            backgroundColor: "background.default",
+            borderBottom: `1.1px solid ${darkMode ? "#424242" : "lightgray"}`,
           }}
         >
           <Container maxWidth="lg" sx={{ display: "flex", py: "10px" }}>
@@ -46,11 +49,18 @@ function Header() {
               <img
                 src="/pawlogo.png"
                 alt="The Bear Bazaar logo"
-                className="h-7 mr-3"
+                className={`h-7 mr-3 ${darkMode && "filter invert"}`}
               />
-              <span className="text-[22px] font-bold text-gray-900">
+              <Typography
+                variant="h6"
+                sx={{
+                  fontSize: "22px",
+                  fontWeight: "bold",
+                  color: "text.primary",
+                }}
+              >
                 The Bear Bazaar
-              </span>
+              </Typography>
             </NavLink>
 
             <div className="flex-1 space-x-12 ml-6 mt-2">
@@ -59,11 +69,16 @@ function Header() {
                   <NavLink
                     key={page.name}
                     to={page.path}
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-[#a51417] font-semibold border-b-[3.5px] border-[#a51417]"
-                        : "text-gray-700 hover:border-b-[3.5px] hover:border-gray-300"
-                    }
+                    className={({ isActive }) => {
+                      if (isActive) {
+                        return "text-[#a51417] font-semibold border-b-[3.5px] border-[#a51417]";
+                      } else {
+                        if (darkMode) {
+                          return "text-gray-300 hover:border-b-[3.5px] hover:border-gray-300";
+                        }
+                        return "text-gray-700 hover:border-b-[3.5px] hover:border-gray-300";
+                      }
+                    }}
                     style={{
                       paddingBottom: "1.1rem",
                     }}
@@ -74,7 +89,10 @@ function Header() {
               )}
             </div>
 
-            <Box sx={{ flexGrow: 0 }}>
+            <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
+              <IconButton onClick={toggleTheme} sx={{ mr: 2 }}>
+                {darkMode ? <LightModeOutlined /> : <DarkModeOutlined />}
+              </IconButton>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar src="" />

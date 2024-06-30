@@ -1,28 +1,53 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
-import Box from "@mui/material/Box";
+import { Paper, Box } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
+import { useTheme } from "@mui/material/styles";
 
 // TODO: Add a Snackbar component here
 function AppLayout() {
+  const theme = useTheme();
+
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+        backgroundColor: "background.default",
+      }}
+    >
       <Header />
       <Box
         sx={{
-          backgroundColor: "white",
+          backgroundColor: "background.default",
         }}
       >
-        <div className="max-w-[800px] min-w-[300px] p-4 md:p-6 mx-auto md:mt-4 mb-12">
-          <div
-            elevation={3}
-            className="p-8 rounded-lg shadow-md border border-gray-200"
+        <Box
+          sx={{
+            maxWidth: "800px",
+            minWidth: "300px",
+            p: { xs: 2, md: 3 },
+            mx: "auto",
+            mt: { md: 2 },
+            mb: 6,
+          }}
+        >
+          <Paper
+            elevation={1}
+            sx={{
+              p: 4,
+              borderRadius: 2,
+              border: 1,
+              borderColor:
+                theme.palette.mode === "dark" ? "grey.800" : "#e5e7eb",
+            }}
           >
             <Outlet />
-          </div>
-        </div>
+          </Paper>
+        </Box>
       </Box>
-    </div>
+    </Box>
   );
 }
 

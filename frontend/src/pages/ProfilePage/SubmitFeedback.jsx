@@ -9,6 +9,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Typography,
 } from "@mui/material";
 
 function SubmitFeedback() {
@@ -53,7 +54,15 @@ function SubmitFeedback() {
   };
   return (
     <div>
-      <p className="text-xl font-bold my-4 text-gray-900">Submit Feedback</p>
+      <Typography
+        variant="h6"
+        component="p"
+        fontWeight="bold"
+        my={2}
+        color="text.primary"
+      >
+        Submit Feedback
+      </Typography>
       <form
         onSubmit={handleFeedbackSubmit}
         style={{ display: "flex", flexDirection: "column", gap: "20px" }}

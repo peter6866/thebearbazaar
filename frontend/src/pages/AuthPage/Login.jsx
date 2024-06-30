@@ -208,7 +208,20 @@ function Login({ flip }) {
   if (knowPass) {
     return (
       <div className="container-inner">
-        <p className="font-bold text-lg mb-4 text-gray-900">Login</p>
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: "bold",
+            mb: "1rem",
+            color: "text.primary",
+            display: "flex",
+            alignItems: "center",
+            fontSize: "1.125rem",
+            lineHeight: "1.75rem",
+          }}
+        >
+          Login
+        </Typography>
 
         <form onSubmit={submitLogin}>
           <div>
@@ -291,7 +304,18 @@ function Login({ flip }) {
   } else {
     return (
       <div className="container-inner">
-        <p className="font-bold text-lg mb-4">
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: "bold",
+            mb: "1rem",
+            color: "text.primary",
+            display: "flex",
+            alignItems: "center",
+            fontSize: "1.125rem",
+            lineHeight: "1.75rem",
+          }}
+        >
           {step === 2 && (
             <IconButton
               aria-label="back"
@@ -303,7 +327,7 @@ function Login({ flip }) {
             </IconButton>
           )}
           Reset Password
-        </p>
+        </Typography>
         {step === 1 && (
           <form onSubmit={requestCode}>
             <div>

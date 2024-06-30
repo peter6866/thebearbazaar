@@ -758,7 +758,7 @@ exports.getMarketInfo = catchAsync(async (req, res, next) => {
   //To sell I need to be below the first unmatched buyer or the last matched seller
   sellPrice = Math.max(lastMatchSellPrice, firstUnmatchedBuyPrice);
 
-  res.status(201).json({
+  res.status(200).json({
     status: "Success",
     info: {
       numBuyers: activeBuyBids.length,

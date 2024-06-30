@@ -22,6 +22,7 @@ import {
   setBidPrice,
 } from "../../features/bidSlice";
 import { useDispatch } from "react-redux";
+import { Snackbar, Alert } from "@mui/material";
 
 function BidPage() {
   const { authToken } = useAuth();
@@ -51,6 +52,13 @@ function BidPage() {
   const matchedPhone = useSelector(selectMatchedPhone);
   const matchedPrice = useSelector(selectMatchedPrice);
 
+  const [cancelSnackbarOpen, setCancelSnackbarOpen] = useState(false);
+  const [cancelSnackbarMessage, setCancelSnackbarMessage] = useState("");
+
+  const handleCancelSnackbarClose = () => {
+    setCancelSnackbarOpen(false);
+  };
+
   const cancelBid = async () => {
     try {
       const response = await fetch(
@@ -69,6 +77,8 @@ function BidPage() {
 
       if (response.ok) {
         dispatch(setHasBid(false));
+        setCancelSnackbarMessage("Bid canceled successfully");
+        setCancelSnackbarOpen(true);
       }
     } catch (error) {}
   };
@@ -158,6 +168,16 @@ function BidPage() {
           />
         </div>
       )}
+      <Snackbar
+        open={cancelSnackbarOpen}
+        autoHideDuration={5000}
+        onClose={handleCancelSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert onClose={handleCancelSnackbarClose} severity="success">
+          {cancelSnackbarMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

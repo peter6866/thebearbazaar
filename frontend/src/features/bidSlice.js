@@ -4,8 +4,6 @@ import axios from "axios";
 export const fetchInitialData = createAsyncThunk(
   "bid/fetchInitialData",
   async ({ authToken, config }, { rejectWithValue }) => {
-    console.log("fdetchInitialData");
-
     if (!authToken) {
       return rejectWithValue("Unauthorized");
     }

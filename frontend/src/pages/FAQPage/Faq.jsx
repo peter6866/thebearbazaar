@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useConfig } from "../../context/ConfigContext";
 import { useAuth } from "../../context/AuthContext";
 import QAPair from "./QAPair";
+import { Typography } from "@mui/material";
 
 function Faq() {
   const [questionsData, setQuestionsData] = useState([]);
@@ -61,9 +62,15 @@ function Faq() {
 
   return (
     <>
-      <p className="text-xl font-bold my-4 text-gray-900">
+      <Typography
+        variant="h6"
+        component="p"
+        fontWeight="bold"
+        my={2}
+        color="text.primary"
+      >
         Frequently Asked Questions
-      </p>
+      </Typography>
       {questionsData.map((item, index) => (
         <QAPair
           key={index}

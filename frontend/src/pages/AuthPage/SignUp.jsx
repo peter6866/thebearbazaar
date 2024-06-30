@@ -172,7 +172,18 @@ function SignUp({ flip }) {
 
   return (
     <div className="container-inner">
-      <p className="font-bold text-lg mb-4 text-gray-900">
+      <Typography
+        variant="h6"
+        sx={{
+          fontWeight: "bold",
+          mb: "1rem",
+          color: "text.primary",
+          display: "flex",
+          alignItems: "center",
+          fontSize: "1.125rem",
+          lineHeight: "1.75rem",
+        }}
+      >
         {step === 2 && (
           <IconButton
             aria-label="back"
@@ -184,7 +195,7 @@ function SignUp({ flip }) {
           </IconButton>
         )}
         Sign Up
-      </p>
+      </Typography>
       {step === 1 && (
         <form onSubmit={requestCode}>
           <div>
@@ -311,7 +322,9 @@ function SignUp({ flip }) {
           marginTop: "2rem",
         }}
       >
-        <Typography variant="body1">Already have an account?</Typography>
+        <Typography variant="body1" sx={{ color: "text.primary" }}>
+          Already have an account?
+        </Typography>
         <Button
           onClick={flip}
           style={{ textTransform: "none", fontSize: "1rem" }}

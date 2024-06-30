@@ -154,9 +154,17 @@ function PhoneNum() {
 
   return (
     <div>
-      <p className="text-md font-bold my-4 text-gray-900">
+      <Typography
+        variant="body1"
+        component="p"
+        sx={{
+          fontWeight: "bold",
+          my: 2,
+          color: "text.primary",
+        }}
+      >
         Communication Preference
-      </p>
+      </Typography>
       {isLoading ? (
         <div
           style={{

@@ -9,6 +9,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Typography,
 } from "@mui/material";
 import moment from "moment-timezone";
 
@@ -23,6 +24,8 @@ function ListCancels() {
   const { authToken } = useAuth();
 
   const fetchCancels = useCallback(async () => {
+    if (!config || !config.REACT_APP_API_URL) return;
+
     try {
       const response = await fetch(
         `${config.REACT_APP_API_URL}/v1/match/get-cancels`,
@@ -48,7 +51,15 @@ function ListCancels() {
 
   return (
     <Box>
-      <p className="text-xl font-bold my-4 text-gray-900">Canceled Matches</p>
+      <Typography
+        variant="h6"
+        component="p"
+        fontWeight="bold"
+        my={2}
+        color="text.primary"
+      >
+        Canceled Matches
+      </Typography>
       <TableContainer>
         <Table>
           <TableHead>
@@ -59,7 +70,7 @@ function ListCancels() {
           </TableHead>
           <TableBody>
             {cancels.map((cancel) => (
-              <TableRow>
+              <TableRow key={`${cancel.email}${cancel.createdAt}`}>
                 <TableCell>{cancel.email}</TableCell>
                 <TableCell>{formatDate(cancel.createdAt)}</TableCell>
               </TableRow>
