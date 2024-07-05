@@ -182,13 +182,13 @@ function Dashboard({ useInAuth = false }) {
         component="p"
         sx={{
           fontWeight: "bold",
-          mb: useInAuth ? "1rem" : "2rem",
+          mb: useInAuth ? "0.5rem" : "1.5rem",
           color: "text.primary",
         }}
       >
         Price History for 500 Meal Points
       </Typography>
-      <PriceHistory history={priceHistory} />
+      <PriceHistory history={priceHistory} useInAuth={useInAuth} />
       <Snackbar
         open={infoSnackbarOpen}
         autoHideDuration={5000}
