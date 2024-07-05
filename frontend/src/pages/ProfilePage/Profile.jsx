@@ -232,7 +232,7 @@ function Profile() {
             color: "text.primary",
           }}
         >
-          Email Notification Settings
+          Email Notifications
         </Typography>
         <form>
           <FormGroup>
