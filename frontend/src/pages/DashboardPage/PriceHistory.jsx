@@ -21,17 +21,13 @@ import { axisClasses } from "@mui/x-charts/ChartsAxis";
 
 function formatDate(isoString) {
   const date = moment.utc(isoString);
-  console.log(date);
   return date.local().format("MM/DD/YYYY");
 }
 
 const PriceHistory = ({ history, useInAuth }) => {
-  console.log(history);
   const [openDialog, setOpenDialog] = React.useState(false);
   const x = history.map((record) => formatDate(record.createdAt));
   const y = history.map((record) => record.price);
-  console.log(x);
-  console.log(y);
 
   const formattedHistory = x.map((date, index) => ({
     date,
