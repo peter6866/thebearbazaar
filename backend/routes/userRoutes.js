@@ -12,6 +12,8 @@ router.post("/signup-verify", authController.signUpVerify);
 router.post("/resend-code", authController.resendCode);
 // login route
 router.post("/login", authController.login);
+// isLoggedin route
+router.get("/is-loggedin", authController.protect, authController.isLoggedIn);
 
 //update notification settings route
 router

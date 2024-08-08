@@ -267,6 +267,20 @@ exports.login = catchAsync(async (req, res, next) => {
   createSendToken(user, res);
 });
 
+// check if the user is logged in
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  if (req.user) {
+    res.status(200).json({
+      status: "success",
+      data: {
+        message: "User is logged in",
+      },
+    });
+  } else {
+    return next(new AppError("Please log in to access this page", 401));
+  }
+});
+
 // middleware to protect routes
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
@@ -283,7 +297,12 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
 
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  let decoded;
+  try {
+    decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  } catch (error) {
+    return next(new AppError("Invalid token. Please log in again.", 401));
+  }
 
   const currentUser = await User.findByPk(decoded.id);
   // check if the user is banned
