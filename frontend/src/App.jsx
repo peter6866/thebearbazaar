@@ -13,6 +13,7 @@ import AdminPage from "./pages/AdminPage/AdminPage";
 import Profile from "./pages/ProfilePage/Profile";
 import PrivateRoute from "./PrivateRoute";
 import { useTheme, ToggleThemeProvider } from "./context/ThemeContext";
+import LandingPage from "./pages/LandingPage/LandingPage";
 
 function AppContent() {
   const { darkMode } = useTheme();
@@ -76,6 +77,7 @@ function AppContent() {
                 />
               </Route>
               <Route path="/auth" element={<Auth />} />
+              <Route path="/home" element={<LandingPage />} />
             </Routes>
           </AuthProvider>
         </ConfigProvider>
