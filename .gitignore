@@ -3,3 +3,4 @@
 /kubernetes/tls-secret.yaml
 /secrets/*.pem
 /secrets/*.sh
+.DS_Store

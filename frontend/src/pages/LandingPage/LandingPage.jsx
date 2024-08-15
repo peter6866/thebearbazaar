@@ -71,7 +71,7 @@ const LandingPage = () => {
           backdrop-filter backdrop-blur-lg bg-opacity-85
           ${scrolled ? "border-b pt-0" : "pt-2"}`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
           <div className="flex justify-between items-center h-16">
             <div className="flex-shrink-0">
               <NavLink to="/home" className="flex items-center">
@@ -103,7 +103,7 @@ const LandingPage = () => {
 
       {/* Hero Section */}
       <div className="bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-0 py-36">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6 py-12 lg:py-36">
           <div className="lg:flex lg:items-center lg:justify-between">
             <div className="lg:w-1/2 z-10">
               <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
@@ -128,13 +128,11 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="mt-10 lg:mt-0 lg:w-1/2 lg:relative">
-              <div className="lg:absolute lg:left-0 lg:right-[-35%] lg:top-1/2 lg:transform lg:-translate-y-1/2">
+              <div className="lg:absolute lg:left-0 lg:right-[-25%] lg:top-1/2 lg:transform lg:-translate-y-1/2">
                 <img
-                  src="/hero.png"
+                  src="/main-page.png"
                   alt="The Bear Bazaar mockup"
                   className="w-full h-auto object-contain"
-                  width="1183"
-                  height="787"
                 />
               </div>
             </div>
@@ -144,7 +142,7 @@ const LandingPage = () => {
 
       {/* Features Section */}
       <div className="bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             {[
               {
