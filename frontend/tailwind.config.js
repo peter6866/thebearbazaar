@@ -3,7 +3,11 @@ module.exports = {
   darkMode: false,
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        mainLight: "#a51417",
+      },
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {

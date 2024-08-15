@@ -4,23 +4,57 @@ import { useAuth } from "./context/AuthContext";
 import { useConfig } from "./context/ConfigContext";
 import { useDispatch } from "react-redux";
 import { fetchInitialData } from "./features/bidSlice";
+import axios from "axios";
 
 const PrivateRoute = ({ children, adminPage = false }) => {
-  const { config, loading } = useConfig();
-  const { isLoggedIn, isLoading, authToken, role } = useAuth();
+  const { config, loading: configLoading } = useConfig();
+  const {
+    isLoggedIn,
+    isLoading: authLoading,
+    authToken,
+    role,
+    logout,
+  } = useAuth();
   const location = useLocation();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isLoggedIn && !isLoading && !loading) {
-      dispatch(fetchInitialData({ authToken, config }));
-    }
-  }, [isLoggedIn, isLoading, dispatch, authToken, config, loading]);
+    const checkToken = async () => {
+      if (isLoggedIn && !authLoading && !configLoading) {
+        try {
+          await axios.get(`${config.REACT_APP_API_URL}/v1/users/is-loggedin`, {
+            headers: { Authorization: `Bearer ${authToken}` },
+          });
+          // Token is valid, fetch initial data
+          dispatch(fetchInitialData({ authToken, config }));
+        } catch (error) {
+          // Token is invalid, call logout
+          logout();
+        }
+      }
+    };
 
-  if (!isLoggedIn && !isLoading && !loading) {
-    // Redirect to auth, but store original location for later
-    return <Navigate to="/auth" state={{ from: location }} replace />;
-  } else if (isLoggedIn && adminPage && role !== "admin" && !loading) {
+    checkToken();
+  }, [
+    isLoggedIn,
+    authLoading,
+    configLoading,
+    config,
+    authToken,
+    dispatch,
+    logout,
+  ]);
+
+  if (authLoading || configLoading) {
+    return null; // Render nothing while loading
+  }
+
+  if (!isLoggedIn) {
+    // Redirect to landing page, but store original location for later
+    return <Navigate to="/home" state={{ from: location }} replace />;
+  }
+
+  if (adminPage && role !== "admin") {
     return <Navigate to="/" />;
   }
 
