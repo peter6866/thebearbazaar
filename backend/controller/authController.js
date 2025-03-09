@@ -2,7 +2,7 @@ const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const BanUsers = require("../models/banUsersModel");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const transporter = require("../utils/emailTransporter");
@@ -115,10 +115,50 @@ const createSendToken = (user, res) => {
   });
 };
 
+const verifyTurnstileToken = async (token, ip) => {
+  const secret_key =
+    process.env.NODE_DEV_ENV === "development"
+      ? "1x0000000000000000000000000000000AA"
+      : process.env.TURNSTILE_SECRET_KEY;
+
+  const formData = new URLSearchParams();
+  formData.append("secret", secret_key);
+  formData.append("response", token);
+  if (ip) formData.append("remoteip", ip);
+
+  try {
+    const response = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Turnstile verification error:", error);
+    return { success: false, error: "Verification failed" };
+  }
+};
+
 // handler for getting one-time code
 exports.getCode = catchAsync(async (req, res, next) => {
   req.body.email = req.body.email.toLowerCase();
-  const { email, reset } = req.body;
+  const { email, reset, turnstileToken } = req.body;
+
+  // Check for Turnstile token
+  if (!turnstileToken) {
+    return next(new AppError("CAPTCHA verification required", 400));
+  }
+
+  // Verify the Turnstile token
+  const verification = await verifyTurnstileToken(turnstileToken, req.ip);
+  if (!verification.success) {
+    return next(new AppError("CAPTCHA verification failed", 400));
+  }
+
   const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@wustl\.edu$/;
@@ -239,7 +279,18 @@ exports.resendCode = catchAsync(async (req, res, next) => {
 // handler for logging in
 exports.login = catchAsync(async (req, res, next) => {
   req.body.email = req.body.email.toLowerCase();
-  const { email, password } = req.body;
+  const { email, password, turnstileToken } = req.body;
+
+  // Check for Turnstile token
+  if (!turnstileToken) {
+    return next(new AppError("CAPTCHA verification required", 400));
+  }
+
+  // Verify the Turnstile token
+  const verification = await verifyTurnstileToken(turnstileToken, req.ip);
+  if (!verification.success) {
+    return next(new AppError("CAPTCHA verification failed", 400));
+  }
 
   // check if email and password exist
   if (!email || !password) {

@@ -12,7 +12,7 @@ import PasswordButton from "../../components/PasswordButton";
 import { useAuth } from "../../context/AuthContext";
 import { useConfig } from "../../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
-// import Dashboard from "./Dashboard";
+import TurnstileWidget from "../../components/TurnstileWidget";
 
 function SignUp({ flip }) {
   const [userData, setUserData] = useState({
@@ -33,6 +33,7 @@ function SignUp({ flip }) {
   const [step, setStep] = useState(1);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [countdown, setCountdown] = useState(60);
+  const [turnstileToken, setTurnstileToken] = useState(null);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -40,6 +41,11 @@ function SignUp({ flip }) {
 
   let requestCode = async (e) => {
     e.preventDefault();
+
+    if (!turnstileToken) {
+      setErrorMessage("Please complete the verification.");
+      return;
+    }
 
     // Start the countdown and disable the button
     setIsButtonDisabled(true);
@@ -63,7 +69,11 @@ function SignUp({ flip }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: userData["email"], reset: false }),
+          body: JSON.stringify({
+            email: userData["email"],
+            reset: false,
+            turnstileToken,
+          }),
         }
       );
 
@@ -209,6 +219,15 @@ function SignUp({ flip }) {
               onChange={update}
             />
           </div>
+
+          <TurnstileWidget
+            onSuccess={(token) => setTurnstileToken(token)}
+            onError={() =>
+              setErrorMessage("Verification failed. Please try again.")
+            }
+            onExpire={() => setTurnstileToken(null)}
+          />
+
           <div className="btn-wrapper">
             <Button type="submit" variant="contained">
               Get One Time Code
