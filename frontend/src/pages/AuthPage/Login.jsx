@@ -12,7 +12,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useConfig } from "../../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
 import PasswordButton from "../../components/PasswordButton";
-// import Dashboard from "./Dashboard";
+import TurnstileWidget from "../../components/TurnstileWidget";
 
 function Login({ flip }) {
   const [userData, setUserData] = useState({
@@ -33,6 +33,7 @@ function Login({ flip }) {
   const [step, setStep] = useState(1);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [countdown, setCountdown] = useState(60);
+  const [turnstileToken, setTurnstileToken] = useState(null);
 
   let navigate = useNavigate();
 
@@ -95,6 +96,11 @@ function Login({ flip }) {
   let requestCode = async (e) => {
     e.preventDefault();
 
+    if (!turnstileToken) {
+      setErrorMessage("Please complete the verification.");
+      return;
+    }
+
     // Start the countdown and disable the button
     setIsButtonDisabled(true);
     setCountdown(60);
@@ -117,7 +123,11 @@ function Login({ flip }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email: userData["email"], reset: true }),
+          body: JSON.stringify({
+            email: userData["email"],
+            reset: true,
+            turnstileToken,
+          }),
         }
       );
 
@@ -180,6 +190,11 @@ function Login({ flip }) {
   let submitLogin = async (e) => {
     e.preventDefault();
 
+    if (!turnstileToken) {
+      setErrorMessage("Please complete the verification.");
+      return;
+    }
+
     try {
       const response = await fetch(
         `${config.REACT_APP_API_URL}/v1/users/login`,
@@ -191,6 +206,7 @@ function Login({ flip }) {
           body: JSON.stringify({
             email: userData["email"],
             password: userData["password"],
+            turnstileToken,
           }),
         }
       );
@@ -205,6 +221,7 @@ function Login({ flip }) {
       }
     } catch (error) {}
   };
+
   if (knowPass) {
     return (
       <div className="container-inner">
@@ -247,8 +264,21 @@ function Login({ flip }) {
               onChange={update}
             />
           </div>
+
+          <TurnstileWidget
+            onSuccess={(token) => setTurnstileToken(token)}
+            onError={() =>
+              setErrorMessage("Verification failed. Please try again.")
+            }
+            onExpire={() => setTurnstileToken(null)}
+          />
+
           <div className="btn-wrapper">
-            <Button type="submit" variant="contained">
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={!turnstileToken}
+            >
               Login
             </Button>
           </div>
@@ -341,8 +371,21 @@ function Login({ flip }) {
                 onChange={update}
               />
             </div>
+
+            <TurnstileWidget
+              onSuccess={(token) => setTurnstileToken(token)}
+              onError={() =>
+                setErrorMessage("Verification failed. Please try again.")
+              }
+              onExpire={() => setTurnstileToken(null)}
+            />
+
             <div className="btn-wrapper">
-              <Button type="submit" variant="contained">
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={!turnstileToken}
+              >
                 Get One Time Code
               </Button>
             </div>

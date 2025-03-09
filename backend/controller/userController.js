@@ -2,7 +2,7 @@ const User = require("../models/userModel");
 const PhoneNum = require("../models/phoneNumModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const sequelize = require("../db/connection");
 
 exports.getNotificationSettings = catchAsync(async (req, res, next) => {
