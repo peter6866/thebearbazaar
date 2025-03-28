@@ -3,6 +3,8 @@ const morgan = require("morgan");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
+const { RedisStore } = require("rate-limit-redis");
+const redis = require("./db/redis");
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controller/errorController");
@@ -24,11 +26,19 @@ if (process.env.NODE_DEV_ENV === "development") {
 
 // Limit requests from same API
 const limiter = rateLimit({
-  max: 500,
+  max: 100,
   windowMs: 60 * 60 * 1000,
   message: "Too many requests from this IP, please try again in an hour!",
+
+  store: new RedisStore({
+    sendCommand: (...args) => redis.call(...args),
+  }),
 });
-if (process.env.NODE_DEV_ENV === "production") app.use("/api", limiter);
+
+if (process.env.NODE_DEV_ENV === "production") {
+  app.use("/api", limiter);
+  console.log("Rate limit enabled");
+}
 
 app.use(express.json());
 
