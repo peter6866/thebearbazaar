@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import SignUp from "./SignUp";
 import Login from "./Login";
 import Dashboard from "../DashboardPage/Dashboard";
+import AuthDashboard from "../DashboardPage/AuthDashboard";
 import { useTheme } from "../../context/ThemeContext";
 import { Typography } from "@mui/material";
 
@@ -75,7 +76,7 @@ function Auth() {
             Connect with other WashU students to exchange meal points
           </p>
           <div className="flex-grow">
-            <Dashboard useInAuth={true} />
+            <AuthDashboard />
           </div>
         </div>
 
