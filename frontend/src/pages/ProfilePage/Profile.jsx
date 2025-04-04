@@ -7,6 +7,7 @@ import {
   IconButton,
   InputAdornment,
   Typography,
+  Paper,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAuth } from "../../context/AuthContext";
@@ -15,8 +16,10 @@ import { Switch, FormControlLabel, FormGroup } from "@mui/material";
 import PasswordButton from "../../components/PasswordButton";
 import SubmitFeedback from "./SubmitFeedback";
 import PhoneNum from "./PhoneNum";
+import { useTheme } from "@mui/material/styles";
 
 function Profile() {
+  const theme = useTheme();
   const { authToken } = useAuth();
   const { config } = useConfig();
 
@@ -210,7 +213,15 @@ function Profile() {
   return loading ? (
     <div></div>
   ) : (
-    <>
+    <Paper
+      elevation={1}
+      sx={{
+        p: 4,
+        borderRadius: 2,
+        border: 1,
+        borderColor: theme.palette.mode === "dark" ? "grey.800" : "#e5e7eb",
+      }}
+    >
       <Typography
         variant="h6"
         component="p"
@@ -367,7 +378,7 @@ function Profile() {
       </div>
       <Divider style={{ marginTop: "2rem", marginBottom: "3rem" }}></Divider>
       <SubmitFeedback />
-    </>
+    </Paper>
   );
 }
 

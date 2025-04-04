@@ -1,13 +1,8 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
-import { Paper, Box } from "@mui/material";
-import Snackbar from "@mui/material/Snackbar";
-import { useTheme } from "@mui/material/styles";
+import { Box } from "@mui/material";
 
-// TODO: Add a Snackbar component here
 function AppLayout() {
-  const theme = useTheme();
-
   return (
     <Box
       sx={{
@@ -33,18 +28,7 @@ function AppLayout() {
             mb: 6,
           }}
         >
-          <Paper
-            elevation={1}
-            sx={{
-              p: 4,
-              borderRadius: 2,
-              border: 1,
-              borderColor:
-                theme.palette.mode === "dark" ? "grey.800" : "#e5e7eb",
-            }}
-          >
-            <Outlet />
-          </Paper>
+          <Outlet />
         </Box>
       </Box>
     </Box>

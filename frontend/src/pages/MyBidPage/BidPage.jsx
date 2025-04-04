@@ -9,7 +9,6 @@ import {
   selectHasBid,
   selectIsMatched,
   selectLoading,
-  selectError,
   selectMatchedType,
   selectMatchedEmail,
   selectMatchedPhone,
@@ -22,7 +21,7 @@ import {
   setBidPrice,
 } from "../../features/bidSlice";
 import { useDispatch } from "react-redux";
-import { Snackbar, Alert } from "@mui/material";
+import { Snackbar, Alert, Paper } from "@mui/material";
 
 function BidPage() {
   const { authToken } = useAuth();

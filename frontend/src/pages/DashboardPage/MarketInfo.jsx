@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Box, Card, CardContent, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 
 function MarketInfo({ info }) {
   return (

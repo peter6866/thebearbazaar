@@ -2,14 +2,16 @@ import React, { useState, useEffect, useCallback } from "react";
 import Countdown from "./Countdown";
 import PriceHistory from "./PriceHistory";
 import MarketInfo from "./MarketInfo";
-import { Divider, Snackbar, Alert, Typography } from "@mui/material";
+import { Divider, Snackbar, Alert, Typography, Paper } from "@mui/material";
 import { useConfig } from "../../context/ConfigContext";
 import { useSelector } from "react-redux";
 import { selectHasBid } from "../../features/bidSlice";
 import { selectIsMatched } from "../../features/bidSlice";
 import axios from "axios";
+import { useTheme } from "@mui/material/styles";
 
 function Dashboard({ useInAuth = false }) {
+  const theme = useTheme();
   const { config } = useConfig();
   const [priceHistory, setPriceHistory] = useState([]);
   const [matchTime, setMatchTime] = useState();
@@ -107,7 +109,15 @@ function Dashboard({ useInAuth = false }) {
   };
 
   return (
-    <>
+    <Paper
+      elevation={1}
+      sx={{
+        p: 4,
+        borderRadius: 2,
+        border: 1,
+        borderColor: theme.palette.mode === "dark" ? "grey.800" : "#e5e7eb",
+      }}
+    >
       {!useInAuth && (
         <>
           <Typography
@@ -199,7 +209,7 @@ function Dashboard({ useInAuth = false }) {
           {infoSnackbarMessage}
         </Alert>
       </Snackbar>
-    </>
+    </Paper>
   );
 }
 
