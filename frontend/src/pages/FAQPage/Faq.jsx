@@ -2,12 +2,14 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useConfig } from "../../context/ConfigContext";
 import { useAuth } from "../../context/AuthContext";
 import QAPair from "./QAPair";
-import { Typography } from "@mui/material";
+import { Typography, Paper } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 function Faq() {
   const [questionsData, setQuestionsData] = useState([]);
   const { config } = useConfig();
   const { authToken, role } = useAuth();
+  const theme = useTheme();
 
   const loadFAQ = useCallback(async () => {
     if (!config || !config.REACT_APP_API_URL) {
@@ -61,7 +63,15 @@ function Faq() {
   }, [loadFAQ]);
 
   return (
-    <>
+    <Paper
+      elevation={1}
+      sx={{
+        p: 4,
+        borderRadius: 2,
+        border: 1,
+        borderColor: theme.palette.mode === "dark" ? "grey.800" : "#e5e7eb",
+      }}
+    >
       <Typography
         variant="h6"
         component="p"
@@ -82,7 +92,7 @@ function Faq() {
           role={role}
         />
       ))}
-    </>
+    </Paper>
   );
 }
 

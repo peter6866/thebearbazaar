@@ -14,6 +14,7 @@ import {
   FormControl,
   InputLabel,
   Divider,
+  Paper,
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -27,6 +28,7 @@ import BanUser from "./BanUser";
 import Stats from "./Stats";
 import ListMatches from "./ListMatches";
 import ListCancels from "./ListCancels";
+import { useTheme } from "@mui/material/styles";
 
 function AdminPage() {
   const [question, setQuestion] = useState("");
@@ -44,6 +46,7 @@ function AdminPage() {
 
   const { config } = useConfig();
   const { authToken } = useAuth();
+  const theme = useTheme();
 
   dayjs.extend(utc);
 
@@ -218,7 +221,15 @@ function AdminPage() {
   };
 
   return (
-    <>
+    <Paper
+      elevation={1}
+      sx={{
+        p: 4,
+        borderRadius: 2,
+        border: 1,
+        borderColor: theme.palette.mode === "dark" ? "grey.800" : "#e5e7eb",
+      }}
+    >
       <Stats />
       <Divider style={{ marginTop: "2rem", marginBottom: "2rem" }}></Divider>
       <p className="text-xl font-bold my-4 text-gray-900">
@@ -393,7 +404,7 @@ function AdminPage() {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </Paper>
   );
 }
 

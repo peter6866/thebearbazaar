@@ -28,8 +28,10 @@
     "sequelize": "6.29.0",
     "moment": "2.30.1",
     "moment-timezone": "0.5.45",
-    "express-rate-limit": "7.2.0",
-    "helmet": "7.1.0"
+    "express-rate-limit": "7.5.0",
+    "helmet": "7.1.0",
+    "rate-limit-redis": "4.2.0",
+    "ioredis": "5.6.0"
   },
   "devDependencies": {
     "eslint": "^8.56.0",
