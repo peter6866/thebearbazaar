@@ -10,6 +10,9 @@ const sendErrorDev = (err, res) => {
 };
 
 const sendErrorProd = (err, res) => {
+  if (res.headersSent) {
+    return;
+  }
   // Operational, trusted error: send message to client
   if (err.isOperational) {
     res.status(err.statusCode).json({
