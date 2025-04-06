@@ -22,9 +22,10 @@ function AppLayout() {
           sx={{
             maxWidth: "800px",
             minWidth: "300px",
-            p: { xs: 2, md: 3 },
+            p: { xs: 0, sm: 2 },
+            pt: { xs: 2 },
             mx: "auto",
-            mt: { md: 2 },
+            mt: { sm: 2 },
             mb: 6,
           }}
         >
