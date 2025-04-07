@@ -135,7 +135,7 @@ function Header() {
               </Typography>
             </NavLink>
 
-            <div className="flex-1 space-x-12 ml-6 mt-2">
+            <div className="flex-1 space-x-12 ml-6 mt-[10px]">
               {pages.map((page) =>
                 page.name === "Admin" && role !== "admin" ? null : (
                   <NavLink
@@ -153,7 +153,7 @@ function Header() {
                       }
                     }}
                     style={{
-                      paddingBottom: scrolled ? "1.2rem" : "1.2rem",
+                      paddingBottom: scrolled ? "1.1rem" : "1.1rem",
                       transition: "all 0.3s ease",
                     }}
                   >
