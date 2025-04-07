@@ -45,7 +45,7 @@ const sendMatchedEmail = (
                 margin: auto;
             }
             .header {
-              background-color: #a51417; /* Main red color */
+              background-color: #BA0C2F; /* Main red color */
               color: #ffffff;
               padding: 10px;
               text-align: center;
@@ -58,7 +58,7 @@ const sendMatchedEmail = (
             color: #999;
         }
         a {
-            color: #a51417; /* Main red color for links */
+            color: #BA0C2F; /* Main red color for links */
         }
         
         </style>
@@ -129,7 +129,7 @@ const sendUnmatchedEmail = (email, unmatchedType) => {
                 margin: auto;
             }
             .header {
-              background-color: #a51417; /* Main red color */
+              background-color: #BA0C2F; /* Main red color */
               color: #ffffff;
               padding: 10px;
               text-align: center;
@@ -142,7 +142,7 @@ const sendUnmatchedEmail = (email, unmatchedType) => {
             color: #999;
         }
         a {
-            color: #a51417; /* Main red color for links */
+            color: #BA0C2F; /* Main red color for links */
         }
         
         </style>
@@ -202,7 +202,7 @@ const sendBuyHigherEmail = (email) => {
                 margin: auto;
             }
             .header {
-              background-color: #a51417; /* Main red color */
+              background-color: #BA0C2F; /* Main red color */
               color: #ffffff;
               padding: 10px;
               text-align: center;
@@ -215,7 +215,7 @@ const sendBuyHigherEmail = (email) => {
             color: #999;
         }
         a {
-            color: #a51417; /* Main red color for links */
+            color: #BA0C2F; /* Main red color for links */
         }
         
         </style>
@@ -277,7 +277,7 @@ const sendSellLowerEmail = (email) => {
                 margin: auto;
             }
             .header {
-              background-color: #a51417; /* Main red color */
+              background-color: #BA0C2F; /* Main red color */
               color: #ffffff;
               padding: 10px;
               text-align: center;
@@ -290,7 +290,7 @@ const sendSellLowerEmail = (email) => {
             color: #999;
         }
         a {
-            color: #a51417; /* Main red color for links */
+            color: #BA0C2F; /* Main red color for links */
         }
         
         </style>

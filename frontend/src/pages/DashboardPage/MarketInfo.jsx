@@ -111,7 +111,7 @@ function MarketInfo({ info }) {
               height: "100%",
               bgcolor: alpha(
                 theme.palette.primary.main,
-                isDarkMode ? 0.08 : 0.04
+                isDarkMode ? 0.05 : 0.01
               ),
               border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
             }}
@@ -176,7 +176,7 @@ function MarketInfo({ info }) {
               height: "100%",
               bgcolor: alpha(
                 theme.palette.primary.washuGreen,
-                isDarkMode ? 0.08 : 0.04
+                isDarkMode ? 0.08 : 0.01
               ),
               border: `1px solid ${alpha(
                 theme.palette.primary.washuGreen,

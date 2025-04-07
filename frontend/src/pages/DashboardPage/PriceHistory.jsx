@@ -45,7 +45,6 @@ const PriceHistory = ({ history, useInAuth }) => {
   const [view, setView] = useState("chart");
 
   const theme = useTheme();
-  const isDarkMode = theme.palette.mode === "dark";
 
   // Format data
   const x = history.map((record) => formatDate(record.createdAt));
@@ -65,7 +64,7 @@ const PriceHistory = ({ history, useInAuth }) => {
   }));
 
   // Chart colors
-  const chartPrimaryColor = "#a51417";
+  const chartPrimaryColor = "#BA0C2F";
 
   const handleViewChange = (event, newView) => {
     setView(newView);
@@ -154,25 +153,27 @@ const PriceHistory = ({ history, useInAuth }) => {
             </Paper>
           </Stack>
 
-          <Box sx={{ mb: 2, borderBottom: 1, borderColor: "divider" }}>
-            <Tabs
-              value={view}
-              onChange={handleViewChange}
-              variant="fullWidth"
-              sx={{
-                "& .MuiTab-root": {
-                  textTransform: "none",
-                  fontWeight: 600,
-                  fontSize: "0.95rem",
-                },
-              }}
-            >
-              <Tab value="chart" label="Chart View" />
-              <Tab value="table" label="Table View" />
-            </Tabs>
-          </Box>
+          {!useInAuth && (
+            <Box sx={{ mb: 2, borderBottom: 1, borderColor: "divider" }}>
+              <Tabs
+                value={view}
+                onChange={handleViewChange}
+                variant="fullWidth"
+                sx={{
+                  "& .MuiTab-root": {
+                    textTransform: "none",
+                    fontWeight: 600,
+                    fontSize: "0.95rem",
+                  },
+                }}
+              >
+                <Tab value="chart" label="Chart View" />
+                <Tab value="table" label="Table View" />
+              </Tabs>
+            </Box>
+          )}
 
-          {view === "chart" && (
+          {!useInAuth && view === "chart" && (
             <Box
               sx={{
                 position: "relative",
@@ -258,7 +259,7 @@ const PriceHistory = ({ history, useInAuth }) => {
             </Box>
           )}
 
-          {view === "table" && (
+          {!useInAuth && view === "table" && (
             <TableContainer
               component={Paper}
               elevation={0}
@@ -329,7 +330,7 @@ const PriceHistory = ({ history, useInAuth }) => {
             </TableContainer>
           )}
 
-          {view === "chart" && (
+          {!useInAuth && view === "chart" && (
             <Box
               sx={{
                 display: "flex",
@@ -352,6 +353,19 @@ const PriceHistory = ({ history, useInAuth }) => {
               >
                 View Full Price History
               </Button>
+            </Box>
+          )}
+
+          {useInAuth && view === "chart" && (
+            <Box
+              sx={{
+                display: "flex",
+                mt: 2,
+              }}
+            >
+              <Typography variant="body2" color="text.secondary">
+                * Log in to view full price history
+              </Typography>
             </Box>
           )}
         </Box>

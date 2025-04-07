@@ -105,7 +105,7 @@ function Stats() {
           {
             data: y.length > 12 ? y.slice(-12) : y,
             label: "New Weekly Registers",
-            color: "#a51417",
+            color: "#BA0C2F",
             curve: "linear",
           },
         ]}

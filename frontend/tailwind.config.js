@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        mainLight: "#a51417",
+        mainLight: "#BA0C2F",
       },
     },
   },
@@ -15,7 +15,7 @@ module.exports = {
       {
         light: {
           ...require("daisyui/src/theming/themes")["light"],
-          secondary: "#a51417",
+          secondary: "#BA0C2F",
         },
       },
     ],

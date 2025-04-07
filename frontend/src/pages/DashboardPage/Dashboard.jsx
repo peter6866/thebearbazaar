@@ -158,6 +158,18 @@ function Dashboard({ useInAuth = false }) {
             position: "relative",
             background: gradientBg,
             border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "4px",
+              background: `linear-gradient(90deg, ${alpha(
+                theme.palette.primary.main,
+                0.7
+              )}, ${alpha(theme.palette.primary.main, 0.9)})`,
+            },
           }}
         >
           <CardContent sx={{ p: 3 }}>
@@ -519,18 +531,6 @@ function Dashboard({ useInAuth = false }) {
             position: "relative",
             background: gradientBg,
             border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "4px",
-              background: `linear-gradient(90deg, ${alpha(
-                theme.palette.primary.main,
-                0.7
-              )}, ${alpha(theme.palette.primary.main, 0.9)})`,
-            },
           }}
         >
           <CardContent sx={{ p: 3 }}>
@@ -569,18 +569,6 @@ function Dashboard({ useInAuth = false }) {
             position: "relative",
             background: gradientBg,
             border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "4px",
-              background: `linear-gradient(90deg, ${alpha(
-                theme.palette.primary.main,
-                0.7
-              )}, ${alpha(theme.palette.primary.main, 0.9)})`,
-            },
           }}
         >
           <CardContent sx={{ p: 3 }}>
@@ -619,18 +607,6 @@ function Dashboard({ useInAuth = false }) {
             position: "relative",
             background: gradientBg,
             border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "4px",
-              background: `linear-gradient(90deg, ${alpha(
-                theme.palette.primary.main,
-                0.7
-              )}, ${alpha(theme.palette.primary.main, 0.9)})`,
-            },
           }}
         >
           <CardContent sx={{ p: 3 }}>

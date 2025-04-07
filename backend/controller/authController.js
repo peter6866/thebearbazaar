@@ -43,7 +43,7 @@ const sendVerificationEmail = (email, verificationCode) => {
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .header {
-            background-color: #a51417; /* Main red color */
+            background-color: #BA0C2F; /* Main red color */
             color: #ffffff;
             padding: 10px;
             text-align: center;
@@ -56,9 +56,9 @@ const sendVerificationEmail = (email, verificationCode) => {
             margin: 20px 0;
             font-size: 24px;
             font-weight: bold;
-            color: #a51417; /* Main red color for text */
+            color: #BA0C2F; /* Main red color for text */
             border-radius: 5px;
-            border: 1px dashed #a51417; /* Main red color for border */
+            border: 1px dashed #BA0C2F; /* Main red color for border */
         }
         .footer {
             margin-top: 20px;
@@ -67,7 +67,7 @@ const sendVerificationEmail = (email, verificationCode) => {
             color: #999;
         }
         a {
-            color: #a51417; /* Main red color for links */
+            color: #BA0C2F; /* Main red color for links */
         }
     </style>
   
