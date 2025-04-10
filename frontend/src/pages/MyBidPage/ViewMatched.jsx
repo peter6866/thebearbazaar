@@ -64,7 +64,7 @@ const ViewMatched = ({
   return (
     <Box sx={{ maxWidth: 550, mx: "auto" }}>
       <Card
-        elevation={isDarkMode ? 4 : 1}
+        elevation={isDarkMode ? 4 : 0}
         sx={{
           borderRadius: 4,
           overflow: "hidden",

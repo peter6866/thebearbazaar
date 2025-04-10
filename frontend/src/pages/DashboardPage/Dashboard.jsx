@@ -12,13 +12,9 @@ import {
   Snackbar,
   Alert,
   Button,
-  Chip,
-  Fade,
   Container,
-  Divider,
   useTheme,
   alpha,
-  Paper,
 } from "@mui/material";
 import {
   TrendingUp as TrendingUpIcon,
@@ -60,7 +56,7 @@ function Dashboard({ useInAuth = false }) {
       )}, ${alpha(theme.palette.background.default, 0.8)})`
     : `linear-gradient(135deg, #ffffff, ${alpha(
         theme.palette.primary.main,
-        0.04
+        0.03
       )})`;
 
   const loadPriceHistory = useCallback(async () => {
@@ -149,15 +145,15 @@ function Dashboard({ useInAuth = false }) {
 
   return (
     <Container>
-      <Stack spacing={4}>
+      <Stack spacing={4} sx={{ pb: 4 }}>
         <Card
-          elevation={isDarkMode ? 4 : 1}
+          elevation={isDarkMode ? 4 : 0}
           sx={{
-            borderRadius: 3,
+            borderRadius: 4,
             overflow: "hidden",
             position: "relative",
             background: gradientBg,
-            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+            border: `1px solid ${alpha(theme.palette.divider, 0.07)}`,
             "&::before": {
               content: '""',
               position: "absolute",
@@ -198,7 +194,7 @@ function Dashboard({ useInAuth = false }) {
                 p: 2,
                 borderRadius: 2,
                 bgcolor: alpha(theme.palette.background.default, 0.5),
-                border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                border: `1px solid ${alpha(theme.palette.divider, 0.07)}`,
               }}
             >
               <Box
@@ -524,13 +520,13 @@ function Dashboard({ useInAuth = false }) {
         </Card>
 
         <Card
-          elevation={isDarkMode ? 4 : 1}
+          elevation={isDarkMode ? 4 : 0}
           sx={{
             borderRadius: 4,
             overflow: "hidden",
             position: "relative",
             background: gradientBg,
-            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+            border: `1px solid ${alpha(theme.palette.divider, 0.07)}`,
           }}
         >
           <CardContent sx={{ p: 3 }}>
@@ -562,13 +558,13 @@ function Dashboard({ useInAuth = false }) {
         </Card>
 
         <Card
-          elevation={isDarkMode ? 4 : 1}
+          elevation={isDarkMode ? 4 : 0}
           sx={{
             borderRadius: 4,
             overflow: "hidden",
             position: "relative",
             background: gradientBg,
-            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+            border: `1px solid ${alpha(theme.palette.divider, 0.07)}`,
           }}
         >
           <CardContent sx={{ p: 3 }}>
@@ -600,13 +596,13 @@ function Dashboard({ useInAuth = false }) {
         </Card>
 
         <Card
-          elevation={isDarkMode ? 4 : 1}
+          elevation={isDarkMode ? 4 : 0}
           sx={{
             borderRadius: 4,
             overflow: "hidden",
             position: "relative",
             background: gradientBg,
-            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+            border: `1px solid ${alpha(theme.palette.divider, 0.07)}`,
           }}
         >
           <CardContent sx={{ p: 3 }}>

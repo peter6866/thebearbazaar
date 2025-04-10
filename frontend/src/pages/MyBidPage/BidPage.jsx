@@ -21,7 +21,7 @@ import {
   setBidPrice,
 } from "../../features/bidSlice";
 import { useDispatch } from "react-redux";
-import { Snackbar, Alert, Paper } from "@mui/material";
+import { Snackbar, Alert, Container } from "@mui/material";
 
 function BidPage() {
   const { authToken } = useAuth();
@@ -142,7 +142,7 @@ function BidPage() {
   };
 
   return (
-    <div>
+    <Container>
       {!hasBid && !isMatched && !loading && (
         <Transact
           sendBid={sendBid}
@@ -177,7 +177,7 @@ function BidPage() {
           {cancelSnackbarMessage}
         </Alert>
       </Snackbar>
-    </div>
+    </Container>
   );
 }
 

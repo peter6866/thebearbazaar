@@ -205,7 +205,7 @@ function Faq() {
   return (
     <Container maxWidth="md">
       <Paper
-        elevation={isDarkMode ? 4 : 1}
+        elevation={isDarkMode ? 4 : 0}
         sx={{
           borderRadius: 4,
           overflow: "hidden",
