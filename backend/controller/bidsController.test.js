@@ -1,3 +1,23 @@
+jest.mock("../db/redis", () => ({
+  createClient: jest.fn(() => ({
+    get: jest.fn().mockResolvedValue(null),
+    set: jest.fn().mockResolvedValue("OK"),
+    del: jest.fn().mockResolvedValue(1),
+    hget: jest.fn().mockResolvedValue(null),
+    hset: jest.fn().mockResolvedValue("OK"),
+    hmset: jest.fn().mockResolvedValue("OK"),
+    hgetall: jest.fn().mockResolvedValue({}),
+    expire: jest.fn().mockResolvedValue(1),
+    ttl: jest.fn().mockResolvedValue(300),
+    exec: jest.fn().mockResolvedValue([]),
+    multi: jest.fn().mockReturnThis(),
+    on: jest.fn(),
+    disconnect: jest.fn(),
+  })),
+  closeConnection: jest.fn(),
+  getClient: jest.fn(),
+}));
+
 const { generateMatches } = require("./bidsController");
 const BuyBids = require("../models/buyBidsModel");
 const SellBids = require("../models/sellBidsModel");
@@ -212,9 +232,23 @@ describe("generateMatches", () => {
   afterAll(async () => {
     await BuyBids.destroy({ where: {} });
     await SellBids.destroy({ where: {} });
+
+    const redisModule = require("../db/redis");
+    redisModule.closeConnection();
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
+
+    // Clear Redis mock statistics
+    const redisModule = require("../db/redis");
+    const redisClient = redisModule.getClient();
+    if (redisClient) {
+      Object.values(redisClient).forEach((mockFn) => {
+        if (typeof mockFn === "function" && mockFn.mockClear) {
+          mockFn.mockClear();
+        }
+      });
+    }
   });
 });
