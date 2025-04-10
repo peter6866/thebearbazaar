@@ -6,6 +6,7 @@ const MatchBids = require("../models/matchBidsModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const transporter = require("../utils/emailTransporter");
+const redis = require("../db/redis");
 
 const sendMatchedEmail = (
   email,
@@ -349,6 +350,10 @@ exports.sellBid = catchAsync(async (req, res, next) => {
     price,
   });
 
+  // remove from the passive queue when user places a new bid
+  await redis.zrem("passive:seller", id);
+  await redis.zrem("passive:buyer", id);
+
   sendPricingEmails();
   res.status(201).json({
     status: "success",
@@ -375,6 +380,10 @@ exports.buyBid = catchAsync(async (req, res, next) => {
   if (buybid || sellbid) {
     return next(new AppError("You have already placed a bid!", 400));
   }
+
+  // remove from the passive queue when user places a new bid
+  await redis.zrem("passive:seller", id);
+  await redis.zrem("passive:buyer", id);
 
   sendPricingEmails();
   await BuyBids.create({
@@ -548,6 +557,7 @@ exports.deleteAllBids = catchAsync(async (req, res, next) => {
 
 exports.match = catchAsync(async (req, res, next) => {
   const matches = await generateMatches();
+  await redis.del("passive:buyer", "passive:seller");
   res.status(201).json({
     status: "Success",
     message: "Successfully matched bids",
