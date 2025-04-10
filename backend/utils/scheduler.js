@@ -1,8 +1,10 @@
 const cron = require("node-cron");
 const bidsController = require("../controller/bidsController");
 const settingsController = require("../controller/settingsController");
+const redis = require("../db/redis");
 
 let cronJob;
+let cleanupJob;
 
 const convertSecondsToSchedule = (utcSeconds) => {
   const day = Math.floor(utcSeconds / 86400);
@@ -13,6 +15,10 @@ const convertSecondsToSchedule = (utcSeconds) => {
   utcSeconds = utcSeconds % 60;
   const second = utcSeconds;
   return `${second} ${minute} ${hour} * * ${day} `;
+};
+
+const cleanupPassiveQueue = async () => {
+  await redis.del("passive:buyer", "passive:seller");
 };
 
 const scheduleJob = (sec) => {
@@ -32,9 +38,26 @@ const scheduleJob = (sec) => {
   );
 };
 
+const scheduleCleanupJob = () => {
+  if (cleanupJob) {
+    cleanupJob.stop();
+  }
+
+  cleanupJob = cron.schedule(
+    "0 0 17 * * 6",
+    () => {
+      cleanupPassiveQueue();
+    },
+    {
+      timezone: "UTC",
+    }
+  );
+};
+
 const initializeJob = async () => {
   const sec = await settingsController.fetchScheduledMatchTime();
   scheduleJob(sec);
+  scheduleCleanupJob();
 };
 
-module.exports = { scheduleJob, initializeJob };
+module.exports = { scheduleJob, scheduleCleanupJob, initializeJob };
