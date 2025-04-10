@@ -32,12 +32,12 @@ const ViewBid = ({ bidType, bidPrice, cancelBid }) => {
         theme.palette.background.paper,
         0.9
       )}, ${alpha(theme.palette.background.default, 0.8)})`
-    : `linear-gradient(135deg, #ffffff, ${alpha(accentColor, 0.05)})`;
+    : `linear-gradient(135deg, #ffffff, ${alpha(accentColor, 0.04)})`;
 
   return (
     <Box sx={{ maxWidth: 550, mx: "auto" }}>
       <Card
-        elevation={isDarkMode ? 5 : 2}
+        elevation={isDarkMode ? 4 : 0}
         sx={{
           borderRadius: 4,
           overflow: "hidden",

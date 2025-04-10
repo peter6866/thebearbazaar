@@ -51,7 +51,7 @@ function Auth() {
           darkMode
             ? "bg-neutral-800 border-gray-600"
             : "bg-white border-gray-300"
-        } w-full max-w-[80rem] py-5 px-5 md:px-8 md:py-6 border rounded-lg shadow-lg flex flex-col md:flex-row h-full md:h-[48rem]`}
+        } w-full max-w-[80rem] py-5 px-5 md:px-8 md:py-6 border rounded-lg shadow-lg flex flex-col md:flex-row h-full md:h-[46rem]`}
       >
         <div className="md:w-2/3 p-2 flex flex-col mb-4 md:mb-0 md:mr-4">
           <div className="flex items-center mb-2">
@@ -72,7 +72,7 @@ function Auth() {
               The Bear Bazaar
             </Typography>
           </div>
-          <p className="text-[#a51417] font-semibold text-lg">
+          <p className="text-[#BA0C2F] font-semibold text-lg">
             Connect with other WashU students to exchange meal points
           </p>
           <div className="flex-grow">
@@ -92,7 +92,7 @@ function Auth() {
 
       <button
         onClick={scrollToAuth}
-        className="fixed bottom-4 right-5 z-10 bg-[#a51417] text-white px-3 pt-2 pb-3 rounded-full shadow-lg md:hidden focus:outline-none"
+        className="fixed bottom-4 right-5 z-10 bg-[#BA0C2F] text-white px-3 pt-2 pb-3 rounded-full shadow-lg md:hidden focus:outline-none"
       >
         Go to Sign Up
       </button>

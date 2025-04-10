@@ -82,11 +82,11 @@ function AuthDashboard() {
         sx={{
           fontWeight: "bold",
           mt: "0.75rem",
-          mb: "0rem",
+          mb: 2,
           color: "text.primary",
         }}
       >
-        Active Market Information for 500 Meal Points
+        Active Market Information
       </Typography>
       <MarketInfo info={marketInfo} />
       <Divider style={{ marginTop: "18px", marginBottom: "1rem" }}></Divider>
@@ -96,11 +96,11 @@ function AuthDashboard() {
         component="p"
         sx={{
           fontWeight: "bold",
-          mb: "0.5rem",
+          mb: 2,
           color: "text.primary",
         }}
       >
-        Price History for 500 Meal Points
+        Price History
       </Typography>
       <PriceHistory history={priceHistory} useInAuth={true} />
       <Snackbar

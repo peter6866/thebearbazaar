@@ -21,7 +21,9 @@ function AppContent() {
   const theme = createTheme({
     palette: {
       primary: {
-        main: "#a51417",
+        main: "#BA0C2F",
+        washuGreen: "#215732",
+        teal: "#007D8A",
       },
       mode: darkMode ? "dark" : "light",
     },

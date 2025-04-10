@@ -46,7 +46,7 @@ function NavbarPhone() {
         key={tabName}
         to={path}
         className={`flex flex-col items-center text-gray-500 ${
-          isActive ? "text-[#a51417]" : ""
+          isActive ? "text-[#BA0C2F]" : ""
         }`}
       >
         <IconRenderComponent
@@ -57,7 +57,7 @@ function NavbarPhone() {
         <Typography
           variant="body2"
           sx={{
-            color: isActive ? "#a51417" : "text.secondary",
+            color: isActive ? "#BA0C2F" : "text.secondary",
             fontSize: "0.875rem",
             lineHeight: "1.25rem",
           }}
@@ -71,13 +71,13 @@ function NavbarPhone() {
   const IconRenderComponent = ({ IconComponent, isActive }) => (
     <div
       className={`h-8 w-[74px] mb-1 pt-1 flex justify-center items-center border-t-2 ${
-        isActive ? "border-[#a51417]" : "border-transparent"
+        isActive ? "border-[#BA0C2F]" : "border-transparent"
       }`}
     >
       <IconComponent
         className={`h-6 w-6 ${
           isActive
-            ? "text-[#a51417]"
+            ? "text-[#BA0C2F]"
             : darkMode
             ? "text-gray-100"
             : "text-gray-900"
