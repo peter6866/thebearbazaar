@@ -89,8 +89,8 @@ describe("generateMatches", () => {
     const matches = await generateMatches();
 
     const expectedMatches = [
-      { buyer_id: 1, seller_id: 3, price: 90 },
-      { buyer_id: 2, seller_id: 4, price: 90 },
+      { buyer_id: 1, seller_id: 3, price: 90, isValid: true },
+      { buyer_id: 2, seller_id: 4, price: 90, isValid: true },
     ];
 
     // Assertions
