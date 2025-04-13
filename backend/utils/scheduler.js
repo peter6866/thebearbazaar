@@ -17,10 +17,6 @@ const convertSecondsToSchedule = (utcSeconds) => {
   return `${second} ${minute} ${hour} * * ${day} `;
 };
 
-const cleanupPassiveQueue = async () => {
-  await redis.del("passive:buyer", "passive:seller");
-};
-
 const scheduleJob = (sec) => {
   if (cronJob) {
     cronJob.stop();
@@ -38,26 +34,9 @@ const scheduleJob = (sec) => {
   );
 };
 
-const scheduleCleanupJob = () => {
-  if (cleanupJob) {
-    cleanupJob.stop();
-  }
-
-  cleanupJob = cron.schedule(
-    "0 0 17 * * 6",
-    () => {
-      cleanupPassiveQueue();
-    },
-    {
-      timezone: "UTC",
-    }
-  );
-};
-
 const initializeJob = async () => {
   const sec = await settingsController.fetchScheduledMatchTime();
   scheduleJob(sec);
-  scheduleCleanupJob();
 };
 
-module.exports = { scheduleJob, scheduleCleanupJob, initializeJob };
+module.exports = { scheduleJob, initializeJob };

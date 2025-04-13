@@ -647,7 +647,7 @@ const generateMatches = async () => {
   });
 
   matches = matches.map((match) => {
-    return { ...match, price: marketPrice };
+    return { ...match, price: marketPrice, isValid: true };
   });
 
   const matchedBuyerIds = matches.map((match) => match.buyer_id);
