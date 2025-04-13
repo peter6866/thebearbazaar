@@ -9,7 +9,6 @@ const { Op } = require("sequelize");
 const transporter = require("../utils/emailTransporter");
 const CanceledTrans = require("../models/canceledTransModel");
 const redis = require("../db/redis");
-const settingsController = require("./settingsController");
 const PhoneNum = require("../models/phoneNumModel");
 
 exports.matchInfo = catchAsync(async (req, res, next) => {
@@ -20,8 +19,12 @@ exports.matchInfo = catchAsync(async (req, res, next) => {
   if (!user) {
     return next(new AppError("User not found", 404));
   }
-  const matchBuy = await MatchBids.findOne({ where: { buyer_id: id } });
-  const matchSell = await MatchBids.findOne({ where: { seller_id: id } });
+  const matchBuy = await MatchBids.findOne({
+    where: { buyer_id: id, isValid: true },
+  });
+  const matchSell = await MatchBids.findOne({
+    where: { seller_id: id, isValid: true },
+  });
   if (!matchBuy && !matchSell) {
     res.status(200).json({
       status: "success",
@@ -82,7 +85,7 @@ exports.matchInfo = catchAsync(async (req, res, next) => {
 
 // delete all match bids
 exports.deleteAllMatchBids = catchAsync(async (req, res, next) => {
-  await MatchBids.destroy({ where: {} });
+  await MatchBids.update({ isValid: false }, { where: {} });
 
   res.status(204).json({
     status: "success",
@@ -96,6 +99,9 @@ exports.priceHistory = catchAsync(async (req, res, next) => {
       "createdAt",
       [Sequelize.fn("MIN", Sequelize.col("price")), "price"],
     ],
+    where: {
+      isValid: true,
+    },
     group: ["createdAt"],
     order: [["createdAt", "ASC"]],
   });
@@ -119,35 +125,48 @@ exports.cancelTrans = catchAsync(async (req, res, next) => {
   let user = "";
   let price = 0;
 
+  // get the last entry of the matchbids table
+  const lastEntry = await MatchBids.findOne({
+    order: [["createdAt", "DESC"]],
+  });
+
+  let enterRematching = true;
+
   // Cancel current match
   if (type === "Buyer") {
     let match = await MatchBids.findOne({
-      where: { seller_id: id },
+      where: { seller_id: id, isValid: true },
     });
 
     if (!match) {
       return next(new AppError("No match found", 404));
     }
-    price = match.price;
 
+    price = match.price;
     user = match.buyer_id;
-    await MatchBids.destroy({
-      where: { seller_id: id },
-    });
+    // check if match.createdAt is less than lastEntry.createdAt
+    if (match.createdAt < lastEntry.createdAt) {
+      enterRematching = false;
+    }
+
+    await MatchBids.update({ isValid: false }, { where: { seller_id: id } });
   } else {
     let match = await MatchBids.findOne({
-      where: { buyer_id: id },
+      where: { buyer_id: id, isValid: true },
     });
 
     if (!match) {
       return next(new AppError("No match found", 404));
     }
-    price = match.price;
 
+    price = match.price;
     user = match.seller_id;
-    await MatchBids.destroy({
-      where: { buyer_id: id },
-    });
+    // check if match.createdAt is less than lastEntry.createdAt
+    if (match.createdAt < lastEntry.createdAt) {
+      enterRematching = false;
+    }
+
+    await MatchBids.update({ isValid: false }, { where: { buyer_id: id } });
   }
 
   // notify both users
@@ -160,78 +179,85 @@ exports.cancelTrans = catchAsync(async (req, res, next) => {
     sendCancelEmail(user1.email);
   }
   if (user2.sendMatchNotifications) {
-    sendCancelEmail(user2.email, activeType);
+    if (enterRematching) {
+      sendCancelEmail(user2.email, activeType);
+    } else {
+      sendCancelEmail(user2.email);
+    }
   }
 
   CanceledTrans.create({ user_id: id });
 
-  // passive queue rematching
-  const passiveType = type === "Buyer" ? "seller" : "buyer";
-  const oppositeQueue = `passive:${passiveType}`;
-  const thisQueue = `passive:${type.toLowerCase()}`;
+  if (enterRematching) {
+    // passive queue rematching
+    const passiveType = type === "Buyer" ? "seller" : "buyer";
+    const oppositeQueue = `passive:${passiveType}`;
+    const thisQueue = `passive:${type.toLowerCase()}`;
 
-  const now = moment().utc().unix();
+    const now = moment().utc().unix();
 
-  const [matchCandidate] = await redis.zrange(oppositeQueue, 0, 0); // FIFO
+    const [matchCandidate] = await redis.zrange(oppositeQueue, 0, 0); // FIFO
 
-  if (matchCandidate) {
-    // Re-match with passive user
-    await redis.zrem(oppositeQueue, matchCandidate);
+    if (matchCandidate) {
+      // Re-match with passive user
+      await redis.zrem(oppositeQueue, matchCandidate);
 
-    const matchedBid = {
-      buyer_id: type === "Buyer" ? user : matchCandidate,
-      seller_id: type === "Seller" ? user : matchCandidate,
-      price: price,
-    };
+      const matchedBid = {
+        buyer_id: type === "Buyer" ? user : matchCandidate,
+        seller_id: type === "Seller" ? user : matchCandidate,
+        price: price,
+        createdAt: lastEntry.createdAt,
+      };
 
-    await MatchBids.create(matchedBid);
+      await MatchBids.create(matchedBid);
 
-    const matchedBuyer = await User.findByPk(matchedBid.buyer_id);
-    const matchedSeller = await User.findByPk(matchedBid.seller_id);
-    const matchedBuyerEmail = matchedBuyer.email;
-    const matchedSellerEmail = matchedSeller.email;
+      const matchedBuyer = await User.findByPk(matchedBid.buyer_id);
+      const matchedSeller = await User.findByPk(matchedBid.seller_id);
+      const matchedBuyerEmail = matchedBuyer.email;
+      const matchedSellerEmail = matchedSeller.email;
 
-    // check if buyer prefered phone number
-    const buyerPhoneNum = await PhoneNum.findOne({
-      where: { userId: matchedBuyer.id },
-    });
+      // check if buyer prefered phone number
+      const buyerPhoneNum = await PhoneNum.findOne({
+        where: { userId: matchedBuyer.id },
+      });
 
-    // check if seller prefered phone number
-    const sellerPhoneNum = await PhoneNum.findOne({
-      where: { userId: matchedSeller.id },
-    });
+      // check if seller prefered phone number
+      const sellerPhoneNum = await PhoneNum.findOne({
+        where: { userId: matchedSeller.id },
+      });
 
-    let buyerPhone = buyerPhoneNum ? buyerPhoneNum.phoneNum : null;
-    let sellerPhone = sellerPhoneNum ? sellerPhoneNum.phoneNum : null;
-    let buyerPhonePrefered = buyerPhoneNum ? buyerPhoneNum.isPrefered : false;
-    let sellerPhonePrefered = sellerPhoneNum
-      ? sellerPhoneNum.isPrefered
-      : false;
+      let buyerPhone = buyerPhoneNum ? buyerPhoneNum.phoneNum : null;
+      let sellerPhone = sellerPhoneNum ? sellerPhoneNum.phoneNum : null;
+      let buyerPhonePrefered = buyerPhoneNum ? buyerPhoneNum.isPrefered : false;
+      let sellerPhonePrefered = sellerPhoneNum
+        ? sellerPhoneNum.isPrefered
+        : false;
 
-    if (matchedBuyer.sendMatchNotifications) {
-      await sendMatchedEmail(
-        matchedBuyerEmail,
-        price,
-        "seller",
-        matchedSellerEmail,
-        sellerPhone,
-        sellerPhonePrefered
-      );
+      if (matchedBuyer.sendMatchNotifications) {
+        await sendMatchedEmail(
+          matchedBuyerEmail,
+          price,
+          "seller",
+          matchedSellerEmail,
+          sellerPhone,
+          sellerPhonePrefered
+        );
+      }
+
+      if (matchedSeller.sendMatchNotifications) {
+        await sendMatchedEmail(
+          matchedSellerEmail,
+          price,
+          "buyer",
+          matchedBuyerEmail,
+          buyerPhone,
+          buyerPhonePrefered
+        );
+      }
+    } else {
+      // add passive user to the queue
+      await redis.zadd(thisQueue, now, user);
     }
-
-    if (matchedSeller.sendMatchNotifications) {
-      await sendMatchedEmail(
-        matchedSellerEmail,
-        price,
-        "buyer",
-        matchedBuyerEmail,
-        buyerPhone,
-        buyerPhonePrefered
-      );
-    }
-  } else {
-    // add passive user to the queue
-    await redis.zadd(thisQueue, now, user);
   }
 
   res.status(200).json({
@@ -427,6 +453,9 @@ exports.getMatch = catchAsync(async (req, res, next) => {
   // find all matches in time descending order
   const matches = await MatchBids.findAll({
     order: [["createdAt", "DESC"]],
+    where: {
+      isValid: true,
+    },
   });
 
   // given the user_id in the matches, find the email of the user

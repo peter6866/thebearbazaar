@@ -29,6 +29,11 @@ const MatchBids = sequelize.define(
       allowNull: false,
       defaultValue: new Date(),
     },
+    isValid: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
   },
   {}
 );

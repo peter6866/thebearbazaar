@@ -99,7 +99,7 @@ const PriceHistory = ({ history, useInAuth }) => {
                 color="text.secondary"
                 sx={{ mb: 0.5 }}
               >
-                Current Price
+                Last Matched Price
               </Typography>
               <Typography
                 variant="h4"
