@@ -27,6 +27,20 @@ services:
       - ./env/backend.env
     depends_on:
       - db
+      - redis
+
+  email-service:
+    build:
+      context: ./email-service
+    volumes:
+      - ./email-service:/app
+      - email_service_go_modules:/go/pkg/mod
+    env_file:
+      - ./env/email-service.env
+    depends_on:
+      - db
+      - redis
+
   frontend:
     build: ./frontend
     volumes:
