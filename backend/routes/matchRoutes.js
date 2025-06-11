@@ -1,38 +1,26 @@
 const express = require("express");
 const matchController = require("../controller/matchController");
 const authController = require("../controller/authController");
+
 const router = express.Router();
 
-router
-  .route("/match-info")
-  .post(authController.protect, matchController.matchInfo);
+// Public routes
+router.get("/price-history", matchController.priceHistory);
 
-router.delete(
-  "/",
-  authController.protect,
-  authController.restrictTo("admin"),
-  matchController.deleteAllMatchBids
-);
+// Protected routes - require authentication
+router.use(authController.protect);
 
-router.route("/price-history").post(matchController.priceHistory);
+router.get("/current", matchController.matchInfo);
+router.delete("/current", matchController.cancelTrans);
 
-router
-  .route("/cancel-trans")
-  .post(authController.protect, matchController.cancelTrans);
-
-router.post(
-  "/get-match",
-  authController.protect,
-  authController.restrictTo("admin"),
-  matchController.getMatch
-);
+// Admin-only routes
+router.use(authController.restrictTo("admin"));
 
 router
-  .route("/get-cancels")
-  .post(
-    authController.protect,
-    authController.restrictTo("admin"),
-    matchController.getCancels
-  );
+  .route("/")
+  .get(matchController.getMatch)
+  .delete(matchController.deleteAllMatchBids);
+
+router.get("/cancellations", matchController.getCancels);
 
 module.exports = router;

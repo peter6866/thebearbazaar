@@ -1,33 +1,26 @@
 const express = require("express");
 const bidsController = require("../controller/bidsController");
 const authController = require("../controller/authController");
+
 const router = express.Router();
 
-// sell bid route
-router.route("/sell-bid").post(authController.protect, bidsController.sellBid);
-// post buy bid route
-router.route("/buy-bid").post(authController.protect, bidsController.buyBid);
-//get current bid
-router.route("/get-bid").get(authController.protect, bidsController.getBid);
-//cancel bid
+// Public routes (no authentication required)
+router.get("/market", bidsController.getMarketInfo);
+
+// Protected routes - require authentication
+router.use(authController.protect);
+
 router
-  .route("/cancel-bid")
-  .post(authController.protect, bidsController.cancelBid);
+  .route("/")
+  .get(bidsController.getBid) // GET /api/v1/bids - get current user's bid
+  .post(bidsController.createBid) // POST /api/v1/bids - create new bid (buy/sell)
+  .delete(bidsController.cancelBid); // DELETE /api/v1/bids - cancel current bid
 
-router.post(
-  "/match",
-  authController.protect,
-  authController.restrictTo("admin"),
-  bidsController.match
-);
+// Admin-only routes
+router.use(authController.restrictTo("admin"));
 
-router.delete(
-  "/",
-  authController.protect,
-  authController.restrictTo("admin"),
-  bidsController.deleteAllBids
-);
+router.post("/match", bidsController.match); // POST /api/v1/bids/match - trigger matching
 
-router.route("/market-info").get(bidsController.getMarketInfo);
+router.delete("/all", bidsController.deleteAllBids); // DELETE /api/v1/bids/all - delete all bids
 
 module.exports = router;

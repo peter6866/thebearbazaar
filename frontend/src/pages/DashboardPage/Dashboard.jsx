@@ -68,7 +68,7 @@ function Dashboard({ useInAuth = false }) {
       const response = await fetch(
         `${config.REACT_APP_API_URL}/v1/match/price-history`,
         {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
@@ -89,9 +89,9 @@ function Dashboard({ useInAuth = false }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/settings/get-scheduled-match-time`,
+        `${config.REACT_APP_API_URL}/v1/settings/schedule`,
         {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
@@ -112,7 +112,7 @@ function Dashboard({ useInAuth = false }) {
 
     try {
       const response = await axios.get(
-        `${config.REACT_APP_API_URL}/v1/bids/market-info`,
+        `${config.REACT_APP_API_URL}/v1/bids/market`,
         {
           headers: {
             "Content-Type": "application/json",

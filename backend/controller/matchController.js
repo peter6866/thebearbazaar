@@ -6,7 +6,7 @@ const AppError = require("../utils/appError");
 const Sequelize = require("sequelize");
 const moment = require("moment");
 const { Op } = require("sequelize");
-const transporter = require("../utils/emailTransporter");
+const emailService = require("../services/emailService");
 const CanceledTrans = require("../models/canceledTransModel");
 const redis = require("../db/redis");
 const PhoneNum = require("../models/phoneNumModel");
@@ -176,13 +176,13 @@ exports.cancelTrans = catchAsync(async (req, res, next) => {
   const activeType = type === "Buyer" ? "Seller" : "Buyer";
 
   if (user1.sendMatchNotifications) {
-    sendCancelEmail(user1.email);
+    emailService.sendMatchCanceledEmail(user1.email);
   }
   if (user2.sendMatchNotifications) {
     if (enterRematching) {
-      sendCancelEmail(user2.email, activeType);
+      emailService.sendMatchCanceledEmail(user2.email, activeType);
     } else {
-      sendCancelEmail(user2.email);
+      emailService.sendMatchCanceledEmail(user2.email);
     }
   }
 
@@ -234,7 +234,7 @@ exports.cancelTrans = catchAsync(async (req, res, next) => {
         : false;
 
       if (matchedBuyer.sendMatchNotifications) {
-        await sendMatchedEmail(
+        await emailService.sendMatchFoundEmail(
           matchedBuyerEmail,
           price,
           "seller",
@@ -245,7 +245,7 @@ exports.cancelTrans = catchAsync(async (req, res, next) => {
       }
 
       if (matchedSeller.sendMatchNotifications) {
-        await sendMatchedEmail(
+        await emailService.sendMatchFoundEmail(
           matchedSellerEmail,
           price,
           "buyer",
@@ -265,189 +265,6 @@ exports.cancelTrans = catchAsync(async (req, res, next) => {
     message: "Transaction canceled",
   });
 });
-
-const sendCancelEmail = (email, activeUserType = null) => {
-  const passiveMessage = activeUserType
-    ? `
-      <p>
-        The <strong>${activeUserType}</strong> you were matched with has canceled the transaction. 
-        You&#39ve now been placed in a priority queue. Once another <strong>${activeUserType}</strong> becomes available, 
-        you&#39ll be automatically re-matched.
-      </p>
-    `
-    : "";
-
-  const mailOptions = {
-    from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
-    to: email,
-    subject: "Your match was canceled",
-    html: `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Match Cancel</title>
-          <style>
-            body {
-              font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-              color: #222222;
-              background-color: #f9f9f9;
-              margin: 0;
-              padding: 0;
-            }
-            .email-container {
-              max-width: 600px;
-              margin: 20px auto;
-              padding: 20px;
-              background-color: #ffffff;
-              border: 1px solid #dddddd;
-              border-radius: 8px;
-              box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            }
-            .header {
-              background-color: #BA0C2F;
-              color: #ffffff;
-              padding: 10px;
-              text-align: center;
-              border-radius: 5px 5px 0 0;
-            }
-            .footer {
-              margin-top: 20px;
-              text-align: center;
-              font-size: 14px;
-              color: #999;
-            }
-            a {
-              color: #BA0C2F;
-            }
-          </style>
-      </head>
-      <body>
-          <div class="email-container">
-              <div class="header">
-                  <h1>The Bear Bazaar</h1>
-              </div>
-              <h3>Your match has been canceled.</h3>
-              ${passiveMessage}
-              <p>
-                If you have any questions or concerns, feel free to contact our support team.
-              </p>
-              <div class="footer">
-                  Thank you for using our service!<br>
-                  <a href="mailto:hjiayu@wustl.edu">Contact Support</a>
-              </div>
-          </div>
-      </body>
-      </html>
-    `,
-  };
-
-  // return a promise to send the email
-  return new Promise((resolve, reject) => {
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(info);
-      }
-    });
-  });
-};
-
-const sendMatchedEmail = (
-  email,
-  price,
-  matchedType,
-  matchedEmail,
-  phoneNum,
-  phoneIsPrefered
-) => {
-  const capitalizedMatchedType = `${matchedType
-    .charAt(0)
-    .toUpperCase()}${matchedType.slice(1)}`;
-  const mailOptions = {
-    from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
-    to: email,
-    subject: `A matched ${matchedType} has been found`,
-    html: `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Match Found</title>
-        <style>
-            body {
-                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                background-color: #f9f9f9;
-                margin: 0;
-                padding: 20px;
-            }
-            .email-container {
-                max-width: 600px;
-                background-color: #fff;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                padding: 20px;
-                margin: auto;
-            }
-            .header {
-              background-color: #BA0C2F; /* Main red color */
-              color: #ffffff;
-              padding: 10px;
-              text-align: center;
-              border-radius: 5px 5px 0 0;
-          }
-          .footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: #999;
-        }
-        a {
-            color: #BA0C2F; /* Main red color for links */
-        }
-        
-        </style>
-    </head>
-    <body>
-        <div class="email-container">
-            <div class="header"><h2>Match Confirmation</h2></div>
-            
-            <p>Congratulations! You have been matched with a <strong>${matchedType}</strong> at a price of <strong>$${price}</strong>.</p>
-            <p>${capitalizedMatchedType}'s email: ${matchedEmail}</p>
-            ${
-              phoneIsPrefered
-                ? `<p>${capitalizedMatchedType}'s phone number: ${phoneNum}</p>`
-                : ""
-            } 
-            ${
-              phoneIsPrefered
-                ? `<p>The ${matchedType} prefers to use phone number.</p>`
-                : ""
-            }
-            
-            <div class="footer">
-                Thank you for using our service!<br>
-                <a href="mailto:hjiayu@wustl.edu" style="color: #005a9c;">Contact Support</a>
-            </div>
-        </div>
-    </body>
-    </html>
-    `,
-  };
-
-  return new Promise((resolve, reject) => {
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(info);
-      }
-    });
-  });
-};
 
 exports.getMatch = catchAsync(async (req, res, next) => {
   // find all matches in time descending order

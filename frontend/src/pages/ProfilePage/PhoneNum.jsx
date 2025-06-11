@@ -45,7 +45,7 @@ function PhoneNum() {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/phone-num`,
+        `${config.REACT_APP_API_URL}/v1/users/profile/phone`,
         {
           method: "POST",
           headers: {
@@ -76,9 +76,9 @@ function PhoneNum() {
   const handleUpdatePreference = async () => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/update-preference`,
+        `${config.REACT_APP_API_URL}/v1/users/profile/phone`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
@@ -106,9 +106,9 @@ function PhoneNum() {
   const deleteNum = async () => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/delete-num`,
+        `${config.REACT_APP_API_URL}/v1/users/profile/phone`,
         {
-          method: "POST",
+          method: "DELETE",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
@@ -130,7 +130,7 @@ function PhoneNum() {
     const fetchPhoneNumber = async () => {
       try {
         const response = await fetch(
-          `${config.REACT_APP_API_URL}/v1/users/phone-num`,
+          `${config.REACT_APP_API_URL}/v1/users/profile/phone`,
           {
             method: "GET",
             headers: {

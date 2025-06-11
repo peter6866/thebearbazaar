@@ -60,19 +60,13 @@ function BidPage() {
 
   const cancelBid = async () => {
     try {
-      const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/bids/cancel-bid`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({
-            type: matchedType,
-          }),
-        }
-      );
+      const response = await fetch(`${config.REACT_APP_API_URL}/v1/bids`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
       if (response.ok) {
         dispatch(setHasBid(false));
@@ -90,19 +84,17 @@ function BidPage() {
   const sendBid = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/bids/${transType}-bid`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({
-            price: bidData["Price"],
-          }),
-        }
-      );
+      const response = await fetch(`${config.REACT_APP_API_URL}/v1/bids`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          type: transType,
+          price: bidData["Price"],
+        }),
+      });
 
       const data = await response.json();
 
@@ -119,9 +111,9 @@ function BidPage() {
   const cancelTrans = async () => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/match/cancel-trans`,
+        `${config.REACT_APP_API_URL}/v1/match/current`,
         {
-          method: "POST",
+          method: "DELETE",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,

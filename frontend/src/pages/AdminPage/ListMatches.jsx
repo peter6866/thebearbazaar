@@ -39,16 +39,13 @@ function ListMatch() {
     if (!config || !config.REACT_APP_API_URL) return;
 
     try {
-      const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/match/get-match`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+      const response = await fetch(`${config.REACT_APP_API_URL}/v1/match`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
       const data = await response.json();
       if (response.ok && data) {

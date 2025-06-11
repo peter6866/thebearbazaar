@@ -68,7 +68,7 @@ function Login({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/signup-verify`,
+        `${config.REACT_APP_API_URL}/v1/users/auth/verify`,
         {
           method: "POST",
           headers: {
@@ -117,7 +117,7 @@ function Login({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/get-code`,
+        `${config.REACT_APP_API_URL}/v1/users/auth/code`,
         {
           method: "POST",
           headers: {
@@ -167,7 +167,7 @@ function Login({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/resend-code`,
+        `${config.REACT_APP_API_URL}/v1/users/auth/resend`,
         {
           method: "POST",
           headers: {
@@ -197,7 +197,7 @@ function Login({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/login`,
+        `${config.REACT_APP_API_URL}/v1/users/auth/login`,
         {
           method: "POST",
           headers: {

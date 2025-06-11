@@ -1,18 +1,16 @@
 const express = require("express");
 const settingsController = require("../controller/settingsController");
 const authController = require("../controller/authController");
+
 const router = express.Router();
 
-router
-  .route("/get-scheduled-match-time")
-  .post(settingsController.getScheduledMatchTime);
+// Public routes
+router.get("/schedule", settingsController.getScheduledMatchTime);
 
-router
-  .route("/set-scheduled-match-time")
-  .post(
-    authController.protect,
-    authController.restrictTo("admin"),
-    settingsController.setScheduledMatchTime
-  );
+// Admin-only routes
+router.use(authController.protect);
+router.use(authController.restrictTo("admin"));
+
+router.patch("/schedule", settingsController.setScheduledMatchTime);
 
 module.exports = router;

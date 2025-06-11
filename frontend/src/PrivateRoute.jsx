@@ -22,7 +22,7 @@ const PrivateRoute = ({ children, adminPage = false }) => {
     const checkToken = async () => {
       if (isLoggedIn && !authLoading && !configLoading) {
         try {
-          await axios.get(`${config.REACT_APP_API_URL}/v1/users/is-loggedin`, {
+          await axios.get(`${config.REACT_APP_API_URL}/v1/users/auth/status`, {
             headers: { Authorization: `Bearer ${authToken}` },
           });
           // Token is valid, fetch initial data

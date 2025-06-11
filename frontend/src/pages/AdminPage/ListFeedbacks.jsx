@@ -21,16 +21,13 @@ function ListFeedback() {
     if (!config || !config.REACT_APP_API_URL) return;
 
     try {
-      const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/feedback/get-feedback`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+      const response = await fetch(`${config.REACT_APP_API_URL}/v1/feedback`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
       const data = await response.json();
       if (response.ok && data) {
@@ -42,16 +39,13 @@ function ListFeedback() {
   const deleteFeedback = async (id) => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/feedback/delete-feedback`,
+        `${config.REACT_APP_API_URL}/v1/feedback/${id}`,
         {
-          method: "POST",
+          method: "DELETE",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
           },
-          body: JSON.stringify({
-            feedback_id: id,
-          }),
         }
       );
 
@@ -64,16 +58,13 @@ function ListFeedback() {
   const archiveFeedback = async (id) => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/feedback/archive-feedback`,
+        `${config.REACT_APP_API_URL}/v1/feedback/${id}/archive`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
           },
-          body: JSON.stringify({
-            feedback_id: id,
-          }),
         }
       );
 

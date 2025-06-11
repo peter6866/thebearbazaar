@@ -112,7 +112,7 @@ function AdminPage() {
 
   const handleDeleteBids = async () => {
     try {
-      const response = await fetch(`${config.REACT_APP_API_URL}/v1/bids`, {
+      const response = await fetch(`${config.REACT_APP_API_URL}/v1/bids/all`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -168,9 +168,9 @@ function AdminPage() {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/settings/set-scheduled-match-time`,
+        `${config.REACT_APP_API_URL}/v1/settings/schedule`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,

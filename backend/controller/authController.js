@@ -5,105 +5,12 @@ const BanUsers = require("../models/banUsersModel");
 const bcrypt = require("bcryptjs");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
-const transporter = require("../utils/emailTransporter");
+const emailService = require("../services/emailService");
 
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
-
-// helper function to send verification email
-const sendVerificationEmail = (email, verificationCode) => {
-  const mailOptions = {
-    from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
-    to: email,
-    subject: "Please verify your email for The Bear Bazaar!",
-    html: `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Email Verification</title>
-        <style>
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            color: #222222;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-        }
-        .email-container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border: 1px solid #dddddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .header {
-            background-color: #BA0C2F; /* Main red color */
-            color: #ffffff;
-            padding: 10px;
-            text-align: center;
-            border-radius: 5px 5px 0 0;
-        }
-        .verification-code {
-            background-color: #f8e6e7; /* Lighter shade of red for contrast */
-            padding: 20px;
-            text-align: center;
-            margin: 20px 0;
-            font-size: 24px;
-            font-weight: bold;
-            color: #BA0C2F; /* Main red color for text */
-            border-radius: 5px;
-            border: 1px dashed #BA0C2F; /* Main red color for border */
-        }
-        .footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: #999;
-        }
-        a {
-            color: #BA0C2F; /* Main red color for links */
-        }
-    </style>
-  
-    </head>
-      <body>
-          <div class="email-container">
-              <div class="header">
-                  <h1>Welcome to The Bear Bazaar!</h1>
-              </div>
-              <h3>Hello! Please verify your WashU email.</h3>
-              <div class="verification-code">
-                  ${verificationCode}
-              </div>
-              <p>Enter the above code in the verification field on our website. This code is valid for 1 hour.</p>
-              <p>If you didn't request this, please ignore this email or contact support if you have any concerns.</p>
-              <div class="footer">
-                  Thank you for using our service!<br>
-                  <a href="mailto:hjiayu@wustl.edu" style="color: #005a9c;">Contact Support</a>
-              </div>
-          </div>
-      </body>
-    </html>
-          `,
-  };
-
-  // return a promise to send the email
-  return new Promise((resolve, reject) => {
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(info);
-      }
-    });
-  });
-};
 
 const createSendToken = (user, res) => {
   const token = signToken(user.id);
@@ -204,7 +111,7 @@ exports.getCode = catchAsync(async (req, res, next) => {
     }
   }
 
-  await sendVerificationEmail(
+  await emailService.sendVerificationEmail(
     email.replace(/@wustl\.edu/g, "@email.wustl.edu"),
     verificationCode
   );
@@ -268,7 +175,7 @@ exports.resendCode = catchAsync(async (req, res, next) => {
     verificationCodeTimestamp: new Date(),
   });
 
-  await sendVerificationEmail(email, verificationCode);
+  await emailService.sendVerificationEmail(email, verificationCode);
 
   res.status(201).json({
     status: "success",
@@ -383,7 +290,3 @@ exports.restrictTo =
     }
     next();
   };
-
-exports.shutDownNode = (req, res) => {
-  process.exit(1);
-};
