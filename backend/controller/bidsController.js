@@ -49,7 +49,7 @@ exports.createBid = catchAsync(async (req, res, next) => {
   }
 
   // Send pricing emails
-  sendPricingEmails();
+  await sendPricingEmails();
 
   res.status(201).json({
     status: "success",
@@ -127,20 +127,24 @@ const sendPricingEmails = async () => {
   });
 
   // send emails to the unmatched buyers
-  notifyBuyers.forEach(async (buyer) => {
-    // check if the user's price notification is on
-    if (buyer.sendPriceNotifications) {
-      await emailService.sendBidTooLowEmail(buyer.email);
-    }
-  });
+  await Promise.all(
+    notifyBuyers.map(async (buyer) => {
+      // check if the user's price notification is on
+      if (buyer.sendPriceNotifications) {
+        await emailService.sendBidTooLowEmail(buyer.email);
+      }
+    })
+  );
 
   // send emails to the unmatched sellers
-  notifySellers.forEach(async (seller) => {
-    // check if the user's price notification is on
-    if (seller.sendPriceNotifications) {
-      await emailService.sendBidTooHighEmail(seller.email);
-    }
-  });
+  await Promise.all(
+    notifySellers.map(async (seller) => {
+      // check if the user's price notification is on
+      if (seller.sendPriceNotifications) {
+        await emailService.sendBidTooHighEmail(seller.email);
+      }
+    })
+  );
 
   // update all the bids to not get notified again
   await BuyBids.update(
@@ -264,51 +268,53 @@ const generateMatches = async () => {
     }
   }
 
-  matches.forEach(async (match) => {
-    const matchedBuyer = await User.findByPk(match.buyer_id);
-    const matchedSeller = await User.findByPk(match.seller_id);
-    const matchedBuyerEmail = matchedBuyer.email;
-    const matchedSellerEmail = matchedSeller.email;
+  await Promise.all(
+    matches.map(async (match) => {
+      const matchedBuyer = await User.findByPk(match.buyer_id);
+      const matchedSeller = await User.findByPk(match.seller_id);
+      const matchedBuyerEmail = matchedBuyer.email;
+      const matchedSellerEmail = matchedSeller.email;
 
-    // check if buyer prefered phone number
-    const buyerPhoneNum = await PhoneNum.findOne({
-      where: { userId: matchedBuyer.id },
-    });
+      // check if buyer prefered phone number
+      const buyerPhoneNum = await PhoneNum.findOne({
+        where: { userId: matchedBuyer.id },
+      });
 
-    // check if seller prefered phone number
-    const sellerPhoneNum = await PhoneNum.findOne({
-      where: { userId: matchedSeller.id },
-    });
+      // check if seller prefered phone number
+      const sellerPhoneNum = await PhoneNum.findOne({
+        where: { userId: matchedSeller.id },
+      });
 
-    let buyerPhone = buyerPhoneNum ? buyerPhoneNum.phoneNum : null;
-    let sellerPhone = sellerPhoneNum ? sellerPhoneNum.phoneNum : null;
-    let buyerPhonePrefered = buyerPhoneNum ? buyerPhoneNum.isPrefered : false;
-    let sellerPhonePrefered = sellerPhoneNum
-      ? sellerPhoneNum.isPrefered
-      : false;
+      let buyerPhone = buyerPhoneNum ? buyerPhoneNum.phoneNum : null;
+      let sellerPhone = sellerPhoneNum ? sellerPhoneNum.phoneNum : null;
+      let buyerPhonePrefered = buyerPhoneNum ? buyerPhoneNum.isPrefered : false;
+      let sellerPhonePrefered = sellerPhoneNum
+        ? sellerPhoneNum.isPrefered
+        : false;
 
-    if (matchedBuyer.sendMatchNotifications) {
-      await emailService.sendMatchFoundEmail(
-        matchedBuyerEmail,
-        marketPrice,
-        "seller",
-        matchedSellerEmail,
-        sellerPhone,
-        sellerPhonePrefered
-      );
-    }
+      if (matchedBuyer.sendMatchNotifications) {
+        await emailService.sendMatchFoundEmail(
+          matchedBuyerEmail,
+          marketPrice,
+          "seller",
+          matchedSellerEmail,
+          sellerPhone,
+          sellerPhonePrefered
+        );
+      }
 
-    if (matchedSeller.sendMatchNotifications) {
-      await emailService.sendMatchFoundEmail(
-        matchedSellerEmail,
-        marketPrice,
-        "buyer",
-        matchedBuyerEmail,
-        buyerPhone,
-        buyerPhonePrefered
-      );
-    }
-  });
+      if (matchedSeller.sendMatchNotifications) {
+        await emailService.sendMatchFoundEmail(
+          matchedSellerEmail,
+          marketPrice,
+          "buyer",
+          matchedBuyerEmail,
+          buyerPhone,
+          buyerPhonePrefered
+        );
+      }
+    })
+  );
 
   matches = matches.map((match) => {
     return { ...match, price: marketPrice, isValid: true };
@@ -340,20 +346,24 @@ const generateMatches = async () => {
   });
 
   // send emails to the unmatched buyers
-  unmatchedBuyers.forEach(async (buyer) => {
-    // check if the user's matching notification is on
-    if (buyer.sendMatchNotifications) {
-      await emailService.sendNoMatchEmail(buyer.email, "seller");
-    }
-  });
+  await Promise.all(
+    unmatchedBuyers.map(async (buyer) => {
+      // check if the user's matching notification is on
+      if (buyer.sendMatchNotifications) {
+        await emailService.sendNoMatchEmail(buyer.email, "seller");
+      }
+    })
+  );
 
   // send emails to the unmatched sellers
-  unmatchedSellers.forEach(async (seller) => {
-    // check if the user's matching notification is on
-    if (seller.sendMatchNotifications) {
-      await emailService.sendNoMatchEmail(seller.email, "buyer");
-    }
-  });
+  await Promise.all(
+    unmatchedSellers.map(async (seller) => {
+      // check if the user's matching notification is on
+      if (seller.sendMatchNotifications) {
+        await emailService.sendNoMatchEmail(seller.email, "buyer");
+      }
+    })
+  );
 
   await MatchBids.bulkCreate(matches);
 
