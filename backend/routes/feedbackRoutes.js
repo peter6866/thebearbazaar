@@ -1,30 +1,19 @@
 const express = require("express");
 const feedbackController = require("../controller/feedbackController");
 const authController = require("../controller/authController");
+
 const router = express.Router();
 
-// get feedback route
-router.post(
-  "/get-feedback",
-  authController.protect,
-  authController.restrictTo("admin"),
-  feedbackController.getFeedback
-);
+// Protected routes - require authentication
+router.use(authController.protect);
 
-router.post(
-  "/delete-feedback",
-  authController.protect,
-  authController.restrictTo("admin"),
-  feedbackController.deleteFeedback
-);
+router.post("/", feedbackController.postFeedback);
 
-router.post(
-  "/archive-feedback",
-  authController.protect,
-  authController.restrictTo("admin"),
-  feedbackController.archiveFeedback
-);
+// Admin-only routes
+router.use(authController.restrictTo("admin"));
 
-router.post("/", authController.protect, feedbackController.postFeedback);
+router.get("/", feedbackController.getFeedback);
+router.delete("/:id", feedbackController.deleteFeedback);
+router.patch("/:id/archive", feedbackController.archiveFeedback);
 
 module.exports = router;

@@ -63,7 +63,7 @@ function SignUp({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/get-code`,
+        `${config.REACT_APP_API_URL}/v1/users/auth/code`,
         {
           method: "POST",
           headers: {
@@ -113,7 +113,7 @@ function SignUp({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/resend-code`,
+        `${config.REACT_APP_API_URL}/v1/users/auth/resend`,
         {
           method: "POST",
           headers: {
@@ -138,7 +138,7 @@ function SignUp({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/signup-verify`,
+        `${config.REACT_APP_API_URL}/v1/users/auth/verify`,
         {
           method: "POST",
           headers: {

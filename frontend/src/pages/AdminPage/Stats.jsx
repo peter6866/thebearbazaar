@@ -13,7 +13,7 @@ function Stats() {
     const fetchWeeklyUserStats = async () => {
       try {
         const response = await fetch(
-          `${config.REACT_APP_API_URL}/v1/users/weekly-stats`,
+          `${config.REACT_APP_API_URL}/v1/users/stats/weekly`,
           {
             method: "GET",
             headers: {

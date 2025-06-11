@@ -14,17 +14,14 @@ function BanUser() {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/ban-user`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({ userEmail }),
-        }
-      );
+      const response = await fetch(`${config.REACT_APP_API_URL}/v1/users/ban`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({ userEmail }),
+      });
 
       const data = await response.json();
       if (!response.ok) {

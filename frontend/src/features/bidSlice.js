@@ -14,9 +14,8 @@ export const fetchInitialData = createAsyncThunk(
       let matchedType, email, phoneNum, price;
       let bidType, bidPrice;
 
-      const matchResponse = await axios.post(
-        `${config.REACT_APP_API_URL}/v1/match/match-info`,
-        {},
+      const matchResponse = await axios.get(
+        `${config.REACT_APP_API_URL}/v1/match/current`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -34,7 +33,7 @@ export const fetchInitialData = createAsyncThunk(
       }
 
       const bidResponse = await axios.get(
-        `${config.REACT_APP_API_URL}/v1/bids/get-bid`,
+        `${config.REACT_APP_API_URL}/v1/bids`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

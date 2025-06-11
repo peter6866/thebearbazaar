@@ -5,395 +5,59 @@ const SellBids = require("../models/sellBidsModel");
 const MatchBids = require("../models/matchBidsModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
-const transporter = require("../utils/emailTransporter");
+const emailService = require("../services/emailService");
 const redis = require("../db/redis");
 
-const sendMatchedEmail = (
-  email,
-  price,
-  matchedType,
-  matchedEmail,
-  phoneNum,
-  phoneIsPrefered
-) => {
-  const capitalizedMatchedType = `${matchedType
-    .charAt(0)
-    .toUpperCase()}${matchedType.slice(1)}`;
-  const mailOptions = {
-    from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
-    to: email,
-    subject: `A matched ${matchedType} has been found`,
-    html: `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Match Found</title>
-        <style>
-            body {
-                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                background-color: #f9f9f9;
-                margin: 0;
-                padding: 20px;
-            }
-            .email-container {
-                max-width: 600px;
-                background-color: #fff;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                padding: 20px;
-                margin: auto;
-            }
-            .header {
-              background-color: #BA0C2F; /* Main red color */
-              color: #ffffff;
-              padding: 10px;
-              text-align: center;
-              border-radius: 5px 5px 0 0;
-          }
-          .footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: #999;
-        }
-        a {
-            color: #BA0C2F; /* Main red color for links */
-        }
-        
-        </style>
-    </head>
-    <body>
-        <div class="email-container">
-            <div class="header"><h2>Match Confirmation</h2></div>
-            
-            <p>Congratulations! You have been matched with a <strong>${matchedType}</strong> at a price of <strong>$${price}</strong>.</p>
-            <p>${capitalizedMatchedType}'s email: ${matchedEmail}</p>
-            ${
-              phoneIsPrefered
-                ? `<p>${capitalizedMatchedType}'s phone number: ${phoneNum}</p>`
-                : ""
-            } 
-            ${
-              phoneIsPrefered
-                ? `<p>The ${matchedType} prefers to use phone number.</p>`
-                : ""
-            }
-            
-            <div class="footer">
-                Thank you for using our service!<br>
-                <a href="mailto:hjiayu@wustl.edu" style="color: #005a9c;">Contact Support</a>
-            </div>
-        </div>
-    </body>
-    </html>
-    `,
-  };
-
-  return new Promise((resolve, reject) => {
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(info);
-      }
-    });
-  });
-};
-
-const sendUnmatchedEmail = (email, unmatchedType) => {
-  const mailOptions = {
-    from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
-    to: email,
-    subject: `No matched ${unmatchedType} has been found`,
-    html: `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>No Match Found</title>
-        <style>
-            body {
-                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                background-color: #f9f9f9;
-                margin: 0;
-                padding: 20px;
-            }
-            .email-container {
-                max-width: 600px;
-                background-color: #fff;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                padding: 20px;
-                margin: auto;
-            }
-            .header {
-              background-color: #BA0C2F; /* Main red color */
-              color: #ffffff;
-              padding: 10px;
-              text-align: center;
-              border-radius: 5px 5px 0 0;
-          }
-          .footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: #999;
-        }
-        a {
-            color: #BA0C2F; /* Main red color for links */
-        }
-        
-        </style>
-    </head>
-    <body>
-        <div class="email-container">
-            <div class="header"><h2>No Match Found</h2></div>
-            
-            <p>Sorry! No matched <strong>${unmatchedType}</strong> has been found for this round.</p>
-            
-            <div class="footer">
-                Thank you for using our service!<br>
-                <a href="mailto:hjiayu@wustl.edu" style="color: #005a9c;">Contact Support</a>
-            </div>
-        </div>
-    </body>
-    </html>
-    `,
-  };
-
-  return new Promise((resolve, reject) => {
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(info);
-      }
-    });
-  });
-};
-
-const sendBuyHigherEmail = (email) => {
-  const mailOptions = {
-    from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
-    to: email,
-    subject: `Current bid price may be too low`,
-    html: `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Big Price Too High</title>
-        <style>
-            body {
-                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                background-color: #f9f9f9;
-                margin: 0;
-                padding: 20px;
-            }
-            .email-container {
-                max-width: 600px;
-                background-color: #fff;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                padding: 20px;
-                margin: auto;
-            }
-            .header {
-              background-color: #BA0C2F; /* Main red color */
-              color: #ffffff;
-              padding: 10px;
-              text-align: center;
-              border-radius: 5px 5px 0 0;
-          }
-          .footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: #999;
-        }
-        a {
-            color: #BA0C2F; /* Main red color for links */
-        }
-        
-        </style>
-    </head>
-    <body>
-        <div class="email-container">
-            <div class="header"><h2>Your current bid price may be too low to be matched with a seller</h2></div>
-            
-            <p>If the next match day is soon, consider raising your maximum price to increase your chances of matching with a seller.</p>
-
-            <p>You will only recieve this message once per bid.</p>
-            
-            <div class="footer">
-                Thank you for using our service!<br>
-                <a href="mailto:hjiayu@wustl.edu" style="color: #005a9c;">Contact Support</a>
-            </div>
-        </div>
-    </body>
-    </html>
-    `,
-  };
-
-  return new Promise((resolve, reject) => {
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(info);
-      }
-    });
-  });
-};
-
-const sendSellLowerEmail = (email) => {
-  const mailOptions = {
-    from: "The Bear Bazaar <no-reply@thebearbazaar.com>",
-    to: email,
-    subject: `Current bid price may be too high`,
-    html: `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Big Price Too High</title>
-        <style>
-            body {
-                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                background-color: #f9f9f9;
-                margin: 0;
-                padding: 20px;
-            }
-            .email-container {
-                max-width: 600px;
-                background-color: #fff;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                padding: 20px;
-                margin: auto;
-            }
-            .header {
-              background-color: #BA0C2F; /* Main red color */
-              color: #ffffff;
-              padding: 10px;
-              text-align: center;
-              border-radius: 5px 5px 0 0;
-          }
-          .footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: #999;
-        }
-        a {
-            color: #BA0C2F; /* Main red color for links */
-        }
-        
-        </style>
-    </head>
-    <body>
-        <div class="email-container">
-            <div class="header"><h2>Your current bid price may be too high to be matched with a buyer</h2></div>
-            
-            <p>If the next match day is soon, consider lowering your minimum price to increase your chances of matching with a buyer.</p>
-
-            <p>You will only recieve this message once per bid.</p>
-            
-            <div class="footer">
-                Thank you for using our service!<br>
-                <a href="mailto:hjiayu@wustl.edu" style="color: #005a9c;">Contact Support</a>
-            </div>
-        </div>
-    </body>
-    </html>
-    `,
-  };
-
-  return new Promise((resolve, reject) => {
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(info);
-      }
-    });
-  });
-};
-
-exports.sellBid = catchAsync(async (req, res, next) => {
+exports.createBid = catchAsync(async (req, res, next) => {
   const { id } = req.user;
-  const { price } = req.body;
+  const { price, type } = req.body;
 
-  // check if the price is in the range of 1-500
+  // Validate bid type
+  if (!type || !["buy", "sell"].includes(type.toLowerCase())) {
+    return next(new AppError("Bid type must be 'buy' or 'sell'", 400));
+  }
+
+  // Validate price range
   if (price < 1 || price > 500) {
     return next(new AppError("Price must be between 1 and 500", 400));
   }
 
-  // check if the userid is in buybids table or sellbids table
+  // Check if user exists
   const user = await User.findByPk(id);
   if (!user) {
     return next(new AppError("User not found", 404));
   }
-  const buybid = await BuyBids.findOne({ where: { user_id: id } });
-  const sellbid = await SellBids.findOne({ where: { user_id: id } });
-  if (buybid || sellbid) {
+
+  // Check if user already has a bid
+  const existingBuyBid = await BuyBids.findOne({ where: { user_id: id } });
+  const existingSellBid = await SellBids.findOne({ where: { user_id: id } });
+
+  if (existingBuyBid || existingSellBid) {
     return next(new AppError("You have already placed a bid!", 400));
   }
 
-  await SellBids.create({
-    user_id: id,
-    price,
-  });
-
-  // remove from the passive queue when user places a new bid
+  // Remove from passive queues when user places a new bid
   await redis.zrem("passive:seller", id);
   await redis.zrem("passive:buyer", id);
 
-  sendPricingEmails();
-  res.status(201).json({
-    status: "success",
-    message: "Successfully placed a sell bid",
-  });
-});
-
-exports.buyBid = catchAsync(async (req, res, next) => {
-  const { id } = req.user;
-  const { price } = req.body;
-
-  // check if the price is in the range of 1-500
-  if (price < 1 || price > 500) {
-    return next(new AppError("Price must be between 1 and 500", 400));
+  // Create the appropriate bid type
+  const bidType = type.toLowerCase();
+  if (bidType === "sell") {
+    await SellBids.create({ user_id: id, price });
+  } else {
+    await BuyBids.create({ user_id: id, price });
   }
 
-  // check if the userid is in buybids table or sellbids table
-  const user = await User.findByPk(id);
-  if (!user) {
-    return next(new AppError("User not found", 404));
-  }
-  const buybid = await BuyBids.findOne({ where: { user_id: id } });
-  const sellbid = await SellBids.findOne({ where: { user_id: id } });
-  if (buybid || sellbid) {
-    return next(new AppError("You have already placed a bid!", 400));
-  }
-
-  // remove from the passive queue when user places a new bid
-  await redis.zrem("passive:seller", id);
-  await redis.zrem("passive:buyer", id);
-
-  sendPricingEmails();
-  await BuyBids.create({
-    user_id: id,
-    price,
-  });
+  // Send pricing emails
+  await sendPricingEmails();
 
   res.status(201).json({
     status: "success",
-    message: "Successfully placed a buy bid",
+    message: `Successfully placed a ${bidType} bid`,
+    data: {
+      type: bidType,
+      price,
+    },
   });
 });
 
@@ -463,20 +127,24 @@ const sendPricingEmails = async () => {
   });
 
   // send emails to the unmatched buyers
-  notifyBuyers.forEach(async (buyer) => {
-    // check if the user's price notification is on
-    if (buyer.sendPriceNotifications) {
-      await sendBuyHigherEmail(buyer.email);
-    }
-  });
+  await Promise.all(
+    notifyBuyers.map(async (buyer) => {
+      // check if the user's price notification is on
+      if (buyer.sendPriceNotifications) {
+        await emailService.sendBidTooLowEmail(buyer.email);
+      }
+    })
+  );
 
   // send emails to the unmatched sellers
-  notifySellers.forEach(async (seller) => {
-    // check if the user's price notification is on
-    if (seller.sendPriceNotifications) {
-      await sendSellLowerEmail(seller.email);
-    }
-  });
+  await Promise.all(
+    notifySellers.map(async (seller) => {
+      // check if the user's price notification is on
+      if (seller.sendPriceNotifications) {
+        await emailService.sendBidTooHighEmail(seller.email);
+      }
+    })
+  );
 
   // update all the bids to not get notified again
   await BuyBids.update(
@@ -600,51 +268,53 @@ const generateMatches = async () => {
     }
   }
 
-  matches.forEach(async (match) => {
-    const matchedBuyer = await User.findByPk(match.buyer_id);
-    const matchedSeller = await User.findByPk(match.seller_id);
-    const matchedBuyerEmail = matchedBuyer.email;
-    const matchedSellerEmail = matchedSeller.email;
+  await Promise.all(
+    matches.map(async (match) => {
+      const matchedBuyer = await User.findByPk(match.buyer_id);
+      const matchedSeller = await User.findByPk(match.seller_id);
+      const matchedBuyerEmail = matchedBuyer.email;
+      const matchedSellerEmail = matchedSeller.email;
 
-    // check if buyer prefered phone number
-    const buyerPhoneNum = await PhoneNum.findOne({
-      where: { userId: matchedBuyer.id },
-    });
+      // check if buyer prefered phone number
+      const buyerPhoneNum = await PhoneNum.findOne({
+        where: { userId: matchedBuyer.id },
+      });
 
-    // check if seller prefered phone number
-    const sellerPhoneNum = await PhoneNum.findOne({
-      where: { userId: matchedSeller.id },
-    });
+      // check if seller prefered phone number
+      const sellerPhoneNum = await PhoneNum.findOne({
+        where: { userId: matchedSeller.id },
+      });
 
-    let buyerPhone = buyerPhoneNum ? buyerPhoneNum.phoneNum : null;
-    let sellerPhone = sellerPhoneNum ? sellerPhoneNum.phoneNum : null;
-    let buyerPhonePrefered = buyerPhoneNum ? buyerPhoneNum.isPrefered : false;
-    let sellerPhonePrefered = sellerPhoneNum
-      ? sellerPhoneNum.isPrefered
-      : false;
+      let buyerPhone = buyerPhoneNum ? buyerPhoneNum.phoneNum : null;
+      let sellerPhone = sellerPhoneNum ? sellerPhoneNum.phoneNum : null;
+      let buyerPhonePrefered = buyerPhoneNum ? buyerPhoneNum.isPrefered : false;
+      let sellerPhonePrefered = sellerPhoneNum
+        ? sellerPhoneNum.isPrefered
+        : false;
 
-    if (matchedBuyer.sendMatchNotifications) {
-      await sendMatchedEmail(
-        matchedBuyerEmail,
-        marketPrice,
-        "seller",
-        matchedSellerEmail,
-        sellerPhone,
-        sellerPhonePrefered
-      );
-    }
+      if (matchedBuyer.sendMatchNotifications) {
+        await emailService.sendMatchFoundEmail(
+          matchedBuyerEmail,
+          marketPrice,
+          "seller",
+          matchedSellerEmail,
+          sellerPhone,
+          sellerPhonePrefered
+        );
+      }
 
-    if (matchedSeller.sendMatchNotifications) {
-      await sendMatchedEmail(
-        matchedSellerEmail,
-        marketPrice,
-        "buyer",
-        matchedBuyerEmail,
-        buyerPhone,
-        buyerPhonePrefered
-      );
-    }
-  });
+      if (matchedSeller.sendMatchNotifications) {
+        await emailService.sendMatchFoundEmail(
+          matchedSellerEmail,
+          marketPrice,
+          "buyer",
+          matchedBuyerEmail,
+          buyerPhone,
+          buyerPhonePrefered
+        );
+      }
+    })
+  );
 
   matches = matches.map((match) => {
     return { ...match, price: marketPrice, isValid: true };
@@ -676,20 +346,24 @@ const generateMatches = async () => {
   });
 
   // send emails to the unmatched buyers
-  unmatchedBuyers.forEach(async (buyer) => {
-    // check if the user's matching notification is on
-    if (buyer.sendMatchNotifications) {
-      await sendUnmatchedEmail(buyer.email, "seller");
-    }
-  });
+  await Promise.all(
+    unmatchedBuyers.map(async (buyer) => {
+      // check if the user's matching notification is on
+      if (buyer.sendMatchNotifications) {
+        await emailService.sendNoMatchEmail(buyer.email, "seller");
+      }
+    })
+  );
 
   // send emails to the unmatched sellers
-  unmatchedSellers.forEach(async (seller) => {
-    // check if the user's matching notification is on
-    if (seller.sendMatchNotifications) {
-      await sendUnmatchedEmail(seller.email, "buyer");
-    }
-  });
+  await Promise.all(
+    unmatchedSellers.map(async (seller) => {
+      // check if the user's matching notification is on
+      if (seller.sendMatchNotifications) {
+        await emailService.sendNoMatchEmail(seller.email, "buyer");
+      }
+    })
+  );
 
   await MatchBids.bulkCreate(matches);
 

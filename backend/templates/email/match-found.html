@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Match Found</title>
+    <style>
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 20px;
+      }
+      .email-container {
+        max-width: 600px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin: auto;
+      }
+      .header {
+        background-color: #ba0c2f;
+        color: #ffffff;
+        padding: 10px;
+        text-align: center;
+        border-radius: 5px 5px 0 0;
+      }
+      .footer {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 14px;
+        color: #999;
+      }
+      a {
+        color: #ba0c2f;
+      }
+      .highlight {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="header">
+        <h2>Match Confirmation</h2>
+      </div>
+
+      <p>
+        Congratulations! You have been matched with a
+        <strong>{{matchedType}}</strong> at a price of
+        <strong>${{price}}</strong>.
+      </p>
+      <p>{{capitalizedMatchedType}}'s email: {{matchedEmail}}</p>
+      {{phoneSection}}
+
+      <div class="footer">
+        Thank you for using our service!<br />
+        <a href="mailto:hjiayu@wustl.edu">Contact Support</a>
+      </div>
+    </div>
+  </body>
+</html>

@@ -27,7 +27,7 @@ function AuthDashboard() {
       const response = await fetch(
         `${config.REACT_APP_API_URL}/v1/match/price-history`,
         {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
@@ -48,7 +48,7 @@ function AuthDashboard() {
 
     try {
       const response = await axios.get(
-        `${config.REACT_APP_API_URL}/v1/bids/market-info`,
+        `${config.REACT_APP_API_URL}/v1/bids/market`,
         {
           headers: {
             "Content-Type": "application/json",

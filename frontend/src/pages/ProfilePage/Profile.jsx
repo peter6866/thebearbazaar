@@ -54,9 +54,9 @@ function Profile() {
   const loadNotificationSettings = useCallback(async () => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/get-notifications`,
+        `${config.REACT_APP_API_URL}/v1/users/profile/notifications`,
         {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
@@ -78,9 +78,9 @@ function Profile() {
   let updateNotificationSettings = async () => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/update-notifications`,
+        `${config.REACT_APP_API_URL}/v1/users/profile/notifications`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
@@ -170,9 +170,9 @@ function Profile() {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/change-password`,
+        `${config.REACT_APP_API_URL}/v1/users/profile/password`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,

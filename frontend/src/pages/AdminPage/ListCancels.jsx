@@ -28,9 +28,9 @@ function ListCancels() {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/match/get-cancels`,
+        `${config.REACT_APP_API_URL}/v1/match/cancellations`,
         {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,

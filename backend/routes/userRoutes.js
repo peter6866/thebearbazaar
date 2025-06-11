@@ -2,56 +2,41 @@ const express = require("express");
 const authController = require("../controller/authController");
 const userController = require("../controller/userController");
 const banController = require("../controller/banController");
+
 const router = express.Router();
 
-// get code route
-router.post("/get-code", authController.getCode);
-// sign up verify route
-router.post("/signup-verify", authController.signUpVerify);
-// resend verification code route
-router.post("/resend-code", authController.resendCode);
-// login route
-router.post("/login", authController.login);
-// isLoggedin route
-router.get("/is-loggedin", authController.protect, authController.isLoggedIn);
+// Auth routes (public)
+router.post("/auth/code", authController.getCode);
+router.post("/auth/verify", authController.signUpVerify);
+router.post("/auth/resend", authController.resendCode);
+router.post("/auth/login", authController.login);
 
-//update notification settings route
+// Protected routes - require authentication
+router.use(authController.protect);
+
+router.get("/auth/status", authController.isLoggedIn);
+
+// User profile and settings
 router
-  .route("/update-notifications")
-  .post(authController.protect, userController.updateNotificationSettings);
+  .route("/profile/notifications")
+  .get(userController.getNotificationSettings)
+  .patch(userController.updateNotificationSettings);
 
-router
-  .route("/get-notifications")
-  .post(authController.protect, userController.getNotificationSettings);
-
-router
-  .route("/change-password")
-  .post(authController.protect, userController.changePassword);
-
-router.post(
-  "/ban-user",
-  authController.protect,
-  authController.restrictTo("admin"),
-  banController.banUser
-);
-
-// router.get("/error", authController.shutDownNode);
+router.patch("/profile/password", userController.changePassword);
 
 router
-  .route("/phone-num")
-  .get(authController.protect, userController.getPhoneNum)
-  .post(authController.protect, userController.addPhoneNum);
+  .route("/profile/phone")
+  .get(userController.getPhoneNum)
+  .post(userController.addPhoneNum)
+  .patch(userController.updatePreference)
+  .delete(userController.deletePhoneNum);
 
-router.post(
-  "/update-preference",
-  authController.protect,
-  userController.updatePreference
-);
+// Statistics (could be public or admin-only based on requirements)
+router.get("/stats/weekly", userController.getWeeklyUserStats);
 
-router
-  .route("/delete-num")
-  .post(authController.protect, userController.deletePhoneNum);
+// Admin-only routes
+router.use(authController.restrictTo("admin"));
 
-router.get("/weekly-stats", userController.getWeeklyUserStats);
+router.post("/ban", banController.banUser);
 
 module.exports = router;
