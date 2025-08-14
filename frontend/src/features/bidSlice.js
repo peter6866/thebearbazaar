@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const fetchInitialData = createAsyncThunk(
   "bid/fetchInitialData",
-  async ({ authToken, config }, { rejectWithValue }) => {
+  async ({ authToken }, { rejectWithValue }) => {
     if (!authToken) {
       return rejectWithValue("Unauthorized");
     }
@@ -15,7 +15,7 @@ export const fetchInitialData = createAsyncThunk(
       let bidType, bidPrice;
 
       const matchResponse = await axios.get(
-        `${config.REACT_APP_API_URL}/v1/match/current`,
+        `${import.meta.env.VITE_API_URL}/v1/match/current`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -33,7 +33,7 @@ export const fetchInitialData = createAsyncThunk(
       }
 
       const bidResponse = await axios.get(
-        `${config.REACT_APP_API_URL}/v1/bids`,
+        `${import.meta.env.VITE_API_URL}/v1/bids`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

@@ -15,14 +15,12 @@ import {
   TableRow,
   useTheme,
   alpha,
-  Chip,
   Paper,
   IconButton,
   Divider,
   Stack,
   Tab,
   Tabs,
-  Tooltip,
 } from "@mui/material";
 import {
   InfoOutlined as InfoIcon,

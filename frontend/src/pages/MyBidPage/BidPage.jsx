@@ -3,7 +3,6 @@ import ViewBid from "./ViewBid";
 import ViewMatched from "./ViewMatched";
 import Transact from "./Transact";
 import { useAuth } from "../../context/AuthContext";
-import { useConfig } from "../../context/ConfigContext";
 import { useSelector } from "react-redux";
 import {
   selectHasBid,
@@ -25,7 +24,6 @@ import { Snackbar, Alert, Container } from "@mui/material";
 
 function BidPage() {
   const { authToken } = useAuth();
-  const { config } = useConfig();
 
   const dispatch = useDispatch();
   const hasBid = useSelector(selectHasBid);
@@ -60,7 +58,7 @@ function BidPage() {
 
   const cancelBid = async () => {
     try {
-      const response = await fetch(`${config.REACT_APP_API_URL}/v1/bids`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/v1/bids`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -84,7 +82,7 @@ function BidPage() {
   const sendBid = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${config.REACT_APP_API_URL}/v1/bids`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/v1/bids`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -111,7 +109,7 @@ function BidPage() {
   const cancelTrans = async () => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/match/current`,
+        `${import.meta.env.VITE_API_URL}/v1/match/current`,
         {
           method: "DELETE",
           headers: {

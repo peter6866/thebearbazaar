@@ -10,7 +10,6 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { InputAdornment } from "@mui/material";
 import PasswordButton from "../../components/PasswordButton";
 import { useAuth } from "../../context/AuthContext";
-import { useConfig } from "../../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
 import TurnstileWidget from "../../components/TurnstileWidget";
 
@@ -23,7 +22,6 @@ function SignUp({ flip }) {
   });
 
   const { login } = useAuth();
-  const { config } = useConfig();
   let navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -63,7 +61,7 @@ function SignUp({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/auth/code`,
+        `${import.meta.env.VITE_API_URL}/v1/users/auth/code`,
         {
           method: "POST",
           headers: {
@@ -113,7 +111,7 @@ function SignUp({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/auth/resend`,
+        `${import.meta.env.VITE_API_URL}/v1/users/auth/resend`,
         {
           method: "POST",
           headers: {
@@ -138,7 +136,7 @@ function SignUp({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/auth/verify`,
+        `${import.meta.env.VITE_API_URL}/v1/users/auth/verify`,
         {
           method: "POST",
           headers: {

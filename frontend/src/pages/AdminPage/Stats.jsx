@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { LineChart } from "@mui/x-charts/LineChart";
-import { useConfig } from "../../context/ConfigContext";
 import { useAuth } from "../../context/AuthContext";
 
 function Stats() {
-  const { config } = useConfig();
   const { authToken } = useAuth();
 
   const [weeklyUserStats, setWeeklyUserStats] = useState([]);
@@ -13,7 +11,7 @@ function Stats() {
     const fetchWeeklyUserStats = async () => {
       try {
         const response = await fetch(
-          `${config.REACT_APP_API_URL}/v1/users/stats/weekly`,
+          `${import.meta.env.VITE_API_URL}/v1/users/stats/weekly`,
           {
             method: "GET",
             headers: {
@@ -26,7 +24,7 @@ function Stats() {
       } catch (error) {}
     };
     fetchWeeklyUserStats();
-  }, [authToken, config.REACT_APP_API_URL]);
+  }, [authToken]);
 
   const lineChartData = useMemo(() => {
     return weeklyUserStats.map((stat, index) => ({

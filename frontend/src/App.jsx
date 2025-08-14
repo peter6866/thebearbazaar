@@ -1,7 +1,6 @@
 import "./styles/App.css";
 import React from "react";
 import { AuthProvider } from "./context/AuthContext";
-import { ConfigProvider } from "./context/ConfigContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Auth from "./pages/AuthPage/Auth";
@@ -32,57 +31,55 @@ function AppContent() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <ConfigProvider>
-          <AuthProvider>
-            <Routes>
-              <Route element={<AppLayout />}>
-                <Route
-                  path="/"
-                  element={
-                    <PrivateRoute>
-                      <Dashboard />
-                    </PrivateRoute>
-                  }
-                  exact
-                />
-                <Route
-                  path="/mybid"
-                  element={
-                    <PrivateRoute>
-                      <BidPage />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/faq"
-                  element={
-                    <PrivateRoute>
-                      <Faq />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/admin"
-                  element={
-                    <PrivateRoute adminPage={true}>
-                      <AdminPage />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/profile"
-                  element={
-                    <PrivateRoute>
-                      <Profile />
-                    </PrivateRoute>
-                  }
-                />
-              </Route>
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/home" element={<LandingPage />} />
-            </Routes>
-          </AuthProvider>
-        </ConfigProvider>
+        <AuthProvider>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <Dashboard />
+                  </PrivateRoute>
+                }
+                exact
+              />
+              <Route
+                path="/mybid"
+                element={
+                  <PrivateRoute>
+                    <BidPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/faq"
+                element={
+                  <PrivateRoute>
+                    <Faq />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <PrivateRoute adminPage={true}>
+                    <AdminPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <PrivateRoute>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
+            </Route>
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/home" element={<LandingPage />} />
+          </Routes>
+        </AuthProvider>
       </Router>
     </ThemeProvider>
   );
