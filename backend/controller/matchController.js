@@ -5,7 +5,6 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const Sequelize = require("sequelize");
 const moment = require("moment");
-const { Op } = require("sequelize");
 const emailService = require("../services/emailService");
 const CanceledTrans = require("../models/canceledTransModel");
 const redis = require("../db/redis");
