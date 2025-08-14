@@ -1,0 +1,35 @@
+name: Deploy Backend to HeroKu
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: akhileshns/heroku-deploy@v3.14.15
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: 'thebearbazaar-backend'
+          heroku_email: 'peter.huang440@gmail.com'
+          appdir: 'backend'
+        env:
+          HD_PGUSER: ${{ secrets.HD_PGUSER }}
+          HD_PGPASSWORD: ${{ secrets.HD_PGPASSWORD }}
+          HD_PGDATABASE: ${{ secrets.HD_PGDATABASE }}
+          HD_PGHOST: ${{ secrets.HD_PGHOST }}
+          HD_JWT_SECRET: ${{ secrets.HD_JWT_SECRET }}
+          HD_JWT_EXPIRES_IN: ${{ secrets.HD_JWT_EXPIRES_IN }}
+          HD_SENDGRID_API_KEY: ${{ secrets.HD_SENDGRID_API_KEY }}
+          HD_NODE_DEV_ENV: ${{ secrets.HD_NODE_DEV_ENV }}
+          HD_ACCESS_KEY_ID: ${{ secrets.HD_ACCESS_KEY_ID }}
+          HD_SECRET_ACCESS_KEY: ${{ secrets.HD_SECRET_ACCESS_KEY }}
+          HD_TURNSTILE_SECRET_KEY: ${{ secrets.HD_TURNSTILE_SECRET_KEY }}
+          HD_REDIS_HOST: ${{ secrets.HD_REDIS_HOST }}
+          HD_REDIS_PORT: ${{ secrets.HD_REDIS_PORT }}
+          HD_REDIS_PASSWORD: ${{ secrets.HD_REDIS_PASSWORD }}
