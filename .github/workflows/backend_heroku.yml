@@ -36,3 +36,4 @@ jobs:
           HD_REDIS_HOST: ${{ secrets.HD_REDIS_HOST }}
           HD_REDIS_PORT: ${{ secrets.HD_REDIS_PORT }}
           HD_REDIS_PASSWORD: ${{ secrets.HD_REDIS_PASSWORD }}
+          HD_PORT: ${{ secrets.HD_PORT }}

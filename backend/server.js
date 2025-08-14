@@ -2,13 +2,16 @@ const sequelize = require("./db/connection");
 const app = require("./app");
 const { initializeJob } = require("./utils/scheduler");
 
+const PORT = process.env.PORT || 3001;
+const HOST = "0.0.0.0";
+
 sequelize
   .sync({ force: false })
   .then(() => {
     console.log("Database synced successfully.");
     initializeJob();
-    app.listen(3001, () => {
-      console.log(`App running on port 3001`);
+    app.listen(PORT, HOST, () => {
+      console.log(`App running on ${HOST}:${PORT}`);
     });
   })
   .catch((error) => {
