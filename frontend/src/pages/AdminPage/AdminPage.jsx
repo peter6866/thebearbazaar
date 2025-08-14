@@ -19,7 +19,6 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { useConfig } from "../../context/ConfigContext";
 import { useAuth } from "../../context/AuthContext";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -44,7 +43,6 @@ function AdminPage() {
   const [changeTimeError, setChangeTimeError] = useState("");
   const [changeTimeSuccess, setChangeTimeSuccess] = useState("");
 
-  const { config } = useConfig();
   const { authToken } = useAuth();
   const theme = useTheme();
 
@@ -54,7 +52,7 @@ function AdminPage() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${config.REACT_APP_API_URL}/v1/faq`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/v1/faq`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -84,7 +82,7 @@ function AdminPage() {
   const runMatches = async () => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/bids/match`,
+        `${import.meta.env.VITE_API_URL}/v1/bids/match`,
         {
           method: "POST",
           headers: {
@@ -112,13 +110,16 @@ function AdminPage() {
 
   const handleDeleteBids = async () => {
     try {
-      const response = await fetch(`${config.REACT_APP_API_URL}/v1/bids/all`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/v1/bids/all`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         console.log("Error deleting bids");
@@ -132,7 +133,7 @@ function AdminPage() {
 
   const handleDeleteMatches = async () => {
     try {
-      const response = await fetch(`${config.REACT_APP_API_URL}/v1/match`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/v1/match`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -168,7 +169,7 @@ function AdminPage() {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/settings/schedule`,
+        `${import.meta.env.VITE_API_URL}/v1/settings/schedule`,
         {
           method: "PATCH",
           headers: {

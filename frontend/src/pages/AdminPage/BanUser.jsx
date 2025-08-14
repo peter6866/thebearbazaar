@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Button, TextField, Alert, Box } from "@mui/material";
-import { useConfig } from "../../context/ConfigContext";
 import { useAuth } from "../../context/AuthContext";
 
 function BanUser() {
-  const { config } = useConfig();
   const { authToken } = useAuth();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -14,14 +12,17 @@ function BanUser() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${config.REACT_APP_API_URL}/v1/users/ban`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({ userEmail }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/v1/users/ban`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({ userEmail }),
+        }
+      );
 
       const data = await response.json();
       if (!response.ok) {

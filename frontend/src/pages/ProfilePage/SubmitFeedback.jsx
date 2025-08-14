@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { useConfig } from "../../context/ConfigContext";
 import {
   Button,
   Alert,
@@ -19,23 +18,25 @@ function SubmitFeedback() {
   const [feedbackSuccess, setFeedbackSuccess] = useState("");
 
   const { authToken } = useAuth();
-  const { config } = useConfig();
 
   const handleFeedbackSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${config.REACT_APP_API_URL}/v1/feedback`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({
-          subject: feedbackSubject,
-          feedback: feedbackMessage,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/v1/feedback`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({
+            subject: feedbackSubject,
+            feedback: feedbackMessage,
+          }),
+        }
+      );
 
       const data = await response.json();
       if (response.ok && data) {

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useConfig } from "../../context/ConfigContext";
 import { useAuth } from "../../context/AuthContext";
 import QAPair from "./QAPair";
 import {
@@ -20,7 +19,6 @@ function Faq() {
   const [questionsData, setQuestionsData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredQuestions, setFilteredQuestions] = useState([]);
-  const { config } = useConfig();
   const { authToken, role } = useAuth();
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
@@ -37,12 +35,8 @@ function Faq() {
       )})`;
 
   const loadFAQ = useCallback(async () => {
-    if (!config || !config.REACT_APP_API_URL) {
-      return;
-    }
-
     try {
-      const response = await fetch(`${config.REACT_APP_API_URL}/v1/faq`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/v1/faq`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -59,11 +53,11 @@ function Faq() {
         setFilteredQuestions(data.questions);
       }
     } catch (error) {}
-  }, [config]);
+  }, []);
 
   const handleDeleteFAQ = async (question) => {
     try {
-      const response = await fetch(`${config.REACT_APP_API_URL}/v1/faq`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/v1/faq`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

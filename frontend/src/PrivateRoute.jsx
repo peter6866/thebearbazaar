@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
-import { useConfig } from "./context/ConfigContext";
 import { useDispatch } from "react-redux";
 import { fetchInitialData } from "./features/bidSlice";
 import axios from "axios";
 
 const PrivateRoute = ({ children, adminPage = false }) => {
-  const { config, loading: configLoading } = useConfig();
   const {
     isLoggedIn,
     isLoading: authLoading,
@@ -20,13 +18,16 @@ const PrivateRoute = ({ children, adminPage = false }) => {
 
   useEffect(() => {
     const checkToken = async () => {
-      if (isLoggedIn && !authLoading && !configLoading) {
+      if (isLoggedIn && !authLoading) {
         try {
-          await axios.get(`${config.REACT_APP_API_URL}/v1/users/auth/status`, {
-            headers: { Authorization: `Bearer ${authToken}` },
-          });
+          await axios.get(
+            `${import.meta.env.VITE_API_URL}/v1/users/auth/status`,
+            {
+              headers: { Authorization: `Bearer ${authToken}` },
+            }
+          );
           // Token is valid, fetch initial data
-          dispatch(fetchInitialData({ authToken, config }));
+          dispatch(fetchInitialData({ authToken }));
         } catch (error) {
           // Token is invalid, call logout
           logout();
@@ -35,17 +36,9 @@ const PrivateRoute = ({ children, adminPage = false }) => {
     };
 
     checkToken();
-  }, [
-    isLoggedIn,
-    authLoading,
-    configLoading,
-    config,
-    authToken,
-    dispatch,
-    logout,
-  ]);
+  }, [isLoggedIn, authLoading, authToken, dispatch, logout]);
 
-  if (authLoading || configLoading) {
+  if (authLoading) {
     return null; // Render nothing while loading
   }
 

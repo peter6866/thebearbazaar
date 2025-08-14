@@ -23,7 +23,6 @@ import {
   ShoppingCart as CartIcon,
   People as PeopleIcon,
 } from "@mui/icons-material";
-import { useConfig } from "../../context/ConfigContext";
 import { useSelector } from "react-redux";
 import { selectHasBid, selectIsMatched } from "../../features/bidSlice";
 import axios from "axios";
@@ -32,7 +31,6 @@ function Dashboard({ useInAuth = false }) {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === "dark";
   const navigate = useNavigate();
-  const { config } = useConfig();
   const [priceHistory, setPriceHistory] = useState([]);
   const [matchTime, setMatchTime] = useState();
   const [marketInfo, setMarketInfo] = useState({
@@ -60,13 +58,9 @@ function Dashboard({ useInAuth = false }) {
       )})`;
 
   const loadPriceHistory = useCallback(async () => {
-    if (!config || !config.REACT_APP_API_URL) {
-      return;
-    }
-
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/match/price-history`,
+        `${import.meta.env.VITE_API_URL}/v1/match/price-history`,
         {
           method: "GET",
           headers: {
@@ -80,16 +74,12 @@ function Dashboard({ useInAuth = false }) {
         setPriceHistory(data.matchHistory);
       }
     } catch (error) {}
-  }, [config]);
+  }, []);
 
   const loadMatchTime = useCallback(async () => {
-    if (!config || !config.REACT_APP_API_URL) {
-      return;
-    }
-
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/settings/schedule`,
+        `${import.meta.env.VITE_API_URL}/v1/settings/schedule`,
         {
           method: "GET",
           headers: {
@@ -103,16 +93,12 @@ function Dashboard({ useInAuth = false }) {
         setMatchTime(data.matchTime);
       }
     } catch (error) {}
-  }, [config]);
+  }, []);
 
   const loadMarketInfo = useCallback(async () => {
-    if (!config || !config.REACT_APP_API_URL) {
-      return;
-    }
-
     try {
       const response = await axios.get(
-        `${config.REACT_APP_API_URL}/v1/bids/market`,
+        `${import.meta.env.VITE_API_URL}/v1/bids/market`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -127,7 +113,7 @@ function Dashboard({ useInAuth = false }) {
       setInfoSnackbarMessage("Failed to load market information.");
       setInfoSnackbarOpen(true);
     }
-  }, [config]);
+  }, []);
 
   useEffect(() => {
     loadPriceHistory();

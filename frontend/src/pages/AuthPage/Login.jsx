@@ -9,7 +9,6 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { InputAdornment } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useAuth } from "../../context/AuthContext";
-import { useConfig } from "../../context/ConfigContext";
 import { useNavigate } from "react-router-dom";
 import PasswordButton from "../../components/PasswordButton";
 import TurnstileWidget from "../../components/TurnstileWidget";
@@ -26,7 +25,6 @@ function Login({ flip }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const { login } = useAuth();
-  const { config } = useConfig();
 
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -68,7 +66,7 @@ function Login({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/auth/verify`,
+        `${import.meta.env.VITE_API_URL}/v1/users/auth/verify`,
         {
           method: "POST",
           headers: {
@@ -117,7 +115,7 @@ function Login({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/auth/code`,
+        `${import.meta.env.VITE_API_URL}/v1/users/auth/code`,
         {
           method: "POST",
           headers: {
@@ -167,7 +165,7 @@ function Login({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/auth/resend`,
+        `${import.meta.env.VITE_API_URL}/v1/users/auth/resend`,
         {
           method: "POST",
           headers: {
@@ -197,7 +195,7 @@ function Login({ flip }) {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/auth/login`,
+        `${import.meta.env.VITE_API_URL}/v1/users/auth/login`,
         {
           method: "POST",
           headers: {

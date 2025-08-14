@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAuth } from "../../context/AuthContext";
-import { useConfig } from "../../context/ConfigContext";
 import { Switch, FormControlLabel, FormGroup } from "@mui/material";
 import PasswordButton from "../../components/PasswordButton";
 import SubmitFeedback from "./SubmitFeedback";
@@ -21,7 +20,6 @@ import { useTheme } from "@mui/material/styles";
 function Profile() {
   const theme = useTheme();
   const { authToken } = useAuth();
-  const { config } = useConfig();
 
   const [showPassword, setShowPassword] = useState(false);
   const [matchNotifications, setMatchNotifications] = useState(false);
@@ -54,7 +52,7 @@ function Profile() {
   const loadNotificationSettings = useCallback(async () => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/profile/notifications`,
+        `${import.meta.env.VITE_API_URL}/v1/users/profile/notifications`,
         {
           method: "GET",
           headers: {
@@ -73,12 +71,12 @@ function Profile() {
         setLoading(false);
       }
     } catch (error) {}
-  }, [authToken, config]);
+  }, [authToken]);
 
   let updateNotificationSettings = async () => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/profile/notifications`,
+        `${import.meta.env.VITE_API_URL}/v1/users/profile/notifications`,
         {
           method: "PATCH",
           headers: {
@@ -170,7 +168,7 @@ function Profile() {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/profile/password`,
+        `${import.meta.env.VITE_API_URL}/v1/users/profile/password`,
         {
           method: "PATCH",
           headers: {

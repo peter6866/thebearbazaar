@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useConfig } from "../../context/ConfigContext";
 import { useAuth } from "../../context/AuthContext";
 import { Delete, Archive } from "@mui/icons-material";
 import {
@@ -14,32 +13,32 @@ import {
 
 function ListFeedback() {
   const [feedbacks, setFeedbacks] = useState([]);
-  const { config } = useConfig();
   const { authToken } = useAuth();
 
   const fetchFeedbacks = useCallback(async () => {
-    if (!config || !config.REACT_APP_API_URL) return;
-
     try {
-      const response = await fetch(`${config.REACT_APP_API_URL}/v1/feedback`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/v1/feedback`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
 
       const data = await response.json();
       if (response.ok && data) {
         setFeedbacks(data.feedbacks);
       }
     } catch (error) {}
-  }, [authToken, config]);
+  }, [authToken]);
 
   const deleteFeedback = async (id) => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/feedback/${id}`,
+        `${import.meta.env.VITE_API_URL}/v1/feedback/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -58,7 +57,7 @@ function ListFeedback() {
   const archiveFeedback = async (id) => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/feedback/${id}/archive`,
+        `${import.meta.env.VITE_API_URL}/v1/feedback/${id}/archive`,
         {
           method: "PATCH",
           headers: {

@@ -8,11 +8,9 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
-import { useConfig } from "../../context/ConfigContext";
 import { useAuth } from "../../context/AuthContext";
 
 function PhoneNum() {
-  const { config } = useConfig();
   const { authToken } = useAuth();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -45,7 +43,7 @@ function PhoneNum() {
 
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/profile/phone`,
+        `${import.meta.env.VITE_API_URL}/v1/users/profile/phone`,
         {
           method: "POST",
           headers: {
@@ -76,7 +74,7 @@ function PhoneNum() {
   const handleUpdatePreference = async () => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/profile/phone`,
+        `${import.meta.env.VITE_API_URL}/v1/users/profile/phone`,
         {
           method: "PATCH",
           headers: {
@@ -106,7 +104,7 @@ function PhoneNum() {
   const deleteNum = async () => {
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/users/profile/phone`,
+        `${import.meta.env.VITE_API_URL}/v1/users/profile/phone`,
         {
           method: "DELETE",
           headers: {
@@ -130,7 +128,7 @@ function PhoneNum() {
     const fetchPhoneNumber = async () => {
       try {
         const response = await fetch(
-          `${config.REACT_APP_API_URL}/v1/users/profile/phone`,
+          `${import.meta.env.VITE_API_URL}/v1/users/profile/phone`,
           {
             method: "GET",
             headers: {
@@ -150,7 +148,7 @@ function PhoneNum() {
       } catch (error) {}
     };
     fetchPhoneNumber();
-  }, [config, authToken]);
+  }, [authToken]);
 
   return (
     <div>

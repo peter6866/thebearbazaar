@@ -11,23 +11,8 @@ const ses = new aws.SES({
   },
 });
 
-let transporter;
-// use ses for production
-if (process.env.NODE_DEV_ENV === "production") {
-  transporter = nodemailer.createTransport({
-    SES: { ses, aws },
-  });
-  // use sendgrid for development
-} else {
-  transporter = nodemailer.createTransport({
-    host: "smtp.sendgrid.net",
-    port: 465,
-    secure: true,
-    auth: {
-      user: "apikey",
-      pass: process.env.SENDGRID_API_KEY,
-    },
-  });
-}
+let transporter = nodemailer.createTransport({
+  SES: { ses, aws },
+});
 
 module.exports = transporter;

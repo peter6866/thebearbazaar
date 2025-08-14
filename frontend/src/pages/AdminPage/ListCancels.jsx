@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useConfig } from "../../context/ConfigContext";
 import { useAuth } from "../../context/AuthContext";
 import {
   Box,
@@ -20,15 +19,12 @@ function formatDate(isoString) {
 
 function ListCancels() {
   const [cancels, setCancels] = useState([]);
-  const { config } = useConfig();
   const { authToken } = useAuth();
 
   const fetchCancels = useCallback(async () => {
-    if (!config || !config.REACT_APP_API_URL) return;
-
     try {
       const response = await fetch(
-        `${config.REACT_APP_API_URL}/v1/match/cancellations`,
+        `${import.meta.env.VITE_API_URL}/v1/match/cancellations`,
         {
           method: "GET",
           headers: {
@@ -43,7 +39,7 @@ function ListCancels() {
         setCancels(data.cancels);
       }
     } catch (error) {}
-  }, [authToken, config]);
+  }, [authToken]);
 
   useEffect(() => {
     fetchCancels();
