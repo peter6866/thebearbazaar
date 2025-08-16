@@ -26,6 +26,7 @@ jobs:
           HD_PGPASSWORD: ${{ secrets.HD_PGPASSWORD }}
           HD_PGDATABASE: ${{ secrets.HD_PGDATABASE }}
           HD_PGHOST: ${{ secrets.HD_PGHOST }}
+          HD_PGPORT: ${{ secrets.HD_PGPORT }}
           HD_JWT_SECRET: ${{ secrets.HD_JWT_SECRET }}
           HD_JWT_EXPIRES_IN: ${{ secrets.HD_JWT_EXPIRES_IN }}
           HD_SENDGRID_API_KEY: ${{ secrets.HD_SENDGRID_API_KEY }}
