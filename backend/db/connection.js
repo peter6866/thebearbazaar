@@ -4,7 +4,7 @@ const PGUSER = process.env.PGUSER;
 const PGPASSWORD = process.env.PGPASSWORD;
 const PGDATABASE = process.env.PGDATABASE;
 const PGHOST = process.env.PGHOST;
-const PGPORT = 5432;
+const PGPORT = process.env.PGPORT || 5432;
 
 // connect to the database
 const connectionString = `postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}`;
